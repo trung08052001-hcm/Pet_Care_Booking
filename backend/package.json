@@ -1,0 +1,34 @@
+{
+  "name": "pet-booking-backend",
+  "version": "1.0.0",
+  "description": "Base backend for a pet care booking application.",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "check": "node -e \"require('./src/config/env'); console.log('Environment loaded successfully')\""
+  },
+  "keywords": [
+    "nodejs",
+    "expressjs",
+    "mongodb",
+    "mongoose",
+    "pet-booking"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "compression": "latest",
+    "cors": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "express-rate-limit": "latest",
+    "helmet": "latest",
+    "mongoose": "latest",
+    "morgan": "latest"
+  },
+  "devDependencies": {
+    "nodemon": "latest"
+  }
+}
