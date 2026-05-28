@@ -19,6 +19,7 @@ enum AuthAction {
   restoreSession,
   signIn,
   signUp,
+  signInWithZalo,
 }
 
 class AuthState extends Equatable {

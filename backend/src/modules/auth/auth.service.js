@@ -17,7 +17,12 @@ const {
   validateLoginPayload,
   validateRegisterPayload,
   validateResetPasswordPayload,
+  validateZaloLoginPayload,
 } = require("./auth.validation");
+const {
+  exchangeAuthorizationCode,
+  fetchZaloUserProfile,
+} = require("./zalo-oauth.service");
 
 const buildTokenResponse = (user, tokens) => ({
   user: pickUser(user),
@@ -245,6 +250,60 @@ const resetPassword = async (payload, metadata = {}) => {
   return buildTokenResponse(user, tokens);
 };
 
+const loginWithZalo = async (payload, metadata = {}) => {
+  const { oauthCode, accessToken, codeVerifier } = validateZaloLoginPayload(payload);
+
+  const tokenPayload = accessToken
+    ? {
+        accessToken,
+        refreshToken: null,
+        expiresIn: null,
+      }
+    : await exchangeAuthorizationCode({
+        oauthCode,
+        codeVerifier,
+      });
+  const zaloProfile = await fetchZaloUserProfile(tokenPayload.accessToken);
+
+  let user = await User.findOne({
+    authProvider: "zalo",
+    providerId: zaloProfile.id,
+  });
+
+  if (!user && zaloProfile.phone) {
+    user = await User.findOne({ phone: zaloProfile.phone });
+  }
+
+  if (!user) {
+    user = await User.create({
+      fullName: zaloProfile.fullName,
+      email: `zalo_${zaloProfile.id}@zalo.local`,
+      phone: zaloProfile.phone,
+      password: `${zaloProfile.id}_${Date.now()}_${Math.random().toString(16).slice(2)}`,
+      authProvider: "zalo",
+      providerId: zaloProfile.id,
+      acceptedTermsAt: new Date(),
+      role: "customer",
+    });
+  } else {
+    user.fullName = zaloProfile.fullName || user.fullName;
+    user.phone = zaloProfile.phone || user.phone;
+    user.authProvider = "zalo";
+    user.providerId = zaloProfile.id;
+    user.lastLoginAt = new Date();
+    await user.save();
+  }
+
+  if (!user.lastLoginAt) {
+    user.lastLoginAt = new Date();
+    await user.save();
+  }
+
+  const tokens = await issueAuthTokens(user, metadata);
+
+  return buildTokenResponse(user, tokens);
+};
+
 module.exports = {
   register,
   login,
@@ -252,4 +311,5 @@ module.exports = {
   logout,
   forgotPassword,
   resetPassword,
+  loginWithZalo,
 };

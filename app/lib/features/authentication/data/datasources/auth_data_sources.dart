@@ -9,6 +9,8 @@ abstract interface class AuthRemoteDataSource {
   Future<AuthSessionModel> signIn(SignInRequestModel request);
 
   Future<AuthSessionModel> signUp(SignUpRequestModel request);
+
+  Future<AuthSessionModel> signInWithZalo(ZaloLoginRequestModel request);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -25,6 +27,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<AuthSessionModel> signUp(SignUpRequestModel request) async {
     final response = await _apiService.signUp(request.toJson());
+    return response.data;
+  }
+
+  @override
+  Future<AuthSessionModel> signInWithZalo(ZaloLoginRequestModel request) async {
+    final response = await _apiService.signInWithZalo(request.toJson());
     return response.data;
   }
 }

@@ -113,6 +113,24 @@ const validateResetPasswordPayload = (payload) => {
   };
 };
 
+const validateZaloLoginPayload = (payload) => {
+  const oauthCode = String(payload.oauthCode || "").trim();
+  const accessToken = String(payload.accessToken || "").trim();
+  const codeVerifier = payload.codeVerifier
+    ? String(payload.codeVerifier).trim()
+    : null;
+
+  if (!oauthCode && !accessToken) {
+    throw new ApiError(400, "oauthCode or accessToken is required.");
+  }
+
+  return {
+    oauthCode,
+    accessToken,
+    codeVerifier,
+  };
+};
+
 module.exports = {
   normalizeEmail,
   normalizePhone,
@@ -120,4 +138,5 @@ module.exports = {
   validateLoginPayload,
   validateForgotPasswordPayload,
   validateResetPasswordPayload,
+  validateZaloLoginPayload,
 };

@@ -24,7 +24,8 @@ class _AuthApiService implements AuthApiService {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{...body};
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
     final _options = _setStreamType<AuthApiResponseModel>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
@@ -51,7 +52,8 @@ class _AuthApiService implements AuthApiService {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{...body};
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
     final _options = _setStreamType<AuthApiResponseModel>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
@@ -74,23 +76,31 @@ class _AuthApiService implements AuthApiService {
   }
 
   @override
-  Future<Map<String, dynamic>> getCurrentUser() async {
+  Future<AuthApiResponseModel> signInWithZalo(Map<String, dynamic> body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<Map<String, dynamic>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
+    final _options = _setStreamType<AuthApiResponseModel>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/me',
+            '/auth/social/zalo',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    return _result.data ?? <String, dynamic>{};
+    late AuthApiResponseModel _value;
+    try {
+      _value = AuthApiResponseModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

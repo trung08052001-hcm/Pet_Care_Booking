@@ -72,12 +72,15 @@ const resetPassword = asyncHandler(async (req, res) => {
   });
 });
 
-const socialLoginPlaceholder = (provider) => (req, res) => {
-  res.status(501).json({
-    success: false,
-    message: `${provider} login is not configured yet. Add OAuth verification before using this endpoint.`,
+const zaloLogin = asyncHandler(async (req, res) => {
+  const result = await authService.loginWithZalo(req.body, getRequestMetadata(req));
+
+  res.status(200).json({
+    success: true,
+    message: "Zalo login successful.",
+    data: result,
   });
-};
+});
 
 const getMe = asyncHandler(async (req, res) => {
   res.status(200).json({
@@ -97,6 +100,11 @@ module.exports = {
   forgotPassword,
   resetPassword,
   getMe,
-  googleLogin: socialLoginPlaceholder("Google"),
-  zaloLogin: socialLoginPlaceholder("Zalo"),
+  googleLogin: (req, res) => {
+    res.status(501).json({
+      success: false,
+      message: "Google login is not configured yet.",
+    });
+  },
+  zaloLogin,
 };

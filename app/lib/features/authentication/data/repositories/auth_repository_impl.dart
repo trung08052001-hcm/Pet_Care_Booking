@@ -82,6 +82,36 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, AuthSession>> signInWithZalo({
+    String? oauthCode,
+    String? accessToken,
+    String? codeVerifier,
+  }) async {
+    try {
+      if (!await _networkInfo.isConnected) {
+        return const Left(Failure(message: 'No internet connection.'));
+      }
+
+      final session = await _remoteDataSource.signInWithZalo(
+        ZaloLoginRequestModel(
+          oauthCode: oauthCode?.trim(),
+          accessToken: accessToken?.trim(),
+          codeVerifier: codeVerifier?.trim(),
+        ),
+      );
+      await _localDataSource.saveSession(session);
+      return Right(session.toEntity());
+    } on Exception catch (exception, stackTrace) {
+      return Left(
+        FailureMapper.fromException(
+          exception,
+          stackTrace: stackTrace,
+        ),
+      );
+    }
+  }
+
+  @override
   Future<Either<Failure, AuthSession?>> restoreSession() async {
     try {
       final session = await _localDataSource.getCachedSession();

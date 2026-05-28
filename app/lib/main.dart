@@ -6,6 +6,7 @@ import 'package:app/core/config/app_config.dart';
 import 'package:app/core/config/app_flavor.dart';
 import 'package:app/core/di/injection.dart';
 import 'package:app/core/locale_cubit.dart';
+import 'package:app/features/authentication/data/services/zalo_auth_service.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_event.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,8 @@ Future<void> main() async {
 
   final appConfig = AppConfig.fromFlavor(AppFlavor.dev);
   await configureDependencies(appConfig);
+
+  await ZaloAuthService.init(appId: '2334159220396951537');
 
   Bloc.observer = getIt<AppBlocObserver>();
 

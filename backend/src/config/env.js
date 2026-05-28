@@ -16,6 +16,9 @@ const env = {
   refreshTokenSecret:
     process.env.REFRESH_TOKEN_SECRET || "replace-with-dev-refresh-secret",
   refreshTokenExpiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN || "7d",
+  zaloAppId: process.env.ZALO_APP_ID || "",
+  zaloAppSecret: process.env.ZALO_APP_SECRET || "",
+  zaloCallbackUrl: process.env.ZALO_CALLBACK_URL || "",
 };
 
 module.exports = env;

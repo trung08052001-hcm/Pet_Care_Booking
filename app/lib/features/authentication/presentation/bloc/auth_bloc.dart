@@ -1,5 +1,6 @@
 import 'package:app/features/authentication/domain/usecases/restore_session_usecase.dart';
 import 'package:app/features/authentication/domain/usecases/sign_in_usecase.dart';
+import 'package:app/features/authentication/domain/usecases/sign_in_with_zalo_usecase.dart';
 import 'package:app/features/authentication/domain/usecases/sign_up_usecase.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_event.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_state.dart';
@@ -8,16 +9,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(
     this._signInUseCase,
+    this._signInWithZaloUseCase,
     this._signUpUseCase,
     this._restoreSessionUseCase,
   ) : super(const AuthState()) {
     on<AuthSessionRestoreRequested>(_onSessionRestoreRequested);
     on<AuthSignInRequested>(_onSignInRequested);
+    on<AuthSignInWithZaloRequested>(_onSignInWithZaloRequested);
     on<AuthSignUpRequested>(_onSignUpRequested);
     on<AuthFeedbackCleared>(_onFeedbackCleared);
   }
 
   final SignInUseCase _signInUseCase;
+  final SignInWithZaloUseCase _signInWithZaloUseCase;
   final SignUpUseCase _signUpUseCase;
   final RestoreSessionUseCase _restoreSessionUseCase;
 
@@ -149,6 +153,51 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             action: AuthAction.signUp,
             session: session,
             message: 'Sign up successful.',
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _onSignInWithZaloRequested(
+    AuthSignInWithZaloRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        action: AuthAction.signInWithZalo,
+        submissionStatus: AuthSubmissionStatus.loading,
+        clearMessage: true,
+      ),
+    );
+
+    final result = await _signInWithZaloUseCase(
+      SignInWithZaloParams(
+        oauthCode: event.oauthCode,
+        accessToken: event.accessToken,
+        codeVerifier: event.codeVerifier,
+      ),
+    );
+
+    result.fold(
+      (failure) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.unauthenticated,
+            submissionStatus: AuthSubmissionStatus.failure,
+            action: AuthAction.signInWithZalo,
+            message: failure.message,
+          ),
+        );
+      },
+      (session) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.authenticated,
+            submissionStatus: AuthSubmissionStatus.success,
+            action: AuthAction.signInWithZalo,
+            session: session,
+            message: 'Zalo sign in successful.',
           ),
         );
       },

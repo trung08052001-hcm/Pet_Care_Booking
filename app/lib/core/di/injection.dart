@@ -6,8 +6,10 @@ import 'package:app/features/authentication/data/datasources/auth_data_sources.d
 import 'package:app/features/authentication/data/repositories/auth_repository_impl.dart';
 import 'package:app/features/authentication/data/services/auth_api_service.dart';
 import 'package:app/features/authentication/domain/repositories/auth_repository.dart';
+import 'package:app/features/authentication/data/services/zalo_auth_service.dart';
 import 'package:app/features/authentication/domain/usecases/restore_session_usecase.dart';
 import 'package:app/features/authentication/domain/usecases/sign_in_usecase.dart';
+import 'package:app/features/authentication/domain/usecases/sign_in_with_zalo_usecase.dart';
 import 'package:app/features/authentication/domain/usecases/sign_up_usecase.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:dio/dio.dart';
@@ -66,12 +68,19 @@ void _registerAuthDependencies() {
   getIt.registerFactory<SignUpUseCase>(
     () => SignUpUseCase(getIt<AuthRepository>()),
   );
+  getIt.registerFactory<SignInWithZaloUseCase>(
+    () => SignInWithZaloUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerLazySingleton<ZaloAuthService>(
+    () => const ZaloAuthService(),
+  );
   getIt.registerFactory<RestoreSessionUseCase>(
     () => RestoreSessionUseCase(getIt<AuthRepository>()),
   );
   getIt.registerFactory<AuthBloc>(
     () => AuthBloc(
       getIt<SignInUseCase>(),
+      getIt<SignInWithZaloUseCase>(),
       getIt<SignUpUseCase>(),
       getIt<RestoreSessionUseCase>(),
     ),

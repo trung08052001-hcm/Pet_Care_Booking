@@ -44,6 +44,26 @@ class SignUpRequestModel {
       };
 }
 
+class ZaloLoginRequestModel {
+  const ZaloLoginRequestModel({
+    this.oauthCode,
+    this.accessToken,
+    this.codeVerifier,
+  });
+
+  final String? oauthCode;
+  final String? accessToken;
+  final String? codeVerifier;
+
+  Map<String, dynamic> toJson() => {
+        if (oauthCode != null && oauthCode!.isNotEmpty) 'oauthCode': oauthCode,
+        if (accessToken != null && accessToken!.isNotEmpty)
+          'accessToken': accessToken,
+        if (codeVerifier != null && codeVerifier!.isNotEmpty)
+          'codeVerifier': codeVerifier,
+      };
+}
+
 class AuthApiResponseModel {
   const AuthApiResponseModel({
     required this.success,

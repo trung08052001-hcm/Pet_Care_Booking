@@ -55,6 +55,25 @@ final class AuthSignUpRequested extends AuthEvent {
       ];
 }
 
+final class AuthSignInWithZaloRequested extends AuthEvent {
+  const AuthSignInWithZaloRequested({
+    this.oauthCode,
+    this.accessToken,
+    this.codeVerifier,
+  });
+
+  final String? oauthCode;
+  final String? accessToken;
+  final String? codeVerifier;
+
+  @override
+  List<Object?> get props => [
+        oauthCode,
+        accessToken,
+        codeVerifier,
+      ];
+}
+
 final class AuthFeedbackCleared extends AuthEvent {
   const AuthFeedbackCleared();
 }

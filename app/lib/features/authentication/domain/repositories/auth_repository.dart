@@ -16,5 +16,11 @@ abstract interface class AuthRepository {
     required bool acceptTerms,
   });
 
+  ResultFuture<AuthSession> signInWithZalo({
+    String? oauthCode,
+    String? accessToken,
+    String? codeVerifier,
+  });
+
   ResultFuture<AuthSession?> restoreSession();
 }

@@ -8,8 +8,11 @@ class AuthShell extends StatelessWidget {
     required this.subtitle,
     required this.formChildren,
     required this.primaryButtonLabel,
-    required this.onPrimaryPressed,
+    required     this.onPrimaryPressed,
     this.isPrimaryLoading = false,
+    this.onGooglePressed,
+    this.onZaloPressed,
+    this.isSocialLoading = false,
     this.footerPrompt,
     this.footerActionLabel,
     this.onFooterActionPressed,
@@ -23,6 +26,9 @@ class AuthShell extends StatelessWidget {
   final String primaryButtonLabel;
   final VoidCallback onPrimaryPressed;
   final bool isPrimaryLoading;
+  final VoidCallback? onGooglePressed;
+  final VoidCallback? onZaloPressed;
+  final bool isSocialLoading;
   final String? footerPrompt;
   final String? footerActionLabel;
   final VoidCallback? onFooterActionPressed;
@@ -164,17 +170,21 @@ class AuthShell extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: 18),
-                            const Row(
+                            Row(
                               children: [
                                 Expanded(
                                   child: _SocialAuthButton(
                                     brand: _SocialBrand.google,
+                                    onPressed: onGooglePressed,
+                                    isLoading: isSocialLoading,
                                   ),
                                 ),
-                                SizedBox(width: 12),
+                                const SizedBox(width: 12),
                                 Expanded(
                                   child: _SocialAuthButton(
                                     brand: _SocialBrand.zalo,
+                                    onPressed: onZaloPressed,
+                                    isLoading: isSocialLoading,
                                   ),
                                 ),
                               ],
@@ -362,36 +372,55 @@ enum _SocialBrand {
 class _SocialAuthButton extends StatelessWidget {
   const _SocialAuthButton({
     required this.brand,
+    this.onPressed,
+    this.isLoading = false,
   });
 
   final _SocialBrand brand;
+  final VoidCallback? onPressed;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     final isGoogle = brand == _SocialBrand.google;
     final label = isGoogle ? 'Google' : 'Zalo';
 
-    return Container(
-      height: 50,
-      decoration: BoxDecoration(
-        color: const Color(0xFFF2F7F8),
+    return Material(
+      color: const Color(0xFFF2F7F8),
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: isLoading ? null : onPressed,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE4ECEE)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          isGoogle ? const _GoogleMark() : const _ZaloMark(),
-          const SizedBox(width: 10),
-          Text(
-            label,
-            style: const TextStyle(
-              color: Color(0xFF65727A),
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-            ),
+        child: Container(
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFFE4ECEE)),
           ),
-        ],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (isLoading)
+                const SizedBox(
+                  width: 18,
+                  height: 18,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              else ...[
+                isGoogle ? const _GoogleMark() : const _ZaloMark(),
+                const SizedBox(width: 10),
+                Text(
+                  label,
+                  style: const TextStyle(
+                    color: Color(0xFF65727A),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
       ),
     );
   }
