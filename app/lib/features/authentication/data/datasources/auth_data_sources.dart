@@ -10,6 +10,8 @@ abstract interface class AuthRemoteDataSource {
 
   Future<AuthSessionModel> signUp(SignUpRequestModel request);
 
+  Future<AuthSessionModel> signInWithGoogle(GoogleLoginRequestModel request);
+
   Future<AuthSessionModel> signInWithZalo(ZaloLoginRequestModel request);
 }
 
@@ -27,6 +29,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<AuthSessionModel> signUp(SignUpRequestModel request) async {
     final response = await _apiService.signUp(request.toJson());
+    return response.data;
+  }
+
+  @override
+  Future<AuthSessionModel> signInWithGoogle(
+    GoogleLoginRequestModel request,
+  ) async {
+    final response = await _apiService.signInWithGoogle(request.toJson());
     return response.data;
   }
 

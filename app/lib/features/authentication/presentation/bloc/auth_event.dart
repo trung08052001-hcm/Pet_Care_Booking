@@ -55,6 +55,15 @@ final class AuthSignUpRequested extends AuthEvent {
       ];
 }
 
+final class AuthSignInWithGoogleRequested extends AuthEvent {
+  const AuthSignInWithGoogleRequested({required this.idToken});
+
+  final String idToken;
+
+  @override
+  List<Object?> get props => [idToken];
+}
+
 final class AuthSignInWithZaloRequested extends AuthEvent {
   const AuthSignInWithZaloRequested({
     this.oauthCode,

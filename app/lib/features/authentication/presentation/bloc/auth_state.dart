@@ -19,6 +19,7 @@ enum AuthAction {
   restoreSession,
   signIn,
   signUp,
+  signInWithGoogle,
   signInWithZalo,
 }
 

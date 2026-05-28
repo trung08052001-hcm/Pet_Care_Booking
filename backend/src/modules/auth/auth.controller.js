@@ -72,6 +72,19 @@ const resetPassword = asyncHandler(async (req, res) => {
   });
 });
 
+const googleLogin = asyncHandler(async (req, res) => {
+  const result = await authService.loginWithGoogle(
+    req.body,
+    getRequestMetadata(req)
+  );
+
+  res.status(200).json({
+    success: true,
+    message: "Google login successful.",
+    data: result,
+  });
+});
+
 const zaloLogin = asyncHandler(async (req, res) => {
   const result = await authService.loginWithZalo(req.body, getRequestMetadata(req));
 
@@ -100,11 +113,6 @@ module.exports = {
   forgotPassword,
   resetPassword,
   getMe,
-  googleLogin: (req, res) => {
-    res.status(501).json({
-      success: false,
-      message: "Google login is not configured yet.",
-    });
-  },
+  googleLogin,
   zaloLogin,
 };

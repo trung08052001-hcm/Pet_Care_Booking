@@ -5,6 +5,7 @@ const pickUser = (user) => ({
   phone: user.phone || null,
   role: user.role,
   authProvider: user.authProvider,
+  avatar: user.avatar || null,
   isActive: user.isActive,
   acceptedTermsAt: user.acceptedTermsAt || null,
   lastLoginAt: user.lastLoginAt || null,

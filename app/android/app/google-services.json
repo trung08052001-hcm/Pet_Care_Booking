@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "674702415842",
+    "project_id": "petcarebooking-bb91c",
+    "storage_bucket": "petcarebooking-bb91c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674702415842:android:d1ccad2d1745fac16d8bbb",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "674702415842-aob7322jl4932pau902kgc3tqmt3kimf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.app",
+            "certificate_hash": "509029cad692532afc5874b68a4216b30da383c9"
+          }
+        },
+        {
+          "client_id": "674702415842-qp6pb8fg2tf0eujddj4o97mtobug60lm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8NkNwhoejmpT2YFiDEO7WTBBs-FSfIGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "674702415842-qp6pb8fg2tf0eujddj4o97mtobug60lm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,6 +7,7 @@ import 'package:app/core/config/app_flavor.dart';
 import 'package:app/core/di/injection.dart';
 import 'package:app/core/locale_cubit.dart';
 import 'package:app/features/authentication/data/services/zalo_auth_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_event.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
 
   final appConfig = AppConfig.fromFlavor(AppFlavor.dev);
   await configureDependencies(appConfig);

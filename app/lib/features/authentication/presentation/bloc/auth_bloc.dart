@@ -1,5 +1,6 @@
 import 'package:app/features/authentication/domain/usecases/restore_session_usecase.dart';
 import 'package:app/features/authentication/domain/usecases/sign_in_usecase.dart';
+import 'package:app/features/authentication/domain/usecases/sign_in_with_google_usecase.dart';
 import 'package:app/features/authentication/domain/usecases/sign_in_with_zalo_usecase.dart';
 import 'package:app/features/authentication/domain/usecases/sign_up_usecase.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_event.dart';
@@ -9,18 +10,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(
     this._signInUseCase,
+    this._signInWithGoogleUseCase,
     this._signInWithZaloUseCase,
     this._signUpUseCase,
     this._restoreSessionUseCase,
   ) : super(const AuthState()) {
     on<AuthSessionRestoreRequested>(_onSessionRestoreRequested);
     on<AuthSignInRequested>(_onSignInRequested);
+    on<AuthSignInWithGoogleRequested>(_onSignInWithGoogleRequested);
     on<AuthSignInWithZaloRequested>(_onSignInWithZaloRequested);
     on<AuthSignUpRequested>(_onSignUpRequested);
     on<AuthFeedbackCleared>(_onFeedbackCleared);
   }
 
   final SignInUseCase _signInUseCase;
+  final SignInWithGoogleUseCase _signInWithGoogleUseCase;
   final SignInWithZaloUseCase _signInWithZaloUseCase;
   final SignUpUseCase _signUpUseCase;
   final RestoreSessionUseCase _restoreSessionUseCase;
@@ -153,6 +157,47 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             action: AuthAction.signUp,
             session: session,
             message: 'Sign up successful.',
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _onSignInWithGoogleRequested(
+    AuthSignInWithGoogleRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        action: AuthAction.signInWithGoogle,
+        submissionStatus: AuthSubmissionStatus.loading,
+        clearMessage: true,
+      ),
+    );
+
+    final result = await _signInWithGoogleUseCase(
+      SignInWithGoogleParams(idToken: event.idToken),
+    );
+
+    result.fold(
+      (failure) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.unauthenticated,
+            submissionStatus: AuthSubmissionStatus.failure,
+            action: AuthAction.signInWithGoogle,
+            message: failure.message,
+          ),
+        );
+      },
+      (session) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.authenticated,
+            submissionStatus: AuthSubmissionStatus.success,
+            action: AuthAction.signInWithGoogle,
+            session: session,
+            message: 'Google sign in successful.',
           ),
         );
       },

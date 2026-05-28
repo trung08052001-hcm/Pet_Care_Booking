@@ -14,11 +14,13 @@ const {
 } = require("../../utils/token");
 const {
   validateForgotPasswordPayload,
+  validateGoogleLoginPayload,
   validateLoginPayload,
   validateRegisterPayload,
   validateResetPasswordPayload,
   validateZaloLoginPayload,
 } = require("./auth.validation");
+const { verifyGoogleIdToken } = require("./google-auth.service");
 const {
   exchangeAuthorizationCode,
   fetchZaloUserProfile,
@@ -250,6 +252,105 @@ const resetPassword = async (payload, metadata = {}) => {
   return buildTokenResponse(user, tokens);
 };
 
+const loginWithGoogle = async (payload, metadata = {}) => {
+  const { idToken } = validateGoogleLoginPayload(payload);
+  const googleProfile = await verifyGoogleIdToken(idToken);
+  const email = String(googleProfile.email).toLowerCase();
+
+  const saveUserSafely = async (userToSave) => {
+    try {
+      return await userToSave.save();
+    } catch (error) {
+      if (error.code !== 11000) {
+        throw error;
+      }
+
+      const existingUser =
+        (await User.findOne({ email })) ||
+        (await User.findOne({ providerId: googleProfile.uid }));
+
+      if (!existingUser) {
+        throw error;
+      }
+
+      existingUser.fullName = googleProfile.fullName || existingUser.fullName;
+      existingUser.email = email;
+      existingUser.avatar = googleProfile.avatar || existingUser.avatar;
+      existingUser.authProvider = "google";
+      existingUser.providerId = googleProfile.uid;
+      existingUser.lastLoginAt = new Date();
+
+      return await existingUser.save();
+    }
+  };
+
+  let user = await User.findOne({
+    authProvider: "google",
+    providerId: googleProfile.uid,
+  });
+
+  if (!user) {
+    user = await User.findOne({ email });
+  }
+
+  if (!user) {
+    try {
+      user = await User.create({
+        fullName: googleProfile.fullName,
+        email,
+        phone: null,
+        password: `${googleProfile.uid}_${Date.now()}_${Math.random().toString(16).slice(2)}`,
+        authProvider: "google",
+        providerId: googleProfile.uid,
+        avatar: googleProfile.avatar,
+        acceptedTermsAt: new Date(),
+        role: "customer",
+      });
+    } catch (error) {
+      if (error.code !== 11000) {
+        throw error;
+      }
+
+      user =
+        (await User.findOne({ email })) ||
+        (await User.findOne({ providerId: googleProfile.uid }));
+
+      if (!user) {
+        throw error;
+      }
+
+      user.fullName = googleProfile.fullName || user.fullName;
+      user.email = email;
+      user.avatar = googleProfile.avatar || user.avatar;
+      user.authProvider = "google";
+      user.providerId = googleProfile.uid;
+      user.lastLoginAt = new Date();
+      user = await saveUserSafely(user);
+    }
+  } else {
+    user.fullName = googleProfile.fullName || user.fullName;
+    user.email = email;
+    user.avatar = googleProfile.avatar || user.avatar;
+    user.authProvider = "google";
+    user.providerId = googleProfile.uid;
+    user.lastLoginAt = new Date();
+    user = await saveUserSafely(user);
+  }
+
+  if (!user.isActive) {
+    throw new ApiError(403, "User account is inactive.");
+  }
+
+  if (!user.lastLoginAt) {
+    user.lastLoginAt = new Date();
+    await user.save();
+  }
+
+  const tokens = await issueAuthTokens(user, metadata);
+
+  return buildTokenResponse(user, tokens);
+};
+
 const loginWithZalo = async (payload, metadata = {}) => {
   const { oauthCode, accessToken, codeVerifier } = validateZaloLoginPayload(payload);
 
@@ -311,5 +412,6 @@ module.exports = {
   logout,
   forgotPassword,
   resetPassword,
+  loginWithGoogle,
   loginWithZalo,
 };

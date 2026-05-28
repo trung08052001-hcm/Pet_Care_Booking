@@ -6,7 +6,9 @@ import 'package:app/features/authentication/data/datasources/auth_data_sources.d
 import 'package:app/features/authentication/data/repositories/auth_repository_impl.dart';
 import 'package:app/features/authentication/data/services/auth_api_service.dart';
 import 'package:app/features/authentication/domain/repositories/auth_repository.dart';
+import 'package:app/features/authentication/data/services/google_auth_service.dart';
 import 'package:app/features/authentication/data/services/zalo_auth_service.dart';
+import 'package:app/features/authentication/domain/usecases/sign_in_with_google_usecase.dart';
 import 'package:app/features/authentication/domain/usecases/restore_session_usecase.dart';
 import 'package:app/features/authentication/domain/usecases/sign_in_usecase.dart';
 import 'package:app/features/authentication/domain/usecases/sign_in_with_zalo_usecase.dart';
@@ -71,6 +73,12 @@ void _registerAuthDependencies() {
   getIt.registerFactory<SignInWithZaloUseCase>(
     () => SignInWithZaloUseCase(getIt<AuthRepository>()),
   );
+  getIt.registerFactory<SignInWithGoogleUseCase>(
+    () => SignInWithGoogleUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerLazySingleton<GoogleAuthService>(
+    () => const GoogleAuthService(),
+  );
   getIt.registerLazySingleton<ZaloAuthService>(
     () => const ZaloAuthService(),
   );
@@ -80,6 +88,7 @@ void _registerAuthDependencies() {
   getIt.registerFactory<AuthBloc>(
     () => AuthBloc(
       getIt<SignInUseCase>(),
+      getIt<SignInWithGoogleUseCase>(),
       getIt<SignInWithZaloUseCase>(),
       getIt<SignUpUseCase>(),
       getIt<RestoreSessionUseCase>(),

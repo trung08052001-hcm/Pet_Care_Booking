@@ -13,6 +13,8 @@ class AuthShell extends StatelessWidget {
     this.onGooglePressed,
     this.onZaloPressed,
     this.isSocialLoading = false,
+    this.isGoogleLoading = false,
+    this.isZaloLoading = false,
     this.footerPrompt,
     this.footerActionLabel,
     this.onFooterActionPressed,
@@ -29,6 +31,8 @@ class AuthShell extends StatelessWidget {
   final VoidCallback? onGooglePressed;
   final VoidCallback? onZaloPressed;
   final bool isSocialLoading;
+  final bool isGoogleLoading;
+  final bool isZaloLoading;
   final String? footerPrompt;
   final String? footerActionLabel;
   final VoidCallback? onFooterActionPressed;
@@ -176,7 +180,8 @@ class AuthShell extends StatelessWidget {
                                   child: _SocialAuthButton(
                                     brand: _SocialBrand.google,
                                     onPressed: onGooglePressed,
-                                    isLoading: isSocialLoading,
+                                    isLoading:
+                                        isGoogleLoading || isSocialLoading,
                                   ),
                                 ),
                                 const SizedBox(width: 12),
@@ -184,7 +189,7 @@ class AuthShell extends StatelessWidget {
                                   child: _SocialAuthButton(
                                     brand: _SocialBrand.zalo,
                                     onPressed: onZaloPressed,
-                                    isLoading: isSocialLoading,
+                                    isLoading: isZaloLoading || isSocialLoading,
                                   ),
                                 ),
                               ],

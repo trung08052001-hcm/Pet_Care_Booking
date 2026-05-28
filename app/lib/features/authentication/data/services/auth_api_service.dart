@@ -17,6 +17,9 @@ abstract class AuthApiService {
   @POST('/auth/register')
   Future<AuthApiResponseModel> signUp(@Body() Map<String, dynamic> body);
 
+  @POST('/auth/social/google')
+  Future<AuthApiResponseModel> signInWithGoogle(@Body() Map<String, dynamic> body);
+
   @POST('/auth/social/zalo')
   Future<AuthApiResponseModel> signInWithZalo(@Body() Map<String, dynamic> body);
 }

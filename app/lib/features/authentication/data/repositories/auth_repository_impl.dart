@@ -82,6 +82,30 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, AuthSession>> signInWithGoogle({
+    required String idToken,
+  }) async {
+    try {
+      if (!await _networkInfo.isConnected) {
+        return const Left(Failure(message: 'No internet connection.'));
+      }
+
+      final session = await _remoteDataSource.signInWithGoogle(
+        GoogleLoginRequestModel(idToken: idToken),
+      );
+      await _localDataSource.saveSession(session);
+      return Right(session.toEntity());
+    } on Exception catch (exception, stackTrace) {
+      return Left(
+        FailureMapper.fromException(
+          exception,
+          stackTrace: stackTrace,
+        ),
+      );
+    }
+  }
+
+  @override
   Future<Either<Failure, AuthSession>> signInWithZalo({
     String? oauthCode,
     String? accessToken,

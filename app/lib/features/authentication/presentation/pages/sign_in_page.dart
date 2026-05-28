@@ -1,5 +1,6 @@
 import 'package:app/core/app_localizations.dart';
 import 'package:app/core/di/injection.dart';
+import 'package:app/features/authentication/data/services/google_auth_service.dart';
 import 'package:app/features/authentication/data/services/zalo_auth_service.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_event.dart';
@@ -29,6 +30,27 @@ class _SignInPageState extends State<SignInPage> {
 
   bool _rememberMe = true;
   bool _obscurePassword = true;
+
+  Future<void> _submitGoogleSignIn() async {
+    final googleService = getIt<GoogleAuthService>();
+    try {
+      final idToken = await googleService.signInAndGetIdToken();
+      if (!mounted) return;
+      context.read<AuthBloc>().add(
+            AuthSignInWithGoogleRequested(idToken: idToken),
+          );
+    } on GoogleAuthException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message)),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Không thể đăng nhập với Google.')),
+      );
+    }
+  }
 
   Future<void> _submitZaloOAuth() async {
     final zaloService = getIt<ZaloAuthService>();
@@ -91,6 +113,7 @@ class _SignInPageState extends State<SignInPage> {
     return BlocConsumer<AuthBloc, AuthState>(
       listenWhen: (previous, current) =>
           (current.action == AuthAction.signIn ||
+              current.action == AuthAction.signInWithGoogle ||
               current.action == AuthAction.signInWithZalo) &&
           previous.submissionStatus != current.submissionStatus,
       listener: (context, state) {
@@ -118,9 +141,11 @@ class _SignInPageState extends State<SignInPage> {
           primaryButtonLabel: l10n.signInCta,
           onPrimaryPressed: _submit,
           isPrimaryLoading: isSubmitting,
-          onGooglePressed: null,
+          onGooglePressed: _submitGoogleSignIn,
           onZaloPressed: _submitZaloOAuth,
-          isSocialLoading:
+          isGoogleLoading:
+              state.isLoading && state.action == AuthAction.signInWithGoogle,
+          isZaloLoading:
               state.isLoading && state.action == AuthAction.signInWithZalo,
           footerPrompt: l10n.noAccountPrompt,
           footerActionLabel: l10n.signUpLink,

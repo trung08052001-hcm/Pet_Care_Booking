@@ -19,6 +19,9 @@ const env = {
   zaloAppId: process.env.ZALO_APP_ID || "",
   zaloAppSecret: process.env.ZALO_APP_SECRET || "",
   zaloCallbackUrl: process.env.ZALO_CALLBACK_URL || "",
+  firebaseServiceAccountPath:
+    process.env.FIREBASE_SERVICE_ACCOUNT_PATH ||
+    "src/firebase/serviceAccountKey.json",
 };
 
 module.exports = env;

@@ -16,6 +16,8 @@ abstract interface class AuthRepository {
     required bool acceptTerms,
   });
 
+  ResultFuture<AuthSession> signInWithGoogle({required String idToken});
+
   ResultFuture<AuthSession> signInWithZalo({
     String? oauthCode,
     String? accessToken,

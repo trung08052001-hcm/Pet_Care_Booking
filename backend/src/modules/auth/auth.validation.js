@@ -113,6 +113,16 @@ const validateResetPasswordPayload = (payload) => {
   };
 };
 
+const validateGoogleLoginPayload = (payload) => {
+  const idToken = String(payload.idToken || "").trim();
+
+  if (!idToken) {
+    throw new ApiError(400, "idToken is required.");
+  }
+
+  return { idToken };
+};
+
 const validateZaloLoginPayload = (payload) => {
   const oauthCode = String(payload.oauthCode || "").trim();
   const accessToken = String(payload.accessToken || "").trim();
@@ -138,5 +148,6 @@ module.exports = {
   validateLoginPayload,
   validateForgotPasswordPayload,
   validateResetPasswordPayload,
+  validateGoogleLoginPayload,
   validateZaloLoginPayload,
 };

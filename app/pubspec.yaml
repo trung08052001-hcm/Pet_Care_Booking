@@ -50,6 +50,9 @@ dependencies:
     sdk: flutter
   intl: ^0.20.2
   zalo_flutter: ^0.0.8
+  firebase_core: ^3.15.2
+  firebase_auth: ^5.7.0
+  google_sign_in: ^6.3.0
 
 dev_dependencies:
   flutter_test:
