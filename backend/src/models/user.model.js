@@ -28,9 +28,6 @@ const userSchema = new mongoose.Schema(
     phone: {
       type: String,
       trim: true,
-      default: null,
-      sparse: true,
-      unique: true,
     },
     role: {
       type: String,
@@ -71,6 +68,17 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+  }
+);
+
+// Only enforce uniqueness when phone is a non-empty string (multiple users may omit phone).
+userSchema.index(
+  { phone: 1 },
+  {
+    unique: true,
+    partialFilterExpression: {
+      phone: { $type: "string", $gt: "" },
+    },
   }
 );
 

@@ -1,8 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-/// Signs in with Google via Firebase Auth and returns a Firebase ID token
-/// for backend verification at `POST /api/v1/auth/social/google`.
+/// Signs in with Google and returns a Google OAuth ID token for the backend.
 class GoogleAuthService {
   const GoogleAuthService();
 
@@ -20,14 +18,7 @@ class GoogleAuthService {
       }
 
       final googleAuth = await googleUser.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      final userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
-      final idToken = await userCredential.user?.getIdToken(true);
+      final idToken = googleAuth.idToken;
 
       if (idToken == null || idToken.isEmpty) {
         throw const GoogleAuthException('Failed to obtain Google ID token.');
@@ -36,10 +27,6 @@ class GoogleAuthService {
       return idToken;
     } on GoogleAuthException {
       rethrow;
-    } on FirebaseAuthException catch (e) {
-      throw GoogleAuthException(
-        e.message ?? 'Firebase authentication failed.',
-      );
     } catch (e) {
       throw GoogleAuthException('Google sign-in error: $e');
     }

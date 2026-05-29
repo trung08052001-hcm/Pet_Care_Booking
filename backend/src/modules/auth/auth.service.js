@@ -257,52 +257,18 @@ const loginWithGoogle = async (payload, metadata = {}) => {
   const googleProfile = await verifyGoogleIdToken(idToken);
   const email = String(googleProfile.email).toLowerCase();
 
-  const saveUserSafely = async (userToSave) => {
-    try {
-      return await userToSave.save();
-    } catch (error) {
-      if (error.code !== 11000) {
-        throw error;
-      }
-
-      const existingUser =
-        (await User.findOne({ email })) ||
-        (await User.findOne({ providerId: googleProfile.uid }));
-
-      if (!existingUser) {
-        throw error;
-      }
-
-      existingUser.fullName = googleProfile.fullName || existingUser.fullName;
-      existingUser.email = email;
-      existingUser.avatar = googleProfile.avatar || existingUser.avatar;
-      existingUser.authProvider = "google";
-      existingUser.providerId = googleProfile.uid;
-      existingUser.lastLoginAt = new Date();
-
-      return await existingUser.save();
-    }
-  };
-
-  let user = await User.findOne({
-    authProvider: "google",
-    providerId: googleProfile.uid,
-  });
-
-  if (!user) {
-    user = await User.findOne({ email });
-  }
+  let user =
+    (await User.findOne({ authProvider: "google", providerId: googleProfile.uid })) ||
+    (await User.findOne({ email }));
 
   if (!user) {
     try {
       user = await User.create({
         fullName: googleProfile.fullName,
         email,
-        phone: null,
         password: `${googleProfile.uid}_${Date.now()}_${Math.random().toString(16).slice(2)}`,
         authProvider: "google",
         providerId: googleProfile.uid,
-        avatar: googleProfile.avatar,
         acceptedTermsAt: new Date(),
         role: "customer",
       });
@@ -311,39 +277,25 @@ const loginWithGoogle = async (payload, metadata = {}) => {
         throw error;
       }
 
-      user =
-        (await User.findOne({ email })) ||
-        (await User.findOne({ providerId: googleProfile.uid }));
-
+      user = await User.findOne({ email });
       if (!user) {
-        throw error;
+        throw new ApiError(
+          409,
+          "This email is already registered. Sign in with your password or use the same Google account."
+        );
       }
-
-      user.fullName = googleProfile.fullName || user.fullName;
-      user.email = email;
-      user.avatar = googleProfile.avatar || user.avatar;
-      user.authProvider = "google";
-      user.providerId = googleProfile.uid;
-      user.lastLoginAt = new Date();
-      user = await saveUserSafely(user);
     }
-  } else {
-    user.fullName = googleProfile.fullName || user.fullName;
-    user.email = email;
-    user.avatar = googleProfile.avatar || user.avatar;
-    user.authProvider = "google";
-    user.providerId = googleProfile.uid;
-    user.lastLoginAt = new Date();
-    user = await saveUserSafely(user);
   }
+
+  user.fullName = googleProfile.fullName || user.fullName;
+  user.email = email;
+  user.authProvider = "google";
+  user.providerId = googleProfile.uid;
+  user.lastLoginAt = new Date();
+  await user.save();
 
   if (!user.isActive) {
     throw new ApiError(403, "User account is inactive.");
-  }
-
-  if (!user.lastLoginAt) {
-    user.lastLoginAt = new Date();
-    await user.save();
   }
 
   const tokens = await issueAuthTokens(user, metadata);

@@ -22,6 +22,7 @@ const env = {
   firebaseServiceAccountPath:
     process.env.FIREBASE_SERVICE_ACCOUNT_PATH ||
     "src/firebase/serviceAccountKey.json",
+  googleOAuthClientIds: process.env.GOOGLE_OAUTH_CLIENT_IDS || "",
 };
 
 module.exports = env;

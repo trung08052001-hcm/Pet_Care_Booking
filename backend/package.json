@@ -25,6 +25,7 @@
     "express": "latest",
     "express-rate-limit": "latest",
     "firebase-admin": "^13.0.2",
+    "google-auth-library": "^10.6.2",
     "helmet": "latest",
     "mongoose": "latest",
     "morgan": "latest"
