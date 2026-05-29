@@ -23,6 +23,16 @@ const env = {
     process.env.FIREBASE_SERVICE_ACCOUNT_PATH ||
     "src/firebase/serviceAccountKey.json",
   googleOAuthClientIds: process.env.GOOGLE_OAUTH_CLIENT_IDS || "",
+  smtpHost: process.env.SMTP_HOST || "",
+  smtpPort: Number(process.env.SMTP_PORT) || 587,
+  smtpSecure: process.env.SMTP_SECURE === "true",
+  smtpUser: process.env.SMTP_USER || "",
+  smtpPass: process.env.SMTP_PASS || "",
+  mailFrom: String(process.env.MAIL_FROM || "")
+    .trim()
+    .replace(/^["']|["']$/g, ""),
+  otpExpiresMinutes: Number(process.env.OTP_EXPIRES_MINUTES) || 10,
+  otpResendCooldownSeconds: Number(process.env.OTP_RESEND_COOLDOWN_SECONDS) || 60,
 };
 
 module.exports = env;

@@ -25,4 +25,11 @@ abstract interface class AuthRepository {
   });
 
   ResultFuture<AuthSession?> restoreSession();
+
+  ResultFuture<void> requestPasswordResetOtp({required String email});
+
+  ResultFuture<void> verifyPasswordResetOtp({
+    required String email,
+    required String otp,
+  });
 }

@@ -83,7 +83,7 @@ class AppRouter {
         name: ForgotPasswordOtpPage.routeName,
         builder: (context, state) {
           return ForgotPasswordOtpPage(
-            phoneNumber: state.extra as String? ?? '',
+            email: state.extra as String? ?? '',
           );
         },
       ),

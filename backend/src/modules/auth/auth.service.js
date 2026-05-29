@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const crypto = require("crypto");
 
 const RefreshToken = require("../../models/refreshToken.model");
 const User = require("../../models/user.model");
@@ -12,12 +11,16 @@ const {
   signRefreshToken,
   verifyRefreshToken,
 } = require("../../utils/token");
+const env = require("../../config/env");
+const { sendPasswordResetOtpEmail } = require("../../services/email.service");
+const { generateOtp } = require("../../utils/otp");
 const {
   validateForgotPasswordPayload,
   validateGoogleLoginPayload,
   validateLoginPayload,
   validateRegisterPayload,
   validateResetPasswordPayload,
+  validateVerifyResetOtpPayload,
   validateZaloLoginPayload,
 } = require("./auth.validation");
 const { verifyGoogleIdToken } = require("./google-auth.service");
@@ -195,22 +198,48 @@ const forgotPassword = async (payload) => {
     "+passwordResetTokenHash +passwordResetExpiresAt"
   );
 
-  // Always return a success-shaped response to avoid leaking user existence.
-  if (!user) {
+  if (!user || !user.isActive) {
     return {
-      resetToken: null,
       expiresAt: null,
     };
   }
 
-  const rawResetToken = crypto.randomBytes(32).toString("hex");
+  const otp = generateOtp();
+  const expiresAt = new Date(
+    Date.now() + env.otpExpiresMinutes * 60 * 1000
+  );
 
-  user.passwordResetTokenHash = createTokenHash(rawResetToken);
-  user.passwordResetExpiresAt = new Date(Date.now() + 15 * 60 * 1000);
+  user.passwordResetTokenHash = createTokenHash(otp);
+  user.passwordResetExpiresAt = expiresAt;
   await user.save();
 
+  await sendPasswordResetOtpEmail({
+    to: email,
+    otp,
+    expiresMinutes: env.otpExpiresMinutes,
+  });
+
   return {
-    resetToken: rawResetToken,
+    expiresAt,
+  };
+};
+
+const verifyResetOtp = async (payload) => {
+  const { email, otp } = validateVerifyResetOtpPayload(payload);
+  const otpHash = createTokenHash(otp);
+
+  const user = await User.findOne({
+    email,
+    passwordResetTokenHash: otpHash,
+    passwordResetExpiresAt: { $gt: new Date() },
+  }).select("+passwordResetTokenHash +passwordResetExpiresAt");
+
+  if (!user) {
+    throw new ApiError(400, "OTP is invalid or expired.");
+  }
+
+  return {
+    verified: true,
     expiresAt: user.passwordResetExpiresAt,
   };
 };
@@ -363,6 +392,7 @@ module.exports = {
   refreshAuthTokens,
   logout,
   forgotPassword,
+  verifyResetOtp,
   resetPassword,
   loginWithGoogle,
   loginWithZalo,

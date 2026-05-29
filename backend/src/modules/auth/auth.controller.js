@@ -54,7 +54,17 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     success: true,
-    message: "If the account exists, a reset instruction has been created.",
+    message: "If the account exists, a verification code has been sent.",
+    data: result,
+  });
+});
+
+const verifyResetOtp = asyncHandler(async (req, res) => {
+  const result = await authService.verifyResetOtp(req.body);
+
+  res.status(200).json({
+    success: true,
+    message: "OTP verified successfully.",
     data: result,
   });
 });
@@ -111,6 +121,7 @@ module.exports = {
   refreshToken,
   logout,
   forgotPassword,
+  verifyResetOtp,
   resetPassword,
   getMe,
   googleLogin,

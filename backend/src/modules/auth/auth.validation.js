@@ -92,6 +92,21 @@ const validateForgotPasswordPayload = (payload) => {
   return { email };
 };
 
+const validateVerifyResetOtpPayload = (payload) => {
+  const email = normalizeEmail(payload.email);
+  const otp = String(payload.otp || "").trim();
+
+  if (!email || !validateEmail(email)) {
+    throw new ApiError(400, "A valid email is required.");
+  }
+
+  if (!/^\d{6}$/.test(otp)) {
+    throw new ApiError(400, "OTP must be a 6-digit code.");
+  }
+
+  return { email, otp };
+};
+
 const validateResetPasswordPayload = (payload) => {
   const resetToken = String(payload.resetToken || "").trim();
   const password = String(payload.password || "");
@@ -147,6 +162,7 @@ module.exports = {
   validateRegisterPayload,
   validateLoginPayload,
   validateForgotPasswordPayload,
+  validateVerifyResetOtpPayload,
   validateResetPasswordPayload,
   validateGoogleLoginPayload,
   validateZaloLoginPayload,

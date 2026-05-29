@@ -44,6 +44,50 @@ class SignUpRequestModel {
       };
 }
 
+class ForgotPasswordRequestModel {
+  const ForgotPasswordRequestModel({required this.email});
+
+  final String email;
+
+  Map<String, dynamic> toJson() => {'email': email};
+}
+
+class VerifyResetOtpRequestModel {
+  const VerifyResetOtpRequestModel({
+    required this.email,
+    required this.otp,
+  });
+
+  final String email;
+  final String otp;
+
+  Map<String, dynamic> toJson() => {
+        'email': email,
+        'otp': otp,
+      };
+}
+
+class SimpleApiResponseModel {
+  const SimpleApiResponseModel({
+    required this.success,
+    required this.message,
+    this.data,
+  });
+
+  factory SimpleApiResponseModel.fromJson(Map<String, dynamic> json) {
+    final rawData = json['data'];
+    return SimpleApiResponseModel(
+      success: json['success'] == true,
+      message: json['message'] as String? ?? '',
+      data: rawData is Map<String, dynamic> ? rawData : null,
+    );
+  }
+
+  final bool success;
+  final String message;
+  final Map<String, dynamic>? data;
+}
+
 class GoogleLoginRequestModel {
   const GoogleLoginRequestModel({required this.idToken});
 

@@ -1,4 +1,6 @@
 import 'package:app/core/app_localizations.dart';
+import 'package:app/core/di/injection.dart';
+import 'package:app/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:app/features/authentication/presentation/pages/forgot_password_otp_page.dart';
 import 'package:app/features/authentication/presentation/widgets/auth_shell.dart';
 import 'package:flutter/material.dart';
@@ -16,22 +18,48 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _formKey = GlobalKey<FormState>();
-  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
-    _phoneController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
-  void _submit() {
-    if (!_formKey.currentState!.validate()) {
+  Future<void> _submit() async {
+    if (!_formKey.currentState!.validate() || _isLoading) {
       return;
     }
 
-    context.pushNamed(
-      ForgotPasswordOtpPage.routeName,
-      extra: _phoneController.text.trim(),
+    final email = _emailController.text.trim();
+    setState(() => _isLoading = true);
+
+    final result = await getIt<AuthRepository>().requestPasswordResetOtp(
+      email: email,
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() => _isLoading = false);
+
+    result.fold(
+      (failure) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(failure.message)),
+        );
+      },
+      (_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context).otpSentMessage)),
+        );
+        context.pushNamed(
+          ForgotPasswordOtpPage.routeName,
+          extra: email,
+        );
+      },
     );
   }
 
@@ -43,12 +71,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       title: l10n.forgotPasswordTitle,
       subtitle: l10n.forgotPasswordSubtitle,
       primaryButtonLabel: l10n.sendOtpCta,
+      isPrimaryLoading: _isLoading,
       onPrimaryPressed: _submit,
       showSocialSection: false,
       topLeading: IconButton(
-        onPressed: () {
-          context.pop();
-        },
+        onPressed: _isLoading ? null : () => context.pop(),
         icon: const Icon(Icons.arrow_back_rounded),
         style: IconButton.styleFrom(
           backgroundColor: Colors.white,
@@ -59,17 +86,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         Form(
           key: _formKey,
           child: AuthTextField(
-            label: l10n.phoneLabel,
-            hintText: l10n.phoneHint,
-            controller: _phoneController,
-            prefixIcon: Icons.phone_outlined,
-            keyboardType: TextInputType.phone,
+            label: l10n.emailLabel,
+            hintText: l10n.emailHint,
+            controller: _emailController,
+            prefixIcon: Icons.email_outlined,
+            keyboardType: TextInputType.emailAddress,
             validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return l10n.phoneRequiredError;
+              final email = value?.trim() ?? '';
+              if (email.isEmpty) {
+                return l10n.emailRequiredError;
               }
-              if (value.replaceAll(RegExp(r'[^0-9]'), '').length < 9) {
-                return l10n.phoneInvalidError;
+              if (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(email)) {
+                return l10n.emailInvalidError;
               }
               return null;
             },

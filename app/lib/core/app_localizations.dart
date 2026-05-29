@@ -66,8 +66,12 @@ class AppLocalizations {
       'acceptTermsError': 'Please accept the terms to continue.',
       'forgotPasswordTitle': 'Forgot password',
       'forgotPasswordSubtitle':
-          'Enter your phone number and we will send a verification code to reset your password.',
+          'Enter your email and we will send a 6-digit verification code.',
       'sendOtpCta': 'Send OTP',
+      'otpSentMessage':
+          'If the account exists, a verification code has been sent.',
+      'otpVerifiedMessage': 'OTP verified successfully.',
+      'resendingOtp': 'Sending...',
       'otpTitle': 'Verify OTP',
       'otpSubtitle': 'We sent a 6-digit verification code to {value}.',
       'otpLabel': 'Verification code',
@@ -158,8 +162,12 @@ class AppLocalizations {
       'acceptTermsError': 'Ban can dong y dieu khoan de tiep tuc.',
       'forgotPasswordTitle': 'Quen mat khau',
       'forgotPasswordSubtitle':
-          'Nhap so dien thoai de nhan ma xac minh va dat lai mat khau cho tai khoan cua ban.',
+          'Nhap email de nhan ma xac minh 6 so.',
       'sendOtpCta': 'Gui ma OTP',
+      'otpSentMessage':
+          'Neu tai khoan ton tai, ma xac minh da duoc gui.',
+      'otpVerifiedMessage': 'Xac minh OTP thanh cong.',
+      'resendingOtp': 'Dang gui...',
       'otpTitle': 'Nhap ma OTP',
       'otpSubtitle': 'Chung toi da gui ma xac minh 6 so den {value}.',
       'otpLabel': 'Ma xac minh',
@@ -275,6 +283,9 @@ class AppLocalizations {
   String get otpLabel => _text('otpLabel');
   String get verifyOtpCta => _text('verifyOtpCta');
   String get resendOtp => _text('resendOtp');
+  String get otpSentMessage => _text('otpSentMessage');
+  String get otpVerifiedMessage => _text('otpVerifiedMessage');
+  String get resendingOtp => _text('resendingOtp');
   String get otpRequiredError => _text('otpRequiredError');
   String get otpInvalidError => _text('otpInvalidError');
   String get resetPasswordTitle => _text('resetPasswordTitle');

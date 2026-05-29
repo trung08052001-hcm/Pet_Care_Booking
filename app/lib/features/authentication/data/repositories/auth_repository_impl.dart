@@ -136,6 +136,56 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, void>> requestPasswordResetOtp({
+    required String email,
+  }) async {
+    try {
+      if (!await _networkInfo.isConnected) {
+        return const Left(Failure(message: 'No internet connection.'));
+      }
+
+      await _remoteDataSource.requestPasswordResetOtp(
+        ForgotPasswordRequestModel(email: email.trim()),
+      );
+      return const Right(null);
+    } on Exception catch (exception, stackTrace) {
+      return Left(
+        FailureMapper.fromException(
+          exception,
+          stackTrace: stackTrace,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> verifyPasswordResetOtp({
+    required String email,
+    required String otp,
+  }) async {
+    try {
+      if (!await _networkInfo.isConnected) {
+        return const Left(Failure(message: 'No internet connection.'));
+      }
+
+      await _remoteDataSource.verifyPasswordResetOtp(
+        VerifyResetOtpRequestModel(
+          email: email.trim(),
+          otp: otp.trim(),
+        ),
+      );
+      return const Right(null);
+    } on Exception catch (exception, stackTrace) {
+      return Left(
+        FailureMapper.fromException(
+          exception,
+          stackTrace: stackTrace,
+        ),
+      );
+    }
+  }
+
+  @override
   Future<Either<Failure, AuthSession?>> restoreSession() async {
     try {
       final session = await _localDataSource.getCachedSession();

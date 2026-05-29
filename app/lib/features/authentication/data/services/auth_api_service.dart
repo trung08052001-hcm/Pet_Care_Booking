@@ -22,4 +22,10 @@ abstract class AuthApiService {
 
   @POST('/auth/social/zalo')
   Future<AuthApiResponseModel> signInWithZalo(@Body() Map<String, dynamic> body);
+
+  @POST('/auth/forgot-password')
+  Future<SimpleApiResponseModel> forgotPassword(@Body() Map<String, dynamic> body);
+
+  @POST('/auth/verify-reset-otp')
+  Future<SimpleApiResponseModel> verifyResetOtp(@Body() Map<String, dynamic> body);
 }

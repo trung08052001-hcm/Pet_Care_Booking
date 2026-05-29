@@ -13,6 +13,10 @@ abstract interface class AuthRemoteDataSource {
   Future<AuthSessionModel> signInWithGoogle(GoogleLoginRequestModel request);
 
   Future<AuthSessionModel> signInWithZalo(ZaloLoginRequestModel request);
+
+  Future<void> requestPasswordResetOtp(ForgotPasswordRequestModel request);
+
+  Future<void> verifyPasswordResetOtp(VerifyResetOtpRequestModel request);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -44,6 +48,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<AuthSessionModel> signInWithZalo(ZaloLoginRequestModel request) async {
     final response = await _apiService.signInWithZalo(request.toJson());
     return response.data;
+  }
+
+  @override
+  Future<void> requestPasswordResetOtp(
+    ForgotPasswordRequestModel request,
+  ) async {
+    await _apiService.forgotPassword(request.toJson());
+  }
+
+  @override
+  Future<void> verifyPasswordResetOtp(
+    VerifyResetOtpRequestModel request,
+  ) async {
+    await _apiService.verifyResetOtp(request.toJson());
   }
 }
 

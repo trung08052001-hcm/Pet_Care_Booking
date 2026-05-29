@@ -28,7 +28,8 @@
     "google-auth-library": "^10.6.2",
     "helmet": "latest",
     "mongoose": "latest",
-    "morgan": "latest"
+    "morgan": "latest",
+    "nodemailer": "^8.0.10"
   },
   "devDependencies": {
     "nodemon": "latest"

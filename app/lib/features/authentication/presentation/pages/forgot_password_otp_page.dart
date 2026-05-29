@@ -1,5 +1,7 @@
 import 'package:app/core/app_localizations.dart';
-import 'package:app/features/authentication/presentation/pages/reset_password_page.dart';
+import 'package:app/core/di/injection.dart';
+import 'package:app/features/authentication/domain/repositories/auth_repository.dart';
+import 'package:app/features/authentication/presentation/pages/sign_in_page.dart';
 import 'package:app/features/authentication/presentation/widgets/auth_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,13 +10,13 @@ import 'package:go_router/go_router.dart';
 class ForgotPasswordOtpPage extends StatefulWidget {
   const ForgotPasswordOtpPage({
     super.key,
-    required this.phoneNumber,
+    required this.email,
   });
 
   static const routeName = 'forgot-password-otp';
   static const routePath = '/forgot-password-otp';
 
-  final String phoneNumber;
+  final String email;
 
   @override
   State<ForgotPasswordOtpPage> createState() => _ForgotPasswordOtpPageState();
@@ -23,6 +25,8 @@ class ForgotPasswordOtpPage extends StatefulWidget {
 class _ForgotPasswordOtpPageState extends State<ForgotPasswordOtpPage> {
   final _formKey = GlobalKey<FormState>();
   final _otpController = TextEditingController();
+  bool _isLoading = false;
+  bool _isResending = false;
 
   @override
   void dispose() {
@@ -30,14 +34,69 @@ class _ForgotPasswordOtpPageState extends State<ForgotPasswordOtpPage> {
     super.dispose();
   }
 
-  void _submit() {
-    if (!_formKey.currentState!.validate()) {
+  Future<void> _submit() async {
+    if (!_formKey.currentState!.validate() || _isLoading) {
       return;
     }
 
-    context.pushNamed(
-      ResetPasswordPage.routeName,
-      extra: widget.phoneNumber,
+    setState(() => _isLoading = true);
+
+    final result = await getIt<AuthRepository>().verifyPasswordResetOtp(
+      email: widget.email,
+      otp: _otpController.text.trim(),
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() => _isLoading = false);
+
+    result.fold(
+      (failure) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(failure.message)),
+        );
+      },
+      (_) {
+        final l10n = AppLocalizations.of(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.otpVerifiedMessage)),
+        );
+        context.goNamed(SignInPage.routeName);
+      },
+    );
+  }
+
+  Future<void> _resend() async {
+    if (_isResending || _isLoading) {
+      return;
+    }
+
+    setState(() => _isResending = true);
+
+    final result = await getIt<AuthRepository>().requestPasswordResetOtp(
+      email: widget.email,
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() => _isResending = false);
+
+    final l10n = AppLocalizations.of(context);
+    result.fold(
+      (failure) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(failure.message)),
+        );
+      },
+      (_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.otpSentMessage)),
+        );
+      },
     );
   }
 
@@ -47,14 +106,13 @@ class _ForgotPasswordOtpPageState extends State<ForgotPasswordOtpPage> {
 
     return AuthShell(
       title: l10n.otpTitle,
-      subtitle: l10n.otpSubtitle(widget.phoneNumber),
+      subtitle: l10n.otpSubtitle(widget.email),
       primaryButtonLabel: l10n.verifyOtpCta,
+      isPrimaryLoading: _isLoading,
       onPrimaryPressed: _submit,
       showSocialSection: false,
       topLeading: IconButton(
-        onPressed: () {
-          context.pop();
-        },
+        onPressed: _isLoading ? null : () => context.pop(),
         icon: const Icon(Icons.arrow_back_rounded),
         style: IconButton.styleFrom(
           backgroundColor: Colors.white,
@@ -119,9 +177,9 @@ class _ForgotPasswordOtpPageState extends State<ForgotPasswordOtpPage> {
               ),
               const SizedBox(height: 8),
               TextButton(
-                onPressed: () {},
+                onPressed: _isResending ? null : _resend,
                 child: Text(
-                  l10n.resendOtp,
+                  _isResending ? l10n.resendingOtp : l10n.resendOtp,
                   style: const TextStyle(
                     color: Color(0xFFB45A17),
                     fontWeight: FontWeight.w700,
