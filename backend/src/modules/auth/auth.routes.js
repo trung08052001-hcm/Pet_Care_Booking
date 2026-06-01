@@ -1,5 +1,6 @@
 const express = require("express");
 
+const validate = require("../../middlewares/validate");
 const {
   authenticate,
 } = require("../../middlewares/auth.middleware");
@@ -15,18 +16,28 @@ const {
   verifyResetOtp,
   zaloLogin,
 } = require("./auth.controller");
+const {
+  forgotPasswordSchema,
+  googleLoginSchema,
+  loginSchema,
+  refreshTokenSchema,
+  registerSchema,
+  resetPasswordSchema,
+  verifyResetOtpSchema,
+  zaloLoginSchema,
+} = require("./auth.schemas");
 
 const router = express.Router();
 
-router.post("/register", register);
-router.post("/login", login);
-router.post("/forgot-password", forgotPassword);
-router.post("/verify-reset-otp", verifyResetOtp);
-router.post("/reset-password", resetPassword);
-router.post("/refresh-token", refreshToken);
-router.post("/logout", logout);
-router.post("/social/google", googleLogin);
-router.post("/social/zalo", zaloLogin);
+router.post("/register", validate(registerSchema), register);
+router.post("/login", validate(loginSchema), login);
+router.post("/forgot-password", validate(forgotPasswordSchema), forgotPassword);
+router.post("/verify-reset-otp", validate(verifyResetOtpSchema), verifyResetOtp);
+router.post("/reset-password", validate(resetPasswordSchema), resetPassword);
+router.post("/refresh-token", validate(refreshTokenSchema), refreshToken);
+router.post("/logout", validate(refreshTokenSchema), logout);
+router.post("/social/google", validate(googleLoginSchema), googleLogin);
+router.post("/social/zalo", validate(zaloLoginSchema), zaloLogin);
 router.get("/me", authenticate, getMe);
 
 module.exports = router;

@@ -6,6 +6,13 @@ const errorHandler = (err, req, res, next) => {
   let statusCode = err.statusCode || 500;
   let message = err.message || "Internal server error";
 
+  if (err.isJoi) {
+    statusCode = 400;
+    message = err.details
+      .map((detail) => detail.message.replace(/"/g, ""))
+      .join(", ");
+  }
+
   if (err.name === "ValidationError") {
     statusCode = 400;
     message = Object.values(err.errors)

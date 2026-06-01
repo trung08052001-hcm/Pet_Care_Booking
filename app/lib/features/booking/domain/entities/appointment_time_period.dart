@@ -1,0 +1,4 @@
+enum AppointmentTimePeriod {
+  morning,
+  afternoon,
+}

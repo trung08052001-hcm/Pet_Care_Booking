@@ -1,0 +1,4 @@
+enum ServicePetType {
+  dog,
+  cat,
+}

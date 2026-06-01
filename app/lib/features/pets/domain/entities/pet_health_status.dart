@@ -1,0 +1,4 @@
+enum PetHealthStatus {
+  good,
+  needsRevisit,
+}

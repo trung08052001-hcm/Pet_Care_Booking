@@ -186,6 +186,21 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, void>> logout() async {
+    try {
+      await _localDataSource.clearSession();
+      return const Right(null);
+    } on Exception catch (exception, stackTrace) {
+      return Left(
+        FailureMapper.fromException(
+          exception,
+          stackTrace: stackTrace,
+        ),
+      );
+    }
+  }
+
+  @override
   Future<Either<Failure, AuthSession?>> restoreSession() async {
     try {
       final session = await _localDataSource.getCachedSession();

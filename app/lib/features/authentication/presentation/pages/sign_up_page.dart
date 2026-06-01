@@ -3,7 +3,7 @@ import 'package:app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_event.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_state.dart';
 import 'package:app/features/authentication/presentation/widgets/auth_shell.dart';
-import 'package:app/features/sample_posts/presentation/pages/sample_posts_page.dart';
+import 'package:app/app/shell/main_shell_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -86,7 +86,7 @@ class _SignUpPageState extends State<SignUpPage> {
         if (state.submissionStatus == AuthSubmissionStatus.success &&
             state.status == AuthStatus.authenticated) {
           context.read<AuthBloc>().add(const AuthFeedbackCleared());
-          context.goNamed(SamplePostsPage.routeName);
+          context.goNamed(MainShellPage.routeName);
         }
       },
       builder: (context, state) {

@@ -32,4 +32,6 @@ abstract interface class AuthRepository {
     required String email,
     required String otp,
   });
+
+  ResultFuture<void> logout();
 }

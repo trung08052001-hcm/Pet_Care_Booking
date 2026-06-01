@@ -1,0 +1,4 @@
+enum ChatMessageSender {
+  agent,
+  user,
+}

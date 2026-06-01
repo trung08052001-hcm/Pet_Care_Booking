@@ -1,0 +1,4 @@
+enum ChatFaqIcon {
+  vaccine,
+  nutrition,
+}
