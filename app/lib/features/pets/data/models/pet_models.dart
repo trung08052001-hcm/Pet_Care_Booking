@@ -20,14 +20,14 @@ class CreatePetRequestModel {
   final String? imageDataUrl;
 
   Map<String, dynamic> toJson() => {
-        'name': name,
-        'ageYears': ageYears,
-        'weightKg': weightKg,
-        'petType': petType,
-        'vaccinationStatus': vaccinationStatus,
-        if (imageDataUrl != null && imageDataUrl!.isNotEmpty)
-          'imageDataUrl': imageDataUrl,
-      };
+    'name': name,
+    'ageYears': ageYears,
+    'weightKg': weightKg,
+    'petType': petType,
+    'vaccinationStatus': vaccinationStatus,
+    if (imageDataUrl != null && imageDataUrl!.isNotEmpty)
+      'imageDataUrl': imageDataUrl,
+  };
 }
 
 class PetsApiResponseModel {
@@ -44,7 +44,9 @@ class PetsApiResponseModel {
       success: json['success'] == true,
       message: json['message'] as String? ?? '',
       pets: rawPets
-          .map((item) => PetModel.fromJson(Map<String, dynamic>.from(item as Map)))
+          .map(
+            (item) => PetModel.fromJson(Map<String, dynamic>.from(item as Map)),
+          )
           .toList(),
     );
   }
@@ -105,6 +107,17 @@ class PetModel {
   final String petType;
   final String vaccinationStatus;
   final String? imageDataUrl;
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'ageYears': ageYears,
+    'weightKg': weightKg,
+    'petType': petType,
+    'vaccinationStatus': vaccinationStatus,
+    if (imageDataUrl != null && imageDataUrl!.isNotEmpty)
+      'imageDataUrl': imageDataUrl,
+  };
 
   Pet toEntity() {
     return Pet(

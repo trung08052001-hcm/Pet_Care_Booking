@@ -52,8 +52,13 @@ dependencies:
   zalo_flutter: ^0.0.8
   firebase_core: ^3.15.2
   firebase_auth: ^5.7.0
+  firebase_messaging: ^15.2.10
   google_sign_in: ^6.3.0
+  geolocator: ^14.0.2
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
   image_picker: ^1.2.1
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:

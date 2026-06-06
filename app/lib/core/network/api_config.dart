@@ -1,11 +1,10 @@
 abstract final class ApiConfig {
-  // static const String devBaseUrl = 'http://192.168.50.21:5000/api/v1';
   static const String devBaseUrl = 'http://192.168.1.29:5000/api/v1';
   static const String stgBaseUrl = 'https://stg-api.pawsitive-care.com/api/v1';
   static const String prodBaseUrl = 'https://api.pawsitive-care.com/api/v1';
 
-  static const Duration connectTimeout = Duration(seconds: 30);
-  static const Duration receiveTimeout = Duration(seconds: 30);
+  static const Duration connectTimeout = Duration(seconds: 8);
+  static const Duration receiveTimeout = Duration(seconds: 12);
 }
 
 abstract final class ApiEndpoints {
@@ -23,6 +22,7 @@ abstract final class ApiEndpoints {
   static const String bookingDetail = '/bookings/{bookingId}';
   static const String bookingCancel = '/bookings/{bookingId}/cancel';
   static const String bookingAvailability = '/bookings/availability';
+  static const String notificationDeviceToken = '/notifications/device-token';
 
   static const String posts = '/posts';
 }

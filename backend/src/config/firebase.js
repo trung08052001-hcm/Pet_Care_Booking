@@ -37,7 +37,13 @@ const getFirebaseAuth = () => {
   return admin.auth();
 };
 
+const getFirebaseMessaging = () => {
+  initializeFirebaseAdmin();
+  return admin.messaging();
+};
+
 module.exports = {
   initializeFirebaseAdmin,
   getFirebaseAuth,
+  getFirebaseMessaging,
 };

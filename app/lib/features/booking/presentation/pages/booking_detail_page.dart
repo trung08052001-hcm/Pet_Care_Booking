@@ -1,5 +1,6 @@
 import 'package:app/app/shell/main_shell_page.dart';
 import 'package:app/app/theme/app_colors.dart';
+import 'package:app/core/location/store_directions_service.dart';
 import 'package:app/features/booking/domain/entities/bookable_service_icon.dart';
 import 'package:app/features/booking/domain/entities/booking_detail.dart';
 import 'package:app/features/booking/domain/entities/booking_detail_service_item.dart';
@@ -42,7 +43,9 @@ class BookingDetailPage extends StatelessWidget {
         }
         if (state.showShareSnack) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Chia sẻ lịch hẹn — đang phát triển.')),
+            const SnackBar(
+              content: Text('Chia sẻ lịch hẹn — đang phát triển.'),
+            ),
           );
         }
       },
@@ -60,14 +63,16 @@ class BookingDetailPage extends StatelessWidget {
                       context.goNamed(MainShellPage.routeName);
                     }
                   },
-                  onShare: () => context
-                      .read<BookingDetailBloc>()
-                      .add(const BookingDetailSharePressed()),
+                  onShare: () => context.read<BookingDetailBloc>().add(
+                    const BookingDetailSharePressed(),
+                  ),
                 ),
                 if (state.isLoading)
                   const Expanded(
                     child: Center(
-                      child: CircularProgressIndicator(color: AppColors.primary),
+                      child: CircularProgressIndicator(
+                        color: AppColors.primary,
+                      ),
                     ),
                   )
                 else if (state.status == BookingDetailPageStatus.failure)
@@ -81,7 +86,9 @@ class BookingDetailPage extends StatelessWidget {
                             Text(
                               state.message ?? 'Không tải được chi tiết lịch.',
                               textAlign: TextAlign.center,
-                              style: const TextStyle(color: AppColors.mutedText),
+                              style: const TextStyle(
+                                color: AppColors.mutedText,
+                              ),
                             ),
                             const SizedBox(height: 16),
                             FilledButton(
@@ -101,9 +108,10 @@ class BookingDetailPage extends StatelessWidget {
                       detail: state.detail!,
                       isCancelling: state.isCancelling,
                       onCancel: () => _confirmCancel(context),
-                      onSupport: () => context
-                          .read<BookingDetailBloc>()
-                          .add(const BookingDetailSupportPressed()),
+                      onOpenMap: () => _openMap(context),
+                      onSupport: () => context.read<BookingDetailBloc>().add(
+                        const BookingDetailSupportPressed(),
+                      ),
                     ),
                   ),
               ],
@@ -136,9 +144,16 @@ class BookingDetailPage extends StatelessWidget {
     );
 
     if (confirmed == true && context.mounted) {
-      context
-          .read<BookingDetailBloc>()
-          .add(const BookingDetailCancelPressed());
+      context.read<BookingDetailBloc>().add(const BookingDetailCancelPressed());
+    }
+  }
+
+  Future<void> _openMap(BuildContext context) async {
+    final opened = await StoreDirectionsService.openGoogleMapsDirections();
+    if (!opened && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Không mở được Google Maps.')),
+      );
     }
   }
 }
@@ -185,12 +200,14 @@ class _BookingDetailBody extends StatelessWidget {
     required this.detail,
     required this.isCancelling,
     required this.onCancel,
+    required this.onOpenMap,
     required this.onSupport,
   });
 
   final BookingDetail detail;
   final bool isCancelling;
   final VoidCallback onCancel;
+  final VoidCallback onOpenMap;
   final VoidCallback onSupport;
 
   @override
@@ -225,7 +242,7 @@ class _BookingDetailBody extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              _ScheduleLocationCard(detail: detail),
+              _ScheduleLocationCard(detail: detail, onOpenMap: onOpenMap),
               const SizedBox(height: 20),
               _PaymentSummaryCard(detail: detail),
             ],
@@ -274,10 +291,7 @@ class _BookingCodeRow extends StatelessWidget {
             ],
           ),
         ),
-        _StatusBadge(
-          label: detail.statusLabel,
-          status: detail.status,
-        ),
+        _StatusBadge(label: detail.statusLabel, status: detail.status),
       ],
     );
   }
@@ -417,10 +431,7 @@ class _ServiceRowCard extends StatelessWidget {
               color: Color(service.iconBackgroundColor),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(
-              _iconFor(service.icon),
-              color: AppColors.primary,
-            ),
+            child: Icon(_iconFor(service.icon), color: AppColors.primary),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -457,9 +468,10 @@ class _ServiceRowCard extends StatelessWidget {
 }
 
 class _ScheduleLocationCard extends StatelessWidget {
-  const _ScheduleLocationCard({required this.detail});
+  const _ScheduleLocationCard({required this.detail, required this.onOpenMap});
 
   final BookingDetail detail;
+  final VoidCallback onOpenMap;
 
   @override
   Widget build(BuildContext context) {
@@ -489,26 +501,64 @@ class _ScheduleLocationCard extends StatelessWidget {
             subValue: detail.locationAddress,
           ),
           const SizedBox(height: 14),
-          ClipRRect(
+          InkWell(
+            onTap: onOpenMap,
             borderRadius: BorderRadius.circular(12),
-            child: Container(
-              height: 100,
-              width: double.infinity,
-              color: const Color(0xFFD4E8EE),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Icon(
-                    Icons.map_outlined,
-                    size: 48,
-                    color: AppColors.brownText.withValues(alpha: 0.2),
-                  ),
-                  Icon(
-                    Icons.location_on,
-                    color: AppColors.primary.withValues(alpha: 0.85),
-                    size: 32,
-                  ),
-                ],
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                height: 100,
+                width: double.infinity,
+                color: const Color(0xFFD4E8EE),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Icon(
+                      Icons.map_outlined,
+                      size: 48,
+                      color: AppColors.brownText.withValues(alpha: 0.2),
+                    ),
+                    Icon(
+                      Icons.location_on,
+                      color: AppColors.primary.withValues(alpha: 0.85),
+                      size: 32,
+                    ),
+                    Positioned(
+                      right: 12,
+                      bottom: 10,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.directions_rounded,
+                                color: AppColors.primary,
+                                size: 16,
+                              ),
+                              SizedBox(width: 4),
+                              Text(
+                                'Chỉ đường',
+                                style: TextStyle(
+                                  color: AppColors.primary,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -65,6 +65,11 @@
       "key": "bookingId",
       "value": "",
       "type": "string"
+    },
+    {
+      "key": "fcmToken",
+      "value": "paste-fcm-token-here",
+      "type": "string"
     }
   ],
   "item": [
@@ -712,6 +717,43 @@
               ]
             },
             "description": "Cancels the booking and updates status to cancelled on the server."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "POST Register FCM Device Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{fcmToken}}\",\n  \"platform\": \"flutter\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/notifications/device-token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications",
+                "device-token"
+              ]
+            },
+            "description": "Registers the current app FCM token for push notifications."
           },
           "response": []
         }

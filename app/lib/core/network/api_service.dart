@@ -70,6 +70,11 @@ abstract class AppApiService {
     @Path('bookingId') String bookingId,
   );
 
+  @POST(ApiEndpoints.notificationDeviceToken)
+  Future<SimpleApiResponseModel> registerDeviceToken(
+    @Body() Map<String, dynamic> body,
+  );
+
   @GET(ApiEndpoints.posts)
   Future<List<SamplePostModel>> getSamplePosts();
 }

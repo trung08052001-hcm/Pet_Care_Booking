@@ -10,13 +10,13 @@ class CreateBookingRequestModel {
   final BookingConfirmationRequest request;
 
   Map<String, dynamic> toJson() => {
-        'petId': request.petId,
-        'serviceIds': request.serviceIds,
-        'appointmentDate': request.appointmentDate.toIso8601String(),
-        'timeSlotId': request.timeSlotId,
-        'timeSlotLabel': request.timeSlotLabel,
-        'totalVnd': request.totalVnd,
-      };
+    'petId': request.petId,
+    'serviceIds': request.serviceIds,
+    'appointmentDate': request.appointmentDate.toIso8601String(),
+    'timeSlotId': request.timeSlotId,
+    'timeSlotLabel': request.timeSlotLabel,
+    'totalVnd': request.totalVnd,
+  };
 }
 
 class BookingAvailabilityResponseModel {
@@ -27,7 +27,11 @@ class BookingAvailabilityResponseModel {
     final rawSlots = data['slots'] as List? ?? const [];
     return BookingAvailabilityResponseModel(
       slots: rawSlots
-          .map((item) => BookedSlotModel.fromJson(Map<String, dynamic>.from(item as Map)))
+          .map(
+            (item) => BookedSlotModel.fromJson(
+              Map<String, dynamic>.from(item as Map),
+            ),
+          )
           .toList(),
     );
   }
@@ -47,6 +51,11 @@ class BookedSlotModel {
 
   final String dateKey;
   final String timeSlotId;
+
+  Map<String, dynamic> toJson() => {
+    'dateKey': dateKey,
+    'timeSlotId': timeSlotId,
+  };
 }
 
 class BookingsApiResponseModel {
@@ -57,7 +66,10 @@ class BookingsApiResponseModel {
     final rawBookings = data['bookings'] as List? ?? const [];
     return BookingsApiResponseModel(
       bookings: rawBookings
-          .map((item) => BookingModel.fromJson(Map<String, dynamic>.from(item as Map)))
+          .map(
+            (item) =>
+                BookingModel.fromJson(Map<String, dynamic>.from(item as Map)),
+          )
           .toList(),
     );
   }
@@ -71,7 +83,9 @@ class BookingApiResponseModel {
   factory BookingApiResponseModel.fromJson(Map<String, dynamic> json) {
     final data = Map<String, dynamic>.from(json['data'] as Map? ?? {});
     return BookingApiResponseModel(
-      booking: BookingModel.fromJson(Map<String, dynamic>.from(data['booking'] as Map)),
+      booking: BookingModel.fromJson(
+        Map<String, dynamic>.from(data['booking'] as Map),
+      ),
     );
   }
 
@@ -109,10 +123,15 @@ class BookingModel {
       petName: json['petName'] as String? ?? 'Thú cưng',
       petSubtitle: json['petSubtitle'] as String? ?? '',
       services: rawServices
-          .map((item) => BookingServiceModel.fromJson(Map<String, dynamic>.from(item as Map)))
+          .map(
+            (item) => BookingServiceModel.fromJson(
+              Map<String, dynamic>.from(item as Map),
+            ),
+          )
           .toList(),
       appointmentDate:
-          DateTime.tryParse(json['appointmentDate'] as String? ?? '') ?? DateTime(2026),
+          DateTime.tryParse(json['appointmentDate'] as String? ?? '') ??
+          DateTime(2026),
       timeSlotLabel: json['timeSlotLabel'] as String? ?? '',
       locationName: json['locationName'] as String? ?? 'PawSitive Sanctuary',
       locationAddress: json['locationAddress'] as String? ?? '',
@@ -122,7 +141,9 @@ class BookingModel {
       totalVnd: (json['totalVnd'] as num?)?.round() ?? 0,
       paymentStatusLabel:
           json['paymentStatusLabel'] as String? ?? 'Thanh toán tại cửa hàng',
-      createdAt: DateTime.tryParse(json['createdAt'] as String? ?? '') ?? DateTime.now(),
+      createdAt:
+          DateTime.tryParse(json['createdAt'] as String? ?? '') ??
+          DateTime.now(),
     );
   }
 
@@ -143,6 +164,26 @@ class BookingModel {
   final int totalVnd;
   final String paymentStatusLabel;
   final DateTime createdAt;
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'displayCode': displayCode,
+    'status': status,
+    'petId': petId,
+    'petName': petName,
+    'petSubtitle': petSubtitle,
+    'services': services.map((service) => service.toJson()).toList(),
+    'appointmentDate': appointmentDate.toIso8601String(),
+    'timeSlotLabel': timeSlotLabel,
+    'locationName': locationName,
+    'locationAddress': locationAddress,
+    'subtotalVnd': subtotalVnd,
+    'discountLabel': discountLabel,
+    'discountVnd': discountVnd,
+    'totalVnd': totalVnd,
+    'paymentStatusLabel': paymentStatusLabel,
+    'createdAt': createdAt.toIso8601String(),
+  };
 
   BookingDetail toEntity() {
     return BookingDetail(
@@ -210,6 +251,12 @@ class BookingServiceModel {
   final String id;
   final String name;
   final int amountVnd;
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'amountVnd': amountVnd,
+  };
 
   BookingDetailServiceItem toEntity() {
     return BookingDetailServiceItem(

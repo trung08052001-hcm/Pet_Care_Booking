@@ -1,6 +1,7 @@
 import 'package:app/core/common/typedefs.dart';
 import 'package:app/core/error/app_error.dart';
 import 'package:app/core/network/network_info.dart';
+import 'package:app/features/pets/data/datasources/pets_local_data_source.dart';
 import 'package:app/features/pets/data/datasources/pets_mock_data_source.dart';
 import 'package:app/features/pets/data/datasources/pets_remote_data_source.dart';
 import 'package:app/features/pets/data/models/pet_models.dart';
@@ -16,11 +17,13 @@ class PetsRepositoryImpl implements PetsRepository {
     this._mockDataSource, [
     this._remoteDataSource,
     this._networkInfo,
+    this._localDataSource,
   ]);
 
   final PetsMockDataSource _mockDataSource;
   final PetsRemoteDataSource? _remoteDataSource;
   final NetworkInfo? _networkInfo;
+  final PetsLocalDataSource? _localDataSource;
 
   @override
   ResultFuture<MyPetsPageContent> getMyPetsPageContent() async {
@@ -34,10 +37,17 @@ class PetsRepositoryImpl implements PetsRepository {
       }
 
       if (!await networkInfo.isConnected) {
-        return const Left(Failure(message: 'No internet connection.'));
+        final cachedPets =
+            _localDataSource?.getCachedPets() ?? const <PetModel>[];
+        return Right(
+          _mockDataSource.getPageContent(
+            pets: cachedPets.map((pet) => pet.toEntity()).toList(),
+          ),
+        );
       }
 
       final pets = await remoteDataSource.getPets();
+      await _localDataSource?.savePets(pets);
       return Right(
         _mockDataSource.getPageContent(
           pets: pets.map((pet) => pet.toEntity()).toList(),
@@ -45,10 +55,7 @@ class PetsRepositoryImpl implements PetsRepository {
       );
     } on Exception catch (exception, stackTrace) {
       return Left(
-        FailureMapper.fromException(
-          exception,
-          stackTrace: stackTrace,
-        ),
+        FailureMapper.fromException(exception, stackTrace: stackTrace),
       );
     }
   }
@@ -71,7 +78,22 @@ class PetsRepositoryImpl implements PetsRepository {
       }
 
       if (!await networkInfo.isConnected) {
-        return const Left(Failure(message: 'No internet connection.'));
+        final draft = await _localDataSource?.saveDraft(
+          CreatePetRequestModel(
+            name: name.trim(),
+            ageYears: ageYears,
+            weightKg: weightKg,
+            petType: petType,
+            vaccinationStatus: vaccinationStatus,
+            imageDataUrl: imageDataUrl,
+          ),
+        );
+        if (draft != null) {
+          return Right(draft.toEntity());
+        }
+        return const Left(
+          Failure(message: 'Bạn đang offline, chưa thể lưu nháp thú cưng.'),
+        );
       }
 
       final pet = await remoteDataSource.createPet(
@@ -84,13 +106,17 @@ class PetsRepositoryImpl implements PetsRepository {
           imageDataUrl: imageDataUrl,
         ),
       );
+      final localDataSource = _localDataSource;
+      if (localDataSource != null) {
+        await localDataSource.savePets([
+          ...localDataSource.getCachedPets(),
+          pet,
+        ]);
+      }
       return Right(pet.toEntity());
     } on Exception catch (exception, stackTrace) {
       return Left(
-        FailureMapper.fromException(
-          exception,
-          stackTrace: stackTrace,
-        ),
+        FailureMapper.fromException(exception, stackTrace: stackTrace),
       );
     }
   }

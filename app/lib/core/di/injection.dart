@@ -1,8 +1,11 @@
 import 'package:app/core/config/app_config.dart';
 import 'package:app/core/di/injection.config.dart';
+import 'package:app/core/local/hive_local_store.dart';
 import 'package:app/core/network/api_service.dart';
 import 'package:app/core/network/network_info.dart';
+import 'package:app/core/notifications/push_notification_service.dart';
 import 'package:app/core/storage/storage_service.dart';
+import 'package:app/features/booking/data/datasources/booking_local_data_source.dart';
 import 'package:app/features/authentication/data/datasources/auth_data_sources.dart';
 import 'package:app/features/authentication/data/repositories/auth_repository_impl.dart';
 import 'package:app/features/authentication/data/services/google_auth_service.dart';
@@ -31,14 +34,18 @@ import 'package:app/features/booking/domain/usecases/submit_booking_usecase.dart
 import 'package:app/features/booking/presentation/bloc/booking_appointment_bloc.dart';
 import 'package:app/features/booking/presentation/bloc/booking_confirmation_bloc.dart';
 import 'package:app/features/booking/presentation/bloc/booking_detail_bloc.dart';
+import 'package:app/features/pets/data/datasources/pets_local_data_source.dart';
 import 'package:app/features/pets/data/datasources/pets_mock_data_source.dart';
 import 'package:app/features/pets/data/datasources/pets_remote_data_source.dart';
 import 'package:app/features/pets/data/repositories/pets_repository_impl.dart';
+import 'package:app/features/pets/data/services/pet_sync_service.dart';
 import 'package:app/features/pets/domain/repositories/pets_repository.dart';
 import 'package:app/features/pets/domain/usecases/create_pet_usecase.dart';
 import 'package:app/features/pets/domain/usecases/get_my_pets_page_content_usecase.dart';
 import 'package:app/features/pets/presentation/bloc/pets_bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
@@ -55,6 +62,7 @@ Future<void> configureDependencies(AppConfig appConfig) async {
   _currentAppConfig = appConfig;
   await getIt.init();
   _registerAuthDependencies();
+  _registerOfflineDependencies();
   await _registerPetsDependencies();
   await _registerBookingDependencies();
 }
@@ -115,6 +123,33 @@ void _registerAuthDependencies() {
   );
 }
 
+void _registerOfflineDependencies() {
+  getIt.registerLazySingleton<HiveLocalStore>(() => const HiveLocalStore());
+  getIt.registerLazySingleton<PetsLocalDataSource>(
+    () => PetsLocalDataSource(getIt<HiveLocalStore>()),
+  );
+  getIt.registerLazySingleton<BookingLocalDataSource>(
+    () => BookingLocalDataSource(getIt<HiveLocalStore>()),
+  );
+  getIt.registerLazySingleton<PetSyncService>(
+    () => PetSyncService(
+      getIt<PetsLocalDataSource>(),
+      getIt<PetsRemoteDataSource>(),
+      getIt<NetworkInfo>(),
+      getIt<Connectivity>(),
+    ),
+  );
+  getIt.registerLazySingleton<PushNotificationService>(
+    () => PushNotificationService(
+      FirebaseMessaging.instance,
+      getIt<AppApiService>(),
+      getIt<HiveLocalStore>(),
+      getIt<NetworkInfo>(),
+      getIt<Connectivity>(),
+    ),
+  );
+}
+
 Future<void> _replaceRegistration<T extends Object>(
   T Function() factoryFunc, {
   bool lazySingleton = true,
@@ -139,6 +174,7 @@ Future<void> _registerPetsDependencies() async {
       getIt<PetsMockDataSource>(),
       getIt<PetsRemoteDataSource>(),
       getIt<NetworkInfo>(),
+      getIt<PetsLocalDataSource>(),
     ),
   );
   await _replaceRegistration<GetMyPetsPageContentUseCase>(
@@ -163,30 +199,32 @@ Future<void> _registerBookingDependencies() async {
     () => BookingAppointmentRepositoryImpl(
       getIt<BookingAppointmentMockDataSource>(),
       getIt<AppApiService>(),
+      getIt<NetworkInfo>(),
+      getIt<BookingLocalDataSource>(),
     ),
   );
   await _replaceRegistration<BookingConfirmationRepository>(
     () => BookingConfirmationRepositoryImpl(
       getIt<BookingConfirmationMockDataSource>(),
       getIt<AppApiService>(),
+      getIt<NetworkInfo>(),
     ),
   );
   await _replaceRegistration<BookingDetailRepository>(
     () => BookingDetailRepositoryImpl(
       getIt<BookingDetailLocalDataSource>(),
       getIt<AppApiService>(),
+      getIt<NetworkInfo>(),
+      getIt<BookingLocalDataSource>(),
     ),
   );
   await _replaceRegistration<GetAppointmentPageContentUseCase>(
-    () => GetAppointmentPageContentUseCase(
-      getIt<BookingAppointmentRepository>(),
-    ),
+    () =>
+        GetAppointmentPageContentUseCase(getIt<BookingAppointmentRepository>()),
     lazySingleton: false,
   );
   await _replaceRegistration<GetBookingConfirmationUseCase>(
-    () => GetBookingConfirmationUseCase(
-      getIt<BookingConfirmationRepository>(),
-    ),
+    () => GetBookingConfirmationUseCase(getIt<BookingConfirmationRepository>()),
     lazySingleton: false,
   );
   await _replaceRegistration<SubmitBookingUseCase>(

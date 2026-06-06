@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:app/app/navigation/booking_navigation.dart';
 import 'package:app/app/theme/app_colors.dart';
 import 'package:app/core/di/injection.dart';
 import 'package:app/core/network/api_service.dart';
+import 'package:app/core/network/network_info.dart';
+import 'package:app/features/booking/data/datasources/booking_local_data_source.dart';
 import 'package:app/features/booking/data/models/booking_api_models.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +29,28 @@ class _BookingHistoryPageState extends State<BookingHistoryPage> {
   }
 
   Future<BookingsApiResponseModel> _loadBookings() {
-    return getIt<AppApiService>().getBookings();
+    return _loadBookingsWithCache();
+  }
+
+  Future<BookingsApiResponseModel> _loadBookingsWithCache() async {
+    final localDataSource = getIt<BookingLocalDataSource>();
+    if (!await getIt<NetworkInfo>().isConnected) {
+      return BookingsApiResponseModel(
+        bookings: localDataSource.getCachedBookings(),
+      );
+    }
+
+    try {
+      final response = await getIt<AppApiService>().getBookings().timeout(
+        const Duration(seconds: 4),
+      );
+      await localDataSource.saveBookings(response.bookings);
+      return response;
+    } on Exception {
+      return BookingsApiResponseModel(
+        bookings: localDataSource.getCachedBookings(),
+      );
+    }
   }
 
   void _refresh() {
@@ -79,10 +104,11 @@ class _BookingHistoryPageState extends State<BookingHistoryPage> {
                 final booking = bookings[index];
                 return _BookingHistoryTile(
                   booking: booking,
-                  onTap: () => openBookingDetail(context, bookingId: booking.id),
+                  onTap: () =>
+                      openBookingDetail(context, bookingId: booking.id),
                 );
               },
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
+              separatorBuilder: (context, index) => const SizedBox(height: 12),
               itemCount: bookings.length,
             ),
           );
@@ -137,10 +163,7 @@ class _BookingHistoryMessage extends StatelessWidget {
 }
 
 class _BookingHistoryTile extends StatelessWidget {
-  const _BookingHistoryTile({
-    required this.booking,
-    required this.onTap,
-  });
+  const _BookingHistoryTile({required this.booking, required this.onTap});
 
   final BookingModel booking;
   final VoidCallback onTap;
@@ -241,7 +264,9 @@ class _BookingHistoryTile extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      booking.services.map((service) => service.name).join(', '),
+                      booking.services
+                          .map((service) => service.name)
+                          .join(', '),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -298,6 +323,6 @@ class _BookingHistoryTile extends StatelessWidget {
         buffer.write('.');
       }
     }
-    return '${buffer}đ';
+    return '$bufferđ';
   }
 }

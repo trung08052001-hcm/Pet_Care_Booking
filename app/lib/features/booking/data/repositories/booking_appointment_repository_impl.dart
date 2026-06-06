@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:app/core/common/typedefs.dart';
 import 'package:app/core/error/app_error.dart';
 import 'package:app/core/network/api_service.dart';
+import 'package:app/core/network/network_info.dart';
+import 'package:app/features/booking/data/datasources/booking_local_data_source.dart';
 import 'package:app/features/booking/data/datasources/booking_appointment_mock_data_source.dart';
+import 'package:app/features/booking/data/models/booking_api_models.dart';
 import 'package:app/features/booking/domain/entities/appointment_time_slot.dart';
 import 'package:app/features/booking/domain/entities/appointment_page_content.dart';
 import 'package:app/features/booking/domain/repositories/booking_appointment_repository.dart';
@@ -10,10 +15,17 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: BookingAppointmentRepository)
 class BookingAppointmentRepositoryImpl implements BookingAppointmentRepository {
-  BookingAppointmentRepositoryImpl(this._mockDataSource, [this._apiService]);
+  BookingAppointmentRepositoryImpl(
+    this._mockDataSource, [
+    this._apiService,
+    this._networkInfo,
+    this._localDataSource,
+  ]);
 
   final BookingAppointmentMockDataSource _mockDataSource;
   final AppApiService? _apiService;
+  final NetworkInfo? _networkInfo;
+  final BookingLocalDataSource? _localDataSource;
 
   @override
   ResultFuture<AppointmentPageContent> getAppointmentPageContent({
@@ -33,11 +45,14 @@ class BookingAppointmentRepositoryImpl implements BookingAppointmentRepository {
 
       final from = content.days.first.date;
       final to = content.days.last.date;
-      final response = await apiService.getBookingAvailability({
-        'from': _dateKey(from),
-        'to': _dateKey(to),
-      });
-      final bookedSlotKeys = response.slots
+      final fromKey = _dateKey(from);
+      final toKey = _dateKey(to);
+      final slots = await _bookedSlots(
+        apiService: apiService,
+        fromKey: fromKey,
+        toKey: toKey,
+      );
+      final bookedSlotKeys = slots
           .map((slot) => '${slot.dateKey}:${slot.timeSlotId}')
           .toSet();
       final updatedSlots = content.slotsByDateKey.map((dateKey, slots) {
@@ -77,14 +92,39 @@ class BookingAppointmentRepositoryImpl implements BookingAppointmentRepository {
       );
     } on Exception catch (exception, stackTrace) {
       return Left(
-        FailureMapper.fromException(
-          exception,
-          stackTrace: stackTrace,
-        ),
+        FailureMapper.fromException(exception, stackTrace: stackTrace),
       );
     }
   }
 
   static String _dateKey(DateTime date) =>
       '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+
+  Future<List<BookedSlotModel>> _bookedSlots({
+    required AppApiService apiService,
+    required String fromKey,
+    required String toKey,
+  }) async {
+    final localDataSource = _localDataSource;
+    final networkInfo = _networkInfo;
+    if (networkInfo != null && !await networkInfo.isConnected) {
+      return localDataSource?.getAvailability(from: fromKey, to: toKey) ??
+          const [];
+    }
+
+    try {
+      final response = await apiService
+          .getBookingAvailability({'from': fromKey, 'to': toKey})
+          .timeout(const Duration(seconds: 3));
+      await localDataSource?.saveAvailability(
+        from: fromKey,
+        to: toKey,
+        slots: response.slots,
+      );
+      return response.slots;
+    } on Exception {
+      return localDataSource?.getAvailability(from: fromKey, to: toKey) ??
+          const [];
+    }
+  }
 }

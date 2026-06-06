@@ -1,6 +1,7 @@
 const Booking = require("../../models/booking.model");
 const Pet = require("../../models/pet.model");
 const ApiError = require("../../utils/apiError");
+const notificationService = require("../notifications/notification.service");
 
 const SERVICE_NAMES = {
   "booking-spa": "Tắm & spa",
@@ -13,6 +14,17 @@ const SERVICE_NAMES = {
 const dateKeyFromDate = (date) => {
   const value = new Date(date);
   return value.toISOString().slice(0, 10);
+};
+
+const applyTimeSlotToDate = (date, timeSlotLabel) => {
+  const value = new Date(date);
+  const match = String(timeSlotLabel).match(/^(\d{1,2}):(\d{2})/);
+  if (!match) {
+    return value;
+  }
+
+  value.setHours(Number(match[1]), Number(match[2]), 0, 0);
+  return value;
 };
 
 const pickBooking = (booking) => {
@@ -52,7 +64,7 @@ const pickBooking = (booking) => {
     timeSlotId: booking.timeSlotId,
     timeSlotLabel: booking.timeSlotLabel,
     locationName: "PawSitive Sanctuary",
-    locationAddress: "123 Đường Hạnh Phúc, Quận 1, TP. HCM",
+    locationAddress: "154 Trần Thị Trọng, phường Tân Sơn, TPHCM",
     subtotalVnd: booking.totalVnd,
     discountLabel: "Giảm giá",
     discountVnd: 0,
@@ -62,6 +74,30 @@ const pickBooking = (booking) => {
     updatedAt: booking.updatedAt,
     cancelledAt: booking.cancelledAt,
   };
+};
+
+const notifyBookingEvent = async (userId, booking, type) => {
+  try {
+    const titles = {
+      created: "Đặt lịch thành công",
+      cancelled: "Lịch hẹn đã được hủy",
+      confirmed: "Booking được xác nhận",
+      changed: "Booking đã được thay đổi",
+      reminder_1d: "Nhắc lịch trước 1 ngày",
+      reminder_1h: "Nhắc lịch trước 1 giờ",
+    };
+    await notificationService.sendToUser(userId, {
+      title: titles[type] || "Cập nhật lịch hẹn",
+      body: `${booking.petName} - ${booking.timeSlotLabel}, ${booking.dateKey}`,
+      data: {
+        type,
+        bookingId: booking.id,
+        status: booking.status,
+      },
+    });
+  } catch (error) {
+    console.warn("Failed to send booking notification:", error.message);
+  }
 };
 
 const listBookings = async (userId) => {
@@ -95,6 +131,10 @@ const createBooking = async (userId, payload) => {
   }
 
   const dateKey = dateKeyFromDate(appointmentDate);
+  const appointmentDateTime = applyTimeSlotToDate(
+    appointmentDate,
+    payload.timeSlotLabel
+  );
   const existing = await Booking.findOne({
     dateKey,
     timeSlotId: payload.timeSlotId,
@@ -110,14 +150,16 @@ const createBooking = async (userId, payload) => {
       user: userId,
       pet: payload.petId,
       serviceIds: payload.serviceIds,
-      appointmentDate,
+      appointmentDate: appointmentDateTime,
       dateKey,
       timeSlotId: payload.timeSlotId,
       timeSlotLabel: payload.timeSlotLabel,
       totalVnd: payload.totalVnd,
     });
     await booking.populate("pet");
-    return pickBooking(booking);
+    const picked = pickBooking(booking);
+    notifyBookingEvent(userId, picked, "created");
+    return picked;
   } catch (error) {
     if (error.code === 11000) {
       throw new ApiError(409, "This time slot has already been booked.");
@@ -137,7 +179,9 @@ const cancelBooking = async (userId, bookingId) => {
   booking.status = "cancelled";
   booking.cancelledAt = new Date();
   await booking.save();
-  return pickBooking(booking);
+  const picked = pickBooking(booking);
+  notifyBookingEvent(userId, picked, "cancelled");
+  return picked;
 };
 
 const getAvailability = async ({ from, to }) => {

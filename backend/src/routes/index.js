@@ -3,6 +3,7 @@ const express = require("express");
 const authRoutes = require("../modules/auth/auth.routes");
 const bookingRoutes = require("../modules/bookings/booking.routes");
 const healthRoutes = require("../modules/health/health.routes");
+const notificationRoutes = require("../modules/notifications/notification.routes");
 const petRoutes = require("../modules/pets/pet.routes");
 const serviceRoutes = require("../modules/services/service.routes");
 
@@ -13,5 +14,6 @@ router.use("/auth", authRoutes);
 router.use("/pets", petRoutes);
 router.use("/services", serviceRoutes);
 router.use("/bookings", bookingRoutes);
+router.use("/notifications", notificationRoutes);
 
 module.exports = router;
