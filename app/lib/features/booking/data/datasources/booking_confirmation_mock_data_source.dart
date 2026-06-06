@@ -46,7 +46,7 @@ class BookingConfirmationMockDataSource {
     final month = request.appointmentDate.month;
     final day = request.appointmentDate.day;
     final timeValue =
-        '$weekday, $day Tháng $month, 2023, ${request.timeSlotLabel}';
+        '$weekday, $day Tháng $month, ${request.appointmentDate.year}, ${request.timeSlotLabel}';
 
     return BookingConfirmationContent(
       title: 'Xác nhận',

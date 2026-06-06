@@ -20,6 +20,38 @@ final class PetsRefreshRequested extends PetsEvent {
   const PetsRefreshRequested();
 }
 
+final class PetCreateSubmitted extends PetsEvent {
+  const PetCreateSubmitted({
+    required this.name,
+    required this.ageYears,
+    required this.weightKg,
+    required this.petType,
+    required this.vaccinationStatus,
+    this.imageDataUrl,
+  });
+
+  final String name;
+  final int ageYears;
+  final double weightKg;
+  final String petType;
+  final String vaccinationStatus;
+  final String? imageDataUrl;
+
+  @override
+  List<Object?> get props => [
+        name,
+        ageYears,
+        weightKg,
+        petType,
+        vaccinationStatus,
+        imageDataUrl,
+      ];
+}
+
+final class PetsInteractionConsumed extends PetsEvent {
+  const PetsInteractionConsumed();
+}
+
 final class PetSelected extends PetsEvent {
   const PetSelected(this.petId);
 

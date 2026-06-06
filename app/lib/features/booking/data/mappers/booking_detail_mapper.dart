@@ -57,7 +57,8 @@ abstract final class BookingDetailMapper {
     final weekday = _weekdayLabel(request.appointmentDate.weekday);
     final day = request.appointmentDate.day;
     final month = request.appointmentDate.month;
-    final dateLabel = '$weekday, $day Tháng $month, 2023';
+    final year = request.appointmentDate.year;
+    final dateLabel = '$weekday, $day Tháng $month, $year';
     final timeLabel = _formatTimeLabel(request.timeSlotLabel);
 
     return BookingDetail(

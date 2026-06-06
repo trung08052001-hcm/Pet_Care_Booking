@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:app/core/error/app_error.dart';
+import 'package:app/core/network/api_service.dart';
 import 'package:app/core/storage/storage_service.dart';
 import 'package:app/features/sample_posts/data/models/sample_post_model.dart';
-import 'package:app/features/sample_posts/data/services/sample_posts_api_service.dart';
 import 'package:injectable/injectable.dart';
 
 abstract interface class SamplePostsRemoteDataSource {
@@ -14,7 +14,7 @@ abstract interface class SamplePostsRemoteDataSource {
 class SamplePostsRemoteDataSourceImpl implements SamplePostsRemoteDataSource {
   SamplePostsRemoteDataSourceImpl(this._apiService);
 
-  final SamplePostsApiService _apiService;
+  final AppApiService _apiService;
 
   @override
   Future<List<SamplePostModel>> getSamplePosts() {
@@ -60,9 +60,8 @@ class SamplePostsLocalDataSourceImpl implements SamplePostsLocalDataSource {
 
     return decoded
         .map(
-          (item) => SamplePostModel.fromJson(
-            Map<String, dynamic>.from(item as Map),
-          ),
+          (item) =>
+              SamplePostModel.fromJson(Map<String, dynamic>.from(item as Map)),
         )
         .toList(growable: false);
   }

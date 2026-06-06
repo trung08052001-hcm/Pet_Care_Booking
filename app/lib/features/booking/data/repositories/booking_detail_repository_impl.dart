@@ -1,5 +1,6 @@
 import 'package:app/core/common/typedefs.dart';
 import 'package:app/core/error/app_error.dart' show Failure, FailureMapper;
+import 'package:app/core/network/api_service.dart';
 import 'package:app/features/booking/data/datasources/booking_detail_local_data_source.dart';
 import 'package:app/features/booking/domain/entities/booking_detail.dart';
 import 'package:app/features/booking/domain/entities/booking_detail_status.dart';
@@ -9,13 +10,20 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: BookingDetailRepository)
 class BookingDetailRepositoryImpl implements BookingDetailRepository {
-  BookingDetailRepositoryImpl(this._localDataSource);
+  BookingDetailRepositoryImpl(this._localDataSource, [this._apiService]);
 
   final BookingDetailLocalDataSource _localDataSource;
+  final AppApiService? _apiService;
 
   @override
   ResultFuture<BookingDetail> getBookingDetail(String bookingId) async {
     try {
+      final apiService = _apiService;
+      if (apiService != null) {
+        final response = await apiService.getBooking(bookingId);
+        return Right(response.booking.toEntity());
+      }
+
       await Future<void>.delayed(const Duration(milliseconds: 150));
       final detail = _localDataSource.getById(bookingId);
       if (detail == null) {
@@ -40,6 +48,12 @@ class BookingDetailRepositoryImpl implements BookingDetailRepository {
     required BookingDetailStatus status,
   }) async {
     try {
+      final apiService = _apiService;
+      if (apiService != null && status == BookingDetailStatus.cancelled) {
+        final response = await apiService.cancelBooking(bookingId);
+        return Right(response.booking.toEntity());
+      }
+
       final existing = _localDataSource.getById(bookingId);
       if (existing == null) {
         return const Left(

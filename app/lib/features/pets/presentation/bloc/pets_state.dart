@@ -12,6 +12,7 @@ enum PetsInteraction {
   none,
   petSelected,
   addPet,
+  petCreated,
   promoExplore,
   fab,
 }
@@ -24,6 +25,7 @@ class PetsState extends Equatable {
     this.message,
     this.interaction = PetsInteraction.none,
     this.selectedPetId,
+    this.isCreatingPet = false,
   });
 
   final PetsStatus status;
@@ -32,6 +34,7 @@ class PetsState extends Equatable {
   final String? message;
   final PetsInteraction interaction;
   final String? selectedPetId;
+  final bool isCreatingPet;
 
   bool get isLoading =>
       status == PetsStatus.loading || status == PetsStatus.initial;
@@ -43,6 +46,7 @@ class PetsState extends Equatable {
     String? message,
     PetsInteraction? interaction,
     String? selectedPetId,
+    bool? isCreatingPet,
     bool clearMessage = false,
     bool clearSelection = false,
   }) {
@@ -54,6 +58,7 @@ class PetsState extends Equatable {
       interaction: interaction ?? this.interaction,
       selectedPetId:
           clearSelection ? null : (selectedPetId ?? this.selectedPetId),
+      isCreatingPet: isCreatingPet ?? this.isCreatingPet,
     );
   }
 
@@ -65,5 +70,6 @@ class PetsState extends Equatable {
         message,
         interaction,
         selectedPetId,
+        isCreatingPet,
       ];
 }

@@ -13,6 +13,7 @@ import 'package:app/app/router/app_router.dart' as _i567;
 import 'package:app/core/common/app_bloc_observer.dart' as _i452;
 import 'package:app/core/config/app_config.dart' as _i1068;
 import 'package:app/core/di/register_module.dart' as _i313;
+import 'package:app/core/network/api_service.dart' as _i1031;
 import 'package:app/core/network/dio_factory.dart' as _i75;
 import 'package:app/core/network/network_info.dart' as _i992;
 import 'package:app/core/storage/storage_service.dart' as _i179;
@@ -116,12 +117,8 @@ import 'package:app/features/profile/presentation/bloc/profile_bloc.dart'
     as _i651;
 import 'package:app/features/sample_posts/data/datasources/sample_posts_data_sources.dart'
     as _i309;
-import 'package:app/features/sample_posts/data/di/sample_posts_data_module.dart'
-    as _i1046;
 import 'package:app/features/sample_posts/data/repositories/sample_posts_repository_impl.dart'
     as _i110;
-import 'package:app/features/sample_posts/data/services/sample_posts_api_service.dart'
-    as _i1031;
 import 'package:app/features/sample_posts/domain/repositories/sample_posts_repository.dart'
     as _i1070;
 import 'package:app/features/sample_posts/domain/usecases/get_sample_posts_usecase.dart'
@@ -154,7 +151,6 @@ extension GetItInjectableX on _i174.GetIt {
   }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final registerModule = _$RegisterModule();
-    final samplePostsDataModule = _$SamplePostsDataModule();
     await gh.factoryAsync<_i460.SharedPreferences>(
       () => registerModule.sharedPreferences(),
       preResolve: true,
@@ -374,16 +370,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i518.GetBookingServicesUseCase>(),
       ),
     );
-    gh.lazySingleton<_i1031.SamplePostsApiService>(
-      () => samplePostsDataModule.samplePostsApiService(
-        gh<_i361.Dio>(),
-        gh<_i1068.AppConfig>(),
-      ),
-    );
     gh.lazySingleton<_i309.SamplePostsRemoteDataSource>(
-      () => _i309.SamplePostsRemoteDataSourceImpl(
-        gh<_i1031.SamplePostsApiService>(),
-      ),
+      () => _i309.SamplePostsRemoteDataSourceImpl(gh<_i1031.AppApiService>()),
     );
     gh.lazySingleton<_i1070.SamplePostsRepository>(
       () => _i110.SamplePostsRepositoryImpl(
@@ -403,5 +391,3 @@ extension GetItInjectableX on _i174.GetIt {
 }
 
 class _$RegisterModule extends _i313.RegisterModule {}
-
-class _$SamplePostsDataModule extends _i1046.SamplePostsDataModule {}

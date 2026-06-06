@@ -11,33 +11,18 @@ class BookingAppointmentMockDataSource {
     required String petId,
     required List<String> serviceIds,
   }) {
-    final days = [
-      AppointmentDayOption(
-        date: DateTime(2023, 10, 16),
-        weekdayLabel: 'Thứ 2',
-        dayNumberLabel: '16',
-      ),
-      AppointmentDayOption(
-        date: DateTime(2023, 10, 17),
-        weekdayLabel: 'Thứ 3',
-        dayNumberLabel: '17',
-      ),
-      AppointmentDayOption(
-        date: DateTime(2023, 10, 18),
-        weekdayLabel: 'Thứ 4',
-        dayNumberLabel: '18',
-      ),
-      AppointmentDayOption(
-        date: DateTime(2023, 10, 19),
-        weekdayLabel: 'Thứ 5',
-        dayNumberLabel: '19',
-      ),
-      AppointmentDayOption(
-        date: DateTime(2023, 10, 20),
-        weekdayLabel: 'Thứ 6',
-        dayNumberLabel: '20',
-      ),
-    ];
+    final start = DateTime.now().year == 2026
+        ? DateTime.now()
+        : DateTime(2026, 6, 6);
+    final firstDay = DateTime(start.year, start.month, start.day + 1);
+    final days = List.generate(7, (index) {
+      final date = firstDay.add(Duration(days: index));
+      return AppointmentDayOption(
+        date: date,
+        weekdayLabel: _weekdayLabel(date.weekday),
+        dayNumberLabel: '${date.day}',
+      );
+    });
 
     final slotsOct17 = [
       const AppointmentTimeSlot(
@@ -56,7 +41,7 @@ class BookingAppointmentMockDataSource {
         id: 'slot-1030',
         label: '10:30',
         period: AppointmentTimePeriod.morning,
-        availability: AppointmentSlotAvailability.full,
+        availability: AppointmentSlotAvailability.available,
       ),
       const AppointmentTimeSlot(
         id: 'slot-1400',
@@ -80,13 +65,13 @@ class BookingAppointmentMockDataSource {
         id: 'slot-1530',
         label: '15:30',
         period: AppointmentTimePeriod.afternoon,
-        availability: AppointmentSlotAvailability.full,
+        availability: AppointmentSlotAvailability.available,
       ),
     ];
 
     return AppointmentPageContent(
       title: 'Lịch hẹn',
-      monthLabel: 'Tháng 10, 2023',
+      monthLabel: 'Tháng ${firstDay.month}, 2026',
       dateSectionTitle: 'Chọn ngày',
       timeSectionTitle: 'Chọn khung giờ',
       morningSectionTitle: 'Buổi sáng',
@@ -104,17 +89,26 @@ class BookingAppointmentMockDataSource {
       ),
       days: days,
       slotsByDateKey: {
-        _dateKey(DateTime(2023, 10, 16)): slotsOct17,
-        _dateKey(DateTime(2023, 10, 17)): slotsOct17,
-        _dateKey(DateTime(2023, 10, 18)): slotsOct17,
-        _dateKey(DateTime(2023, 10, 19)): slotsOct17,
-        _dateKey(DateTime(2023, 10, 20)): slotsOct17,
+        for (final day in days) _dateKey(day.date): slotsOct17,
       },
     );
   }
 
   static String _dateKey(DateTime date) =>
-      '${date.year}-${date.month}-${date.day}';
+      '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+
+  static String _weekdayLabel(int weekday) {
+    return switch (weekday) {
+      DateTime.monday => 'Thứ 2',
+      DateTime.tuesday => 'Thứ 3',
+      DateTime.wednesday => 'Thứ 4',
+      DateTime.thursday => 'Thứ 5',
+      DateTime.friday => 'Thứ 6',
+      DateTime.saturday => 'Thứ 7',
+      DateTime.sunday => 'CN',
+      _ => 'Thứ',
+    };
+  }
 
   static String _petName(String petId) {
     return switch (petId) {

@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:app/core/error/app_error.dart';
+import 'package:app/core/network/api_service.dart';
 import 'package:app/core/storage/storage_service.dart';
 import 'package:app/features/authentication/data/models/auth_models.dart';
-import 'package:app/features/authentication/data/services/auth_api_service.dart';
 
 abstract interface class AuthRemoteDataSource {
   Future<AuthSessionModel> signIn(SignInRequestModel request);
@@ -22,7 +22,7 @@ abstract interface class AuthRemoteDataSource {
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   AuthRemoteDataSourceImpl(this._apiService);
 
-  final AuthApiService _apiService;
+  final AppApiService _apiService;
 
   @override
   Future<AuthSessionModel> signIn(SignInRequestModel request) async {
@@ -74,10 +74,7 @@ abstract interface class AuthLocalDataSource {
 }
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
-  AuthLocalDataSourceImpl(
-    this._secureStorage,
-    this._preferences,
-  );
+  AuthLocalDataSourceImpl(this._secureStorage, this._preferences);
 
   final SecureStorageService _secureStorage;
   final AppPreferences _preferences;
@@ -100,16 +97,15 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       key: StorageKeys.cachedAuthUser,
       value: jsonEncode(session.user.toJson()),
     );
-    await _preferences.writeBool(
-      key: StorageKeys.isAuthenticated,
-      value: true,
-    );
+    await _preferences.writeBool(key: StorageKeys.isAuthenticated, value: true);
   }
 
   @override
   Future<AuthSessionModel?> getCachedSession() async {
     final accessToken = await _secureStorage.read(StorageKeys.authToken);
-    final refreshToken = await _secureStorage.read(StorageKeys.authRefreshToken);
+    final refreshToken = await _secureStorage.read(
+      StorageKeys.authRefreshToken,
+    );
     final tokenType = _preferences.readString(StorageKeys.authTokenType);
     final userJson = _preferences.readString(StorageKeys.cachedAuthUser);
     final isAuthenticated =

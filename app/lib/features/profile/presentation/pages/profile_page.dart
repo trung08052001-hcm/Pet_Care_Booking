@@ -1,5 +1,6 @@
 import 'package:app/app/theme/app_colors.dart';
 import 'package:app/features/authentication/presentation/pages/sign_in_page.dart';
+import 'package:app/features/booking/presentation/pages/booking_history_page.dart';
 import 'package:app/features/profile/domain/entities/profile_menu_item.dart';
 import 'package:app/features/profile/domain/entities/profile_menu_item_type.dart';
 import 'package:app/features/profile/domain/entities/profile_page_content.dart';
@@ -130,8 +131,13 @@ class _ProfileContent extends StatelessWidget {
                   const SizedBox(height: 20),
                   _MenuCard(
                     items: content.mainMenuItems,
-                    onItemTap: (type) =>
-                        bloc.add(ProfileMenuItemPressed(type)),
+                    onItemTap: (type) {
+                      if (type == ProfileMenuItemType.bookingHistory) {
+                        context.pushNamed(BookingHistoryPage.routeName);
+                        return;
+                      }
+                      bloc.add(ProfileMenuItemPressed(type));
+                    },
                   ),
                   const SizedBox(height: 24),
                   Align(

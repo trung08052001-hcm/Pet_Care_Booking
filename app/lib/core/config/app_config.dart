@@ -1,4 +1,5 @@
 import 'package:app/core/config/app_flavor.dart';
+import 'package:app/core/network/api_config.dart';
 import 'package:equatable/equatable.dart';
 
 class AppConfig extends Equatable {
@@ -19,11 +20,10 @@ class AppConfig extends Equatable {
           appName: 'PawSitive Care Dev',
           baseUrl: String.fromEnvironment(
             'DEV_BASE_URL',
-            defaultValue: 'http://192.168.1.29:5000/api/v1',
-            // defaultValue: 'http://10.0.2.2:5000/api/v1',
+            defaultValue: ApiConfig.devBaseUrl,
           ),
-          connectTimeout: Duration(seconds: 30),
-          receiveTimeout: Duration(seconds: 30),
+          connectTimeout: ApiConfig.connectTimeout,
+          receiveTimeout: ApiConfig.receiveTimeout,
           enableNetworkLogs: true,
         );
       case AppFlavor.stg:
@@ -32,10 +32,10 @@ class AppConfig extends Equatable {
           appName: 'PawSitive Care Stg',
           baseUrl: String.fromEnvironment(
             'STG_BASE_URL',
-            defaultValue: 'https://stg-api.pawsitive-care.com/api/v1',
+            defaultValue: ApiConfig.stgBaseUrl,
           ),
-          connectTimeout: Duration(seconds: 30),
-          receiveTimeout: Duration(seconds: 30),
+          connectTimeout: ApiConfig.connectTimeout,
+          receiveTimeout: ApiConfig.receiveTimeout,
           enableNetworkLogs: true,
         );
       case AppFlavor.prod:
@@ -44,10 +44,10 @@ class AppConfig extends Equatable {
           appName: 'PawSitive Care',
           baseUrl: String.fromEnvironment(
             'PROD_BASE_URL',
-            defaultValue: 'https://api.pawsitive-care.com/api/v1',
+            defaultValue: ApiConfig.prodBaseUrl,
           ),
-          connectTimeout: Duration(seconds: 30),
-          receiveTimeout: Duration(seconds: 30),
+          connectTimeout: ApiConfig.connectTimeout,
+          receiveTimeout: ApiConfig.receiveTimeout,
           enableNetworkLogs: false,
         );
     }
@@ -62,11 +62,11 @@ class AppConfig extends Equatable {
 
   @override
   List<Object> get props => [
-        flavor,
-        appName,
-        baseUrl,
-        connectTimeout,
-        receiveTimeout,
-        enableNetworkLogs,
-      ];
+    flavor,
+    appName,
+    baseUrl,
+    connectTimeout,
+    receiveTimeout,
+    enableNetworkLogs,
+  ];
 }

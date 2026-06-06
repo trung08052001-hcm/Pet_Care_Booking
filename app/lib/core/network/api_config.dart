@@ -1,0 +1,28 @@
+abstract final class ApiConfig {
+  // static const String devBaseUrl = 'http://192.168.50.21:5000/api/v1';
+  static const String devBaseUrl = 'http://192.168.1.29:5000/api/v1';
+  static const String stgBaseUrl = 'https://stg-api.pawsitive-care.com/api/v1';
+  static const String prodBaseUrl = 'https://api.pawsitive-care.com/api/v1';
+
+  static const Duration connectTimeout = Duration(seconds: 30);
+  static const Duration receiveTimeout = Duration(seconds: 30);
+}
+
+abstract final class ApiEndpoints {
+  static const String authLogin = '/auth/login';
+  static const String authRegister = '/auth/register';
+  static const String authGoogle = '/auth/social/google';
+  static const String authZalo = '/auth/social/zalo';
+  static const String authForgotPassword = '/auth/forgot-password';
+  static const String authVerifyResetOtp = '/auth/verify-reset-otp';
+
+  static const String pets = '/pets';
+  static const String petDetail = '/pets/{petId}';
+
+  static const String bookings = '/bookings';
+  static const String bookingDetail = '/bookings/{bookingId}';
+  static const String bookingCancel = '/bookings/{bookingId}/cancel';
+  static const String bookingAvailability = '/bookings/availability';
+
+  static const String posts = '/posts';
+}

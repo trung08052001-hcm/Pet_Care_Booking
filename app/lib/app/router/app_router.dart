@@ -18,6 +18,7 @@ import 'package:app/features/booking/presentation/bloc/booking_detail_bloc.dart'
 import 'package:app/features/booking/presentation/bloc/booking_detail_event.dart';
 import 'package:app/features/booking/presentation/bloc/booking_event.dart';
 import 'package:app/features/booking/presentation/pages/booking_detail_page.dart';
+import 'package:app/features/booking/presentation/pages/booking_history_page.dart';
 import 'package:app/features/pets/presentation/bloc/pets_bloc.dart';
 import 'package:app/features/pets/presentation/bloc/pets_event.dart';
 import 'package:app/features/pets/presentation/pages/my_pets_page.dart';
@@ -108,6 +109,13 @@ class AppRouter {
               ..add(BookingDetailStarted(bookingId)),
             child: BookingDetailPage(bookingId: bookingId),
           );
+        },
+      ),
+      GoRoute(
+        path: BookingHistoryPage.routePath,
+        name: BookingHistoryPage.routeName,
+        builder: (context, state) {
+          return const BookingHistoryPage();
         },
       ),
       GoRoute(

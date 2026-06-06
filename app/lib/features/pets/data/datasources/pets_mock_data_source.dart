@@ -16,15 +16,15 @@ import 'package:injectable/injectable.dart';
 
 class PetsMockDataSource {
 
-  MyPetsPageContent getPageContent() {
+  MyPetsPageContent getPageContent({List<Pet>? pets}) {
 
-    return const MyPetsPageContent(
+    return MyPetsPageContent(
 
       title: 'Thú cưng của tôi',
 
       subtitle: 'Chọn thú cưng để tiếp tục đặt lịch hẹn.',
 
-      pets: [
+      pets: pets ?? const [
 
         Pet(
 
@@ -74,7 +74,7 @@ class PetsMockDataSource {
 
       addPetLabel: 'Thêm thú cưng khác?',
 
-      promoBanner: PetPromoBanner(
+      promoBanner: const PetPromoBanner(
 
         title: 'Chăm sóc tốt nhất',
 

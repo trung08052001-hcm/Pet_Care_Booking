@@ -14,6 +14,10 @@ class Pet extends Equatable {
     required this.reminderLabel,
     required this.imagePlaceholderColor,
     this.imageUrl,
+    this.ageYears,
+    this.weightKg,
+    this.petType,
+    this.vaccinationStatus,
   });
 
   final String id;
@@ -26,6 +30,10 @@ class Pet extends Equatable {
   final String reminderLabel;
   final int imagePlaceholderColor;
   final String? imageUrl;
+  final int? ageYears;
+  final double? weightKg;
+  final String? petType;
+  final String? vaccinationStatus;
 
   String get detailsLine => '$breed • $ageLabel • $weightLabel';
 
@@ -41,5 +49,9 @@ class Pet extends Equatable {
         reminderLabel,
         imagePlaceholderColor,
         imageUrl,
+        ageYears,
+        weightKg,
+        petType,
+        vaccinationStatus,
       ];
 }

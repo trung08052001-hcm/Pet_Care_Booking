@@ -1,0 +1,721 @@
+{
+  "info": {
+    "_postman_id": "6dbbe2a4-4ec7-48d4-8d8f-51b1f8d8f0a1",
+    "name": "Pet Care Booking Backend",
+    "description": "Postman collection for testing the Pet Care Booking backend API. Default base URL: http://localhost:5000/api/v1.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "email",
+      "value": "postman.user@example.com",
+      "type": "string"
+    },
+    {
+      "key": "phone",
+      "value": "0901234567",
+      "type": "string"
+    },
+    {
+      "key": "password",
+      "value": "Password123!",
+      "type": "string"
+    },
+    {
+      "key": "newPassword",
+      "value": "NewPassword123!",
+      "type": "string"
+    },
+    {
+      "key": "otp",
+      "value": "123456",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refreshToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "googleIdToken",
+      "value": "paste-google-id-token-here",
+      "type": "string"
+    },
+    {
+      "key": "zaloAccessToken",
+      "value": "paste-zalo-access-token-here",
+      "type": "string"
+    },
+    {
+      "key": "petId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "bookingId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "description": "Checks whether the backend is running and whether MongoDB is connected."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "POST Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.tokens) {",
+                  "  pm.collectionVariables.set('accessToken', json.data.tokens.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', json.data.tokens.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Postman User\",\n  \"email\": \"{{email}}\",\n  \"phone\": \"{{phone}}\",\n  \"password\": \"{{password}}\",\n  \"confirmPassword\": \"{{password}}\",\n  \"acceptTerms\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Creates a local user. If the user already exists, expect 409."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.tokens) {",
+                  "  pm.collectionVariables.set('accessToken', json.data.tokens.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', json.data.tokens.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identifier\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Logs in with email or phone and saves access/refresh tokens."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Me",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            },
+            "description": "Requires Bearer accessToken from register/login/refresh/reset-password."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.tokens) {",
+                  "  pm.collectionVariables.set('accessToken', json.data.tokens.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', json.data.tokens.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh-token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "refresh-token"
+              ]
+            },
+            "description": "Refreshes tokens and revokes the old refresh token."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            },
+            "description": "Revokes the current refresh token."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Password Recovery",
+      "item": [
+        {
+          "name": "POST Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "forgot-password"
+              ]
+            },
+            "description": "In development, the OTP is logged in the backend terminal if SMTP is not configured."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Verify Reset OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"otp\": \"{{otp}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/verify-reset-otp",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "verify-reset-otp"
+              ]
+            },
+            "description": "Set collection variable otp to the 6-digit code from email/backend terminal."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Reset Password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.tokens) {",
+                  "  pm.collectionVariables.set('accessToken', json.data.tokens.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', json.data.tokens.refreshToken);",
+                  "  pm.collectionVariables.set('password', pm.collectionVariables.get('newPassword'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"resetToken\": \"{{otp}}\",\n  \"password\": \"{{newPassword}}\",\n  \"confirmPassword\": \"{{newPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password"
+              ]
+            },
+            "description": "Uses the same OTP as resetToken, then saves the new auth tokens."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Social Auth",
+      "item": [
+        {
+          "name": "POST Google Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.tokens) {",
+                  "  pm.collectionVariables.set('accessToken', json.data.tokens.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', json.data.tokens.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idToken\": \"{{googleIdToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/social/google",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "social",
+                "google"
+              ]
+            },
+            "description": "Paste a real Firebase/Google ID token into googleIdToken before testing."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Zalo Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.tokens) {",
+                  "  pm.collectionVariables.set('accessToken', json.data.tokens.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', json.data.tokens.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accessToken\": \"{{zaloAccessToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/social/zalo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "social",
+                "zalo"
+              ]
+            },
+            "description": "Paste a real Zalo access token into zaloAccessToken before testing."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pets API and Skeleton Modules",
+      "item": [
+        {
+          "name": "GET Pets",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pets"
+              ]
+            },
+            "description": "Fetches pets for the authenticated user. Run Register/Login first to save accessToken."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Pets",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.pet) {",
+                  "  pm.collectionVariables.set('petId', json.data.pet.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Mochi\",\n  \"ageYears\": 2,\n  \"weightKg\": 4.5,\n  \"petType\": \"dog\",\n  \"vaccinationStatus\": \"vaccinated\",\n  \"imageDataUrl\": null\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pets"
+              ]
+            },
+            "description": "Creates a pet profile for the authenticated user. imageDataUrl can be null or a data:image/...;base64 string."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/services",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "services"
+              ]
+            },
+            "description": "Currently expected to return 501 because the service module is not implemented yet."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Bookings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookings"
+              ]
+            },
+            "description": "Fetches booking history for the authenticated user."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Booking Availability",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/availability?from=2026-06-07&to=2026-06-14",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookings",
+                "availability"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2026-06-07"
+                },
+                {
+                  "key": "to",
+                  "value": "2026-06-14"
+                }
+              ]
+            },
+            "description": "Returns booked slots that should be disabled in the Flutter booking calendar."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Bookings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.booking) {",
+                  "  pm.collectionVariables.set('bookingId', json.data.booking.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"petId\": \"{{petId}}\",\n  \"serviceIds\": [\"booking-grooming\"],\n  \"appointmentDate\": \"2026-06-07T00:00:00.000Z\",\n  \"timeSlotId\": \"slot-0930\",\n  \"timeSlotLabel\": \"09:30\",\n  \"totalVnd\": 250000\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bookings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookings"
+              ]
+            },
+            "description": "Creates a booking. Run POST Pets first so petId is saved automatically."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Booking Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookings",
+                "{{bookingId}}"
+              ]
+            },
+            "description": "Fetches detail for the booking saved by POST Bookings."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH Cancel Booking",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/{{bookingId}}/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookings",
+                "{{bookingId}}",
+                "cancel"
+              ]
+            },
+            "description": "Cancels the booking and updates status to cancelled on the server."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

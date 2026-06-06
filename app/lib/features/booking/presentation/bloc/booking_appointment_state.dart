@@ -40,7 +40,8 @@ class BookingAppointmentState extends Equatable {
     if (content == null || date == null) {
       return const [];
     }
-    final key = '${date.year}-${date.month}-${date.day}';
+    final key =
+        '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
     return content.slotsByDateKey[key] ?? const [];
   }
 
@@ -70,7 +71,7 @@ class BookingAppointmentState extends Equatable {
     if (date == null || slot == null) {
       return null;
     }
-    return '${date.day} Tháng ${date.month} Lúc ${slot.label}';
+    return '${date.day} Tháng ${date.month}, ${date.year} Lúc ${slot.label}';
   }
 
   BookingAppointmentState copyWith({
