@@ -6,4 +6,9 @@ abstract interface class BookingAppointmentRepository {
     required String petId,
     required List<String> serviceIds,
   });
+
+  ResultFuture<AppointmentPageContent> refreshAppointmentAvailability({
+    required String petId,
+    required List<String> serviceIds,
+  });
 }

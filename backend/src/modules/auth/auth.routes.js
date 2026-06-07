@@ -8,6 +8,7 @@ const {
   forgotPassword,
   getMe,
   googleLogin,
+  adminLogin,
   login,
   logout,
   refreshToken,
@@ -31,6 +32,7 @@ const router = express.Router();
 
 router.post("/register", validate(registerSchema), register);
 router.post("/login", validate(loginSchema), login);
+router.post("/admin/login", validate(loginSchema), adminLogin);
 router.post("/forgot-password", validate(forgotPasswordSchema), forgotPassword);
 router.post("/verify-reset-otp", validate(verifyResetOtpSchema), verifyResetOtp);
 router.post("/reset-password", validate(resetPasswordSchema), resetPassword);

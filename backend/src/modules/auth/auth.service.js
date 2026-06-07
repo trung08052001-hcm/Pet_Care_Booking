@@ -38,6 +38,12 @@ const buildTokenResponse = (user, tokens) => ({
   },
 });
 
+const assertAdminRole = (user) => {
+  if (user.role !== "admin") {
+    throw new ApiError(403, "Only admin accounts can access the admin portal.");
+  }
+};
+
 const issueAuthTokens = async (user, metadata = {}) => {
   const sessionId = new mongoose.Types.ObjectId().toString();
   const refreshToken = signRefreshToken({
@@ -77,13 +83,21 @@ const register = async (payload, metadata = {}) => {
     email,
     password,
     phone,
-    role: "customer",
+    role: "user",
     acceptedTermsAt: new Date(),
   });
 
   const tokens = await issueAuthTokens(user, metadata);
 
   return buildTokenResponse(user, tokens);
+};
+
+const loginAdmin = async (payload, metadata = {}) => {
+  const result = await login(payload, metadata);
+
+  assertAdminRole(result.user);
+
+  return result;
 };
 
 const login = async (payload, metadata = {}) => {
@@ -299,7 +313,7 @@ const loginWithGoogle = async (payload, metadata = {}) => {
         authProvider: "google",
         providerId: googleProfile.uid,
         acceptedTermsAt: new Date(),
-        role: "customer",
+        role: "user",
       });
     } catch (error) {
       if (error.code !== 11000) {
@@ -365,7 +379,7 @@ const loginWithZalo = async (payload, metadata = {}) => {
       authProvider: "zalo",
       providerId: zaloProfile.id,
       acceptedTermsAt: new Date(),
-      role: "customer",
+      role: "user",
     });
   } else {
     user.fullName = zaloProfile.fullName || user.fullName;
@@ -389,6 +403,7 @@ const loginWithZalo = async (payload, metadata = {}) => {
 module.exports = {
   register,
   login,
+  loginAdmin,
   refreshAuthTokens,
   logout,
   forgotPassword,

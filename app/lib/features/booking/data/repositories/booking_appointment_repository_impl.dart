@@ -33,7 +33,33 @@ class BookingAppointmentRepositoryImpl implements BookingAppointmentRepository {
     required List<String> serviceIds,
   }) async {
     try {
-      await Future<void>.delayed(const Duration(milliseconds: 200));
+      final content = _mockDataSource.getPageContent(
+        petId: petId,
+        serviceIds: serviceIds,
+      );
+
+      final from = content.days.first.date;
+      final to = content.days.last.date;
+      final fromKey = _dateKey(from);
+      final toKey = _dateKey(to);
+      final cachedSlots =
+          _localDataSource?.getAvailability(from: fromKey, to: toKey) ??
+          const <BookedSlotModel>[];
+
+      return Right(_withBookedSlots(content, cachedSlots));
+    } on Exception catch (exception, stackTrace) {
+      return Left(
+        FailureMapper.fromException(exception, stackTrace: stackTrace),
+      );
+    }
+  }
+
+  @override
+  ResultFuture<AppointmentPageContent> refreshAppointmentAvailability({
+    required String petId,
+    required List<String> serviceIds,
+  }) async {
+    try {
       final content = _mockDataSource.getPageContent(
         petId: petId,
         serviceIds: serviceIds,
@@ -52,44 +78,8 @@ class BookingAppointmentRepositoryImpl implements BookingAppointmentRepository {
         fromKey: fromKey,
         toKey: toKey,
       );
-      final bookedSlotKeys = slots
-          .map((slot) => '${slot.dateKey}:${slot.timeSlotId}')
-          .toSet();
-      final updatedSlots = content.slotsByDateKey.map((dateKey, slots) {
-        return MapEntry(
-          dateKey,
-          slots
-              .map(
-                (slot) => bookedSlotKeys.contains('$dateKey:${slot.id}')
-                    ? AppointmentTimeSlot(
-                        id: slot.id,
-                        label: slot.label,
-                        period: slot.period,
-                        availability: AppointmentSlotAvailability.full,
-                      )
-                    : slot,
-              )
-              .toList(),
-        );
-      });
 
-      return Right(
-        AppointmentPageContent(
-          title: content.title,
-          monthLabel: content.monthLabel,
-          dateSectionTitle: content.dateSectionTitle,
-          timeSectionTitle: content.timeSectionTitle,
-          morningSectionTitle: content.morningSectionTitle,
-          afternoonSectionTitle: content.afternoonSectionTitle,
-          commitmentTitle: content.commitmentTitle,
-          commitmentBody: content.commitmentBody,
-          totalLabel: content.totalLabel,
-          confirmButtonLabel: content.confirmButtonLabel,
-          petSummary: content.petSummary,
-          days: content.days,
-          slotsByDateKey: updatedSlots,
-        ),
-      );
+      return Right(_withBookedSlots(content, slots));
     } on Exception catch (exception, stackTrace) {
       return Left(
         FailureMapper.fromException(exception, stackTrace: stackTrace),
@@ -99,6 +89,48 @@ class BookingAppointmentRepositoryImpl implements BookingAppointmentRepository {
 
   static String _dateKey(DateTime date) =>
       '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+
+  AppointmentPageContent _withBookedSlots(
+    AppointmentPageContent content,
+    List<BookedSlotModel> slots,
+  ) {
+    final bookedSlotKeys = slots
+        .map((slot) => '${slot.dateKey}:${slot.timeSlotId}')
+        .toSet();
+    final updatedSlots = content.slotsByDateKey.map((dateKey, slots) {
+      return MapEntry(
+        dateKey,
+        slots
+            .map(
+              (slot) => bookedSlotKeys.contains('$dateKey:${slot.id}')
+                  ? AppointmentTimeSlot(
+                      id: slot.id,
+                      label: slot.label,
+                      period: slot.period,
+                      availability: AppointmentSlotAvailability.full,
+                    )
+                  : slot,
+            )
+            .toList(),
+      );
+    });
+
+    return AppointmentPageContent(
+      title: content.title,
+      monthLabel: content.monthLabel,
+      dateSectionTitle: content.dateSectionTitle,
+      timeSectionTitle: content.timeSectionTitle,
+      morningSectionTitle: content.morningSectionTitle,
+      afternoonSectionTitle: content.afternoonSectionTitle,
+      commitmentTitle: content.commitmentTitle,
+      commitmentBody: content.commitmentBody,
+      totalLabel: content.totalLabel,
+      confirmButtonLabel: content.confirmButtonLabel,
+      petSummary: content.petSummary,
+      days: content.days,
+      slotsByDateKey: updatedSlots,
+    );
+  }
 
   Future<List<BookedSlotModel>> _bookedSlots({
     required AppApiService apiService,

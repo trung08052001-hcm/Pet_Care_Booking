@@ -2,12 +2,7 @@ import 'package:app/features/booking/domain/entities/appointment_page_content.da
 import 'package:app/features/booking/domain/entities/appointment_time_slot.dart';
 import 'package:equatable/equatable.dart';
 
-enum BookingAppointmentStatus {
-  initial,
-  loading,
-  success,
-  failure,
-}
+enum BookingAppointmentStatus { initial, loading, success, failure }
 
 class BookingAppointmentState extends Equatable {
   const BookingAppointmentState({
@@ -19,6 +14,7 @@ class BookingAppointmentState extends Equatable {
     this.selectedDate,
     this.selectedTimeSlotId,
     this.message,
+    this.isRefreshingAvailability = false,
   });
 
   final BookingAppointmentStatus status;
@@ -29,6 +25,7 @@ class BookingAppointmentState extends Equatable {
   final DateTime? selectedDate;
   final String? selectedTimeSlotId;
   final String? message;
+  final bool isRefreshingAvailability;
 
   bool get isLoading =>
       status == BookingAppointmentStatus.loading ||
@@ -83,6 +80,7 @@ class BookingAppointmentState extends Equatable {
     DateTime? selectedDate,
     String? selectedTimeSlotId,
     String? message,
+    bool? isRefreshingAvailability,
     bool clearMessage = false,
     bool clearTimeSlot = false,
   }) {
@@ -93,21 +91,25 @@ class BookingAppointmentState extends Equatable {
       serviceIds: serviceIds ?? this.serviceIds,
       totalVnd: totalVnd ?? this.totalVnd,
       selectedDate: selectedDate ?? this.selectedDate,
-      selectedTimeSlotId:
-          clearTimeSlot ? null : (selectedTimeSlotId ?? this.selectedTimeSlotId),
+      selectedTimeSlotId: clearTimeSlot
+          ? null
+          : (selectedTimeSlotId ?? this.selectedTimeSlotId),
       message: clearMessage ? null : (message ?? this.message),
+      isRefreshingAvailability:
+          isRefreshingAvailability ?? this.isRefreshingAvailability,
     );
   }
 
   @override
   List<Object?> get props => [
-        status,
-        content,
-        petId,
-        serviceIds,
-        totalVnd,
-        selectedDate,
-        selectedTimeSlotId,
-        message,
-      ];
+    status,
+    content,
+    petId,
+    serviceIds,
+    totalVnd,
+    selectedDate,
+    selectedTimeSlotId,
+    message,
+    isRefreshingAvailability,
+  ];
 }

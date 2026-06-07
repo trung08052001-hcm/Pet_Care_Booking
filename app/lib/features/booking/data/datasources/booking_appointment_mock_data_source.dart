@@ -14,7 +14,7 @@ class BookingAppointmentMockDataSource {
     final start = DateTime.now().year == 2026
         ? DateTime.now()
         : DateTime(2026, 6, 6);
-    final firstDay = DateTime(start.year, start.month, start.day + 1);
+    final firstDay = DateTime(start.year, start.month, start.day);
     final days = List.generate(7, (index) {
       final date = firstDay.add(Duration(days: index));
       return AppointmentDayOption(

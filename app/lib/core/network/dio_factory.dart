@@ -162,6 +162,7 @@ class NetworkLoggerInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     if (_appConfig.enableNetworkLogs) {
+      options.extra['requestStartedAt'] = DateTime.now();
       _logger.i(
         '[${options.method}] ${options.baseUrl}${options.path}',
       );
@@ -172,10 +173,15 @@ class NetworkLoggerInterceptor extends Interceptor {
   @override
   void onResponse(Response<dynamic> response, ResponseInterceptorHandler handler) {
     if (_appConfig.enableNetworkLogs) {
+      final startedAt = response.requestOptions.extra['requestStartedAt'];
+      final elapsedMs = startedAt is DateTime
+          ? DateTime.now().difference(startedAt).inMilliseconds
+          : null;
       _logger.d(
         '[${response.requestOptions.method}] '
         '${response.requestOptions.baseUrl}${response.requestOptions.path} '
-        '=> ${response.statusCode}',
+        '=> ${response.statusCode}'
+        '${elapsedMs == null ? '' : ' (${elapsedMs}ms)'}',
       );
     }
     handler.next(response);
@@ -190,10 +196,15 @@ class ErrorLoggerInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
+    final startedAt = err.requestOptions.extra['requestStartedAt'];
+    final elapsedMs = startedAt is DateTime
+        ? DateTime.now().difference(startedAt).inMilliseconds
+        : null;
     _logger.w(
       '[${err.requestOptions.method}] '
       '${err.requestOptions.baseUrl}${err.requestOptions.path} '
-      '=> ${err.response?.statusCode ?? 'unknown'}',
+      '=> ${err.response?.statusCode ?? 'unknown'}'
+      '${elapsedMs == null ? '' : ' (${elapsedMs}ms)'}',
       error: err,
       stackTrace: err.stackTrace,
     );

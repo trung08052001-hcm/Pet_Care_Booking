@@ -23,8 +23,13 @@ final class BookingAppointmentStarted extends BookingAppointmentEvent {
   final String? initialTimeSlotId;
 
   @override
-  List<Object?> get props =>
-      [petId, serviceIds, totalVnd, initialDate, initialTimeSlotId];
+  List<Object?> get props => [
+    petId,
+    serviceIds,
+    totalVnd,
+    initialDate,
+    initialTimeSlotId,
+  ];
 }
 
 final class BookingAppointmentDateSelected extends BookingAppointmentEvent {
@@ -47,4 +52,9 @@ final class BookingAppointmentTimeSlotSelected extends BookingAppointmentEvent {
 
 final class BookingAppointmentConfirmPressed extends BookingAppointmentEvent {
   const BookingAppointmentConfirmPressed();
+}
+
+final class BookingAppointmentAvailabilityRefreshRequested
+    extends BookingAppointmentEvent {
+  const BookingAppointmentAvailabilityRefreshRequested();
 }

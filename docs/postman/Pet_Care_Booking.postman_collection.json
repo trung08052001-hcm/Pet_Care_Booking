@@ -756,6 +756,38 @@
             "description": "Registers the current app FCM token for push notifications."
           },
           "response": []
+        },
+        {
+          "name": "POST Send Test Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Pet Care Booking test\",\n  \"body\": \"B?n ?ang test push notification t? backend.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/notifications/test",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications",
+                "test"
+              ]
+            },
+            "description": "Sends an immediate developer test push notification to the authenticated user devices."
+          },
+          "response": []
         }
       ]
     }

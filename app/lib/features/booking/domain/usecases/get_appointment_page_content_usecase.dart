@@ -20,7 +20,8 @@ class GetAppointmentPageContentParams extends Equatable {
 
 @injectable
 class GetAppointmentPageContentUseCase
-    implements UseCase<AppointmentPageContent, GetAppointmentPageContentParams> {
+    implements
+        UseCase<AppointmentPageContent, GetAppointmentPageContentParams> {
   GetAppointmentPageContentUseCase(this._repository);
 
   final BookingAppointmentRepository _repository;
@@ -30,6 +31,15 @@ class GetAppointmentPageContentUseCase
     GetAppointmentPageContentParams params,
   ) {
     return _repository.getAppointmentPageContent(
+      petId: params.petId,
+      serviceIds: params.serviceIds,
+    );
+  }
+
+  ResultFuture<AppointmentPageContent> refreshAvailability(
+    GetAppointmentPageContentParams params,
+  ) {
+    return _repository.refreshAppointmentAvailability(
       petId: params.petId,
       serviceIds: params.serviceIds,
     );

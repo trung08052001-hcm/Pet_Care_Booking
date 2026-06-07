@@ -46,6 +46,7 @@ import 'package:app/features/pets/presentation/bloc/pets_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
@@ -142,6 +143,7 @@ void _registerOfflineDependencies() {
   getIt.registerLazySingleton<PushNotificationService>(
     () => PushNotificationService(
       FirebaseMessaging.instance,
+      FlutterLocalNotificationsPlugin(),
       getIt<AppApiService>(),
       getIt<HiveLocalStore>(),
       getIt<NetworkInfo>(),

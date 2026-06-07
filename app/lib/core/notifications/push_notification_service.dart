@@ -6,10 +6,12 @@ import 'package:app/core/network/api_service.dart';
 import 'package:app/core/network/network_info.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class PushNotificationService {
   PushNotificationService(
     this._messaging,
+    this._localNotifications,
     this._apiService,
     this._store,
     this._networkInfo,
@@ -17,6 +19,7 @@ class PushNotificationService {
   );
 
   final FirebaseMessaging _messaging;
+  final FlutterLocalNotificationsPlugin _localNotifications;
   final AppApiService _apiService;
   final HiveLocalStore _store;
   final NetworkInfo _networkInfo;
@@ -26,18 +29,54 @@ class PushNotificationService {
   StreamSubscription<String>? _tokenSubscription;
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
 
+  static const AndroidNotificationChannel _androidChannel =
+      AndroidNotificationChannel(
+        'booking_updates',
+        'Booking updates',
+        description: 'Notifications for booking updates and reminders.',
+        importance: Importance.high,
+      );
+
   Future<void> init() async {
     await _messaging.requestPermission();
+    await _initLocalNotifications();
+    await _messaging.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
     await _registerCurrentToken();
 
     _tokenSubscription ??= _messaging.onTokenRefresh.listen(_registerToken);
     _connectivitySubscription ??= _connectivity.onConnectivityChanged.listen(
       (_) => syncPendingToken(),
     );
-    _foregroundSubscription ??= FirebaseMessaging.onMessage.listen(
-      _saveForegroundMessage,
-    );
+    _foregroundSubscription ??= FirebaseMessaging.onMessage.listen((message) {
+      _saveForegroundMessage(message);
+      _showForegroundNotification(message);
+    });
     await syncPendingToken();
+  }
+
+  Future<void> _initLocalNotifications() async {
+    const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const darwinInit = DarwinInitializationSettings();
+    const settings = InitializationSettings(
+      android: androidInit,
+      iOS: darwinInit,
+      macOS: darwinInit,
+    );
+    await _localNotifications.initialize(settings);
+    await _localNotifications
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >()
+        ?.createNotificationChannel(_androidChannel);
+    await _localNotifications
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >()
+        ?.requestNotificationsPermission();
   }
 
   Future<void> dispose() async {
@@ -116,6 +155,33 @@ class PushNotificationService {
         'receivedAt': DateTime.now().toIso8601String(),
         'read': false,
       },
+    );
+  }
+
+  Future<void> _showForegroundNotification(RemoteMessage message) async {
+    final title =
+        message.notification?.title ?? message.data['title'] as String?;
+    final body = message.notification?.body ?? message.data['body'] as String?;
+    if ((title == null || title.isEmpty) && (body == null || body.isEmpty)) {
+      return;
+    }
+
+    await _localNotifications.show(
+      message.hashCode,
+      title ?? 'Pet Care Booking',
+      body ?? '',
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          _androidChannel.id,
+          _androidChannel.name,
+          channelDescription: _androidChannel.description,
+          importance: Importance.high,
+          priority: Priority.high,
+          icon: '@mipmap/ic_launcher',
+        ),
+        iOS: const DarwinNotificationDetails(),
+      ),
+      payload: message.data['bookingId'] as String?,
     );
   }
 }

@@ -8,6 +8,12 @@ const registerDeviceTokenSchema = Joi.object({
   deviceId: Joi.string().trim().allow(null, ""),
 });
 
+const testNotificationSchema = Joi.object({
+  title: Joi.string().trim().default("Test notification"),
+  body: Joi.string().trim().default("Firebase Cloud Messaging is working."),
+});
+
 module.exports = {
   registerDeviceTokenSchema,
+  testNotificationSchema,
 };

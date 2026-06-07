@@ -7,7 +7,6 @@ import 'package:app/core/common/app_bloc_observer.dart';
 import 'package:app/core/config/app_config.dart';
 import 'package:app/core/config/app_flavor.dart';
 import 'package:app/core/di/injection.dart';
-import 'package:app/core/location/location_required_gate.dart';
 import 'package:app/core/locale_cubit.dart';
 import 'package:app/core/local/hive_local_store.dart';
 import 'package:app/core/notifications/push_notification_service.dart';
@@ -16,7 +15,6 @@ import 'package:app/features/pets/data/services/pet_sync_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_event.dart';
-import 'package:app/features/authentication/presentation/bloc/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -70,15 +68,6 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.light(),
             routerConfig: appRouter,
             debugShowCheckedModeBanner: false,
-            builder: (context, child) {
-              final isAuthenticated = context.select<AuthBloc, bool>(
-                (bloc) => bloc.state.status == AuthStatus.authenticated,
-              );
-              return LocationRequiredGate(
-                enabled: isAuthenticated,
-                child: child ?? const SizedBox.shrink(),
-              );
-            },
             locale: locale,
             localizationsDelegates: const [
               AppLocalizations.delegate,

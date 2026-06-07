@@ -27,6 +27,16 @@ const login = asyncHandler(async (req, res) => {
   });
 });
 
+const adminLogin = asyncHandler(async (req, res) => {
+  const result = await authService.loginAdmin(req.body, getRequestMetadata(req));
+
+  res.status(200).json({
+    success: true,
+    message: "Admin login successful.",
+    data: result,
+  });
+});
+
 const refreshToken = asyncHandler(async (req, res) => {
   const result = await authService.refreshAuthTokens(
     req.body.refreshToken,
@@ -118,6 +128,7 @@ const getMe = asyncHandler(async (req, res) => {
 module.exports = {
   register,
   login,
+  adminLogin,
   refreshToken,
   logout,
   forgotPassword,

@@ -20,24 +20,34 @@ class BookingHistoryPage extends StatefulWidget {
 }
 
 class _BookingHistoryPageState extends State<BookingHistoryPage> {
-  late Future<BookingsApiResponseModel> _future;
+  List<BookingModel> _bookings = const [];
+  bool _isRefreshing = true;
+  bool _hasError = false;
 
   @override
   void initState() {
     super.initState();
-    _future = _loadBookings();
+    _bookings = getIt<BookingLocalDataSource>().getCachedBookings();
+    unawaited(_refreshBookings());
   }
 
-  Future<BookingsApiResponseModel> _loadBookings() {
-    return _loadBookingsWithCache();
-  }
-
-  Future<BookingsApiResponseModel> _loadBookingsWithCache() async {
+  Future<void> _refreshBookings() async {
     final localDataSource = getIt<BookingLocalDataSource>();
+    if (mounted) {
+      setState(() {
+        _isRefreshing = true;
+        _hasError = false;
+      });
+    }
+
     if (!await getIt<NetworkInfo>().isConnected) {
-      return BookingsApiResponseModel(
-        bookings: localDataSource.getCachedBookings(),
-      );
+      if (mounted) {
+        setState(() {
+          _bookings = localDataSource.getCachedBookings();
+          _isRefreshing = false;
+        });
+      }
+      return;
     }
 
     try {
@@ -45,18 +55,21 @@ class _BookingHistoryPageState extends State<BookingHistoryPage> {
         const Duration(seconds: 4),
       );
       await localDataSource.saveBookings(response.bookings);
-      return response;
+      if (mounted) {
+        setState(() {
+          _bookings = response.bookings;
+          _isRefreshing = false;
+        });
+      }
     } on Exception {
-      return BookingsApiResponseModel(
-        bookings: localDataSource.getCachedBookings(),
-      );
+      if (mounted) {
+        setState(() {
+          _bookings = localDataSource.getCachedBookings();
+          _isRefreshing = false;
+          _hasError = true;
+        });
+      }
     }
-  }
-
-  void _refresh() {
-    setState(() {
-      _future = _loadBookings();
-    });
   }
 
   @override
@@ -69,50 +82,45 @@ class _BookingHistoryPageState extends State<BookingHistoryPage> {
         foregroundColor: AppColors.brownText,
         elevation: 0,
       ),
-      body: FutureBuilder<BookingsApiResponseModel>(
-        future: _future,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(color: AppColors.primary),
-            );
-          }
-
-          if (snapshot.hasError) {
-            return _BookingHistoryMessage(
-              title: 'Không tải được lịch sử đặt chỗ',
-              actionLabel: 'Thử lại',
-              onAction: _refresh,
-            );
-          }
-
-          final bookings = snapshot.data?.bookings ?? const <BookingModel>[];
-          if (bookings.isEmpty) {
-            return _BookingHistoryMessage(
-              title: 'Bạn chưa có lịch đặt nào',
+      body: Stack(
+        children: [
+          if (_bookings.isEmpty)
+            _BookingHistoryMessage(
+              title: _isRefreshing
+                  ? 'Đang tải lịch sử đặt chỗ...'
+                  : _hasError
+                  ? 'Không tải được lịch sử đặt chỗ'
+                  : 'Bạn chưa có lịch đặt nào',
               actionLabel: 'Tải lại',
-              onAction: _refresh,
-            );
-          }
-
-          return RefreshIndicator(
-            color: AppColors.primary,
-            onRefresh: () async => _refresh(),
-            child: ListView.separated(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-              itemBuilder: (context, index) {
-                final booking = bookings[index];
-                return _BookingHistoryTile(
-                  booking: booking,
-                  onTap: () =>
-                      openBookingDetail(context, bookingId: booking.id),
-                );
-              },
-              separatorBuilder: (context, index) => const SizedBox(height: 12),
-              itemCount: bookings.length,
+              onAction: () => unawaited(_refreshBookings()),
+            )
+          else
+            RefreshIndicator(
+              color: AppColors.primary,
+              onRefresh: _refreshBookings,
+              child: ListView.separated(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+                itemCount: _bookings.length,
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 12),
+                itemBuilder: (context, index) {
+                  final booking = _bookings[index];
+                  return _BookingHistoryTile(
+                    booking: booking,
+                    onTap: () =>
+                        openBookingDetail(context, bookingId: booking.id),
+                  );
+                },
+              ),
             ),
-          );
-        },
+          if (_isRefreshing && _bookings.isNotEmpty)
+            const Positioned(
+              left: 0,
+              right: 0,
+              top: 0,
+              child: LinearProgressIndicator(color: AppColors.primary),
+            ),
+        ],
       ),
     );
   }
@@ -143,7 +151,7 @@ class _BookingHistoryMessage extends StatelessWidget {
               style: const TextStyle(
                 color: AppColors.brownText,
                 fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
               ),
             ),
             const SizedBox(height: 14),
@@ -170,7 +178,6 @@ class _BookingHistoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final status = _statusLabel(booking.status);
     final statusColor = _statusColor(booking.status);
 
     return Material(
@@ -194,7 +201,7 @@ class _BookingHistoryTile extends StatelessWidget {
                       style: const TextStyle(
                         color: AppColors.brownText,
                         fontSize: 15,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                   ),
@@ -209,7 +216,7 @@ class _BookingHistoryTile extends StatelessWidget {
                         vertical: 4,
                       ),
                       child: Text(
-                        status,
+                        _statusLabel(booking.status),
                         style: TextStyle(
                           color: statusColor,
                           fontSize: 12,
@@ -226,7 +233,7 @@ class _BookingHistoryTile extends StatelessWidget {
                 style: const TextStyle(
                   color: AppColors.brownText,
                   fontSize: 16,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
               if (booking.petSubtitle.isNotEmpty) ...[
@@ -253,24 +260,6 @@ class _BookingHistoryTile extends StatelessWidget {
                       '${_dateLabel(booking.appointmentDate)} - ${booking.timeSlotLabel}',
                       style: const TextStyle(
                         color: AppColors.brownText,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      booking.services
-                          .map((service) => service.name)
-                          .join(', '),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: AppColors.mutedText,
                         fontSize: 13,
                       ),
                     ),

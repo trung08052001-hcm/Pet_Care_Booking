@@ -1,1 +1,4 @@
 .repo-backups/
+backend/src/firebase/*.json
+admin_web/node_modules/
+admin_web/dist/

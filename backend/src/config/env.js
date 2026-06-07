@@ -9,7 +9,9 @@ const env = {
   apiPrefix: process.env.API_PREFIX || "/api/v1",
   mongoUri:
     process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/pet-booking",
-  clientUrl: process.env.CLIENT_URL || "http://localhost:3000",
+  clientUrl:
+    process.env.CLIENT_URL ||
+    "http://localhost:3000,http://localhost:5173,http://localhost:5174,http://127.0.0.1:5173,http://127.0.0.1:5174",
   accessTokenSecret:
     process.env.ACCESS_TOKEN_SECRET || "replace-with-dev-access-secret",
   accessTokenExpiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN || "15m",
