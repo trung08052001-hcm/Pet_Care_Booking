@@ -48,6 +48,8 @@ class AppLocalizations {
       'fullNameHint': 'Nguyen Van A',
       'phoneLabel': 'Phone number',
       'phoneHint': '090 123 4567',
+      'addressLabel': 'Address',
+      'addressHint': 'Enter your address',
       'confirmPasswordLabel': 'Confirm password',
       'confirmPasswordHint': 'Re-enter your password',
       'acceptTermsPrefix': 'I agree to the ',
@@ -61,6 +63,8 @@ class AppLocalizations {
       'fullNameRequiredError': 'Please enter your full name.',
       'phoneRequiredError': 'Please enter your phone number.',
       'phoneInvalidError': 'Please enter a valid phone number.',
+      'addressRequiredError': 'Please enter your address.',
+      'addressTooLongError': 'Address cannot exceed 300 characters.',
       'confirmPasswordRequiredError': 'Please confirm your password.',
       'confirmPasswordMismatchError': 'Passwords do not match.',
       'acceptTermsError': 'Please accept the terms to continue.',
@@ -144,6 +148,8 @@ class AppLocalizations {
       'fullNameHint': 'Nguyen Van A',
       'phoneLabel': 'So dien thoai',
       'phoneHint': '090 123 4567',
+      'addressLabel': 'Dia chi',
+      'addressHint': 'Nhap dia chi cua ban',
       'confirmPasswordLabel': 'Xac nhan mat khau',
       'confirmPasswordHint': 'Nhap lai mat khau',
       'acceptTermsPrefix': 'Toi dong y voi ',
@@ -157,6 +163,8 @@ class AppLocalizations {
       'fullNameRequiredError': 'Vui long nhap ho va ten.',
       'phoneRequiredError': 'Vui long nhap so dien thoai.',
       'phoneInvalidError': 'So dien thoai khong hop le.',
+      'addressRequiredError': 'Vui long nhap dia chi.',
+      'addressTooLongError': 'Dia chi khong duoc vuot qua 300 ky tu.',
       'confirmPasswordRequiredError': 'Vui long nhap lai mat khau.',
       'confirmPasswordMismatchError': 'Mat khau xac nhan khong khop.',
       'acceptTermsError': 'Ban can dong y dieu khoan de tiep tuc.',
@@ -258,6 +266,8 @@ class AppLocalizations {
   String get fullNameHint => _text('fullNameHint');
   String get phoneLabel => _text('phoneLabel');
   String get phoneHint => _text('phoneHint');
+  String get addressLabel => _text('addressLabel');
+  String get addressHint => _text('addressHint');
   String get confirmPasswordLabel => _text('confirmPasswordLabel');
   String get confirmPasswordHint => _text('confirmPasswordHint');
   String get acceptTermsPrefix => _text('acceptTermsPrefix');
@@ -271,6 +281,8 @@ class AppLocalizations {
   String get fullNameRequiredError => _text('fullNameRequiredError');
   String get phoneRequiredError => _text('phoneRequiredError');
   String get phoneInvalidError => _text('phoneInvalidError');
+  String get addressRequiredError => _text('addressRequiredError');
+  String get addressTooLongError => _text('addressTooLongError');
   String get confirmPasswordRequiredError =>
       _text('confirmPasswordRequiredError');
   String get confirmPasswordMismatchError =>

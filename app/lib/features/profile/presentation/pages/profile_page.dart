@@ -1,6 +1,7 @@
 import 'package:app/app/theme/app_colors.dart';
 import 'package:app/features/authentication/presentation/pages/sign_in_page.dart';
 import 'package:app/features/booking/presentation/pages/booking_history_page.dart';
+import 'package:app/features/pets/presentation/pages/profile_my_pets_page.dart';
 import 'package:app/features/profile/domain/entities/profile_menu_item.dart';
 import 'package:app/features/profile/domain/entities/profile_menu_item_type.dart';
 import 'package:app/features/profile/domain/entities/profile_page_content.dart';
@@ -9,6 +10,8 @@ import 'package:app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:app/features/profile/presentation/bloc/profile_event.dart';
 import 'package:app/features/profile/presentation/bloc/profile_state.dart';
 import 'package:app/features/profile/presentation/mappers/profile_ui_mapper.dart';
+import 'package:app/features/profile/presentation/pages/help_center_page.dart';
+import 'package:app/features/profile/presentation/pages/profile_address_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -132,8 +135,16 @@ class _ProfileContent extends StatelessWidget {
                   _MenuCard(
                     items: content.mainMenuItems,
                     onItemTap: (type) {
+                      if (type == ProfileMenuItemType.myPets) {
+                        context.pushNamed(ProfileMyPetsPage.routeName);
+                        return;
+                      }
                       if (type == ProfileMenuItemType.bookingHistory) {
                         context.pushNamed(BookingHistoryPage.routeName);
+                        return;
+                      }
+                      if (type == ProfileMenuItemType.addresses) {
+                        context.pushNamed(ProfileAddressPage.routeName);
                         return;
                       }
                       bloc.add(ProfileMenuItemPressed(type));
@@ -155,8 +166,13 @@ class _ProfileContent extends StatelessWidget {
                   const SizedBox(height: 10),
                   _MenuCard(
                     items: content.supportMenuItems,
-                    onItemTap: (type) =>
-                        bloc.add(ProfileMenuItemPressed(type)),
+                    onItemTap: (type) {
+                      if (type == ProfileMenuItemType.helpCenter) {
+                        context.pushNamed(HelpCenterPage.routeName);
+                        return;
+                      }
+                      bloc.add(ProfileMenuItemPressed(type));
+                    },
                   ),
                   const SizedBox(height: 28),
                   _LogoutButton(

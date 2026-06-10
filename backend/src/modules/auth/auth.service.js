@@ -68,7 +68,8 @@ const issueAuthTokens = async (user, metadata = {}) => {
 };
 
 const register = async (payload, metadata = {}) => {
-  const { email, fullName, password, phone } = validateRegisterPayload(payload);
+  const { address, email, fullName, password, phone } =
+    validateRegisterPayload(payload);
 
   const existingUser = await User.findOne({
     $or: [{ email }, ...(phone ? [{ phone }] : [])],
@@ -83,6 +84,15 @@ const register = async (payload, metadata = {}) => {
     email,
     password,
     phone,
+    address: address
+      ? {
+          detail: address,
+          label: "",
+          latitude: null,
+          longitude: null,
+          updatedAt: new Date(),
+        }
+      : undefined,
     role: "user",
     acceptedTermsAt: new Date(),
   });
@@ -400,6 +410,35 @@ const loginWithZalo = async (payload, metadata = {}) => {
   return buildTokenResponse(user, tokens);
 };
 
+const getMyAddress = async (userId) => {
+  const user = await User.findById(userId).select("address");
+
+  if (!user || !user.isActive) {
+    throw new ApiError(401, "User is not authorized.");
+  }
+
+  return user.address || null;
+};
+
+const updateMyAddress = async (userId, payload) => {
+  const user = await User.findById(userId);
+
+  if (!user || !user.isActive) {
+    throw new ApiError(401, "User is not authorized.");
+  }
+
+  user.address = {
+    label: payload.label || "",
+    detail: payload.detail,
+    latitude: payload.latitude ?? null,
+    longitude: payload.longitude ?? null,
+    updatedAt: new Date(),
+  };
+  await user.save();
+
+  return user.address;
+};
+
 module.exports = {
   register,
   login,
@@ -411,4 +450,6 @@ module.exports = {
   resetPassword,
   loginWithGoogle,
   loginWithZalo,
+  getMyAddress,
+  updateMyAddress,
 };

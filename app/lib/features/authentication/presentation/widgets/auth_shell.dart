@@ -288,6 +288,8 @@ class AuthTextField extends StatelessWidget {
     this.suffix,
     this.keyboardType,
     this.validator,
+    this.minLines = 1,
+    this.maxLines = 1,
   });
 
   final String label;
@@ -298,6 +300,8 @@ class AuthTextField extends StatelessWidget {
   final Widget? suffix;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
+  final int minLines;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -319,6 +323,8 @@ class AuthTextField extends StatelessWidget {
             controller: controller,
             obscureText: obscureText,
             keyboardType: keyboardType,
+            minLines: obscureText ? 1 : minLines,
+            maxLines: obscureText ? 1 : maxLines,
             validator: validator,
             decoration: InputDecoration(
               hintText: hintText,

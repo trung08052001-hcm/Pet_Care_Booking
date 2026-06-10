@@ -1,9 +1,9 @@
+import 'package:app/app/shell/main_shell_page.dart';
 import 'package:app/core/app_localizations.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_event.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_state.dart';
 import 'package:app/features/authentication/presentation/widgets/auth_shell.dart';
-import 'package:app/app/shell/main_shell_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -23,6 +23,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _addressController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
@@ -35,6 +36,7 @@ class _SignUpPageState extends State<SignUpPage> {
     _fullNameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
+    _addressController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -59,6 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
             fullName: _fullNameController.text.trim(),
             email: _emailController.text.trim(),
             phone: _phoneController.text.trim(),
+            address: _addressController.text.trim(),
             password: _passwordController.text,
             confirmPassword: _confirmPasswordController.text,
             acceptTerms: _acceptedTerms,
@@ -152,6 +155,24 @@ class _SignUpPageState extends State<SignUpPage> {
                       final phoneRegex = RegExp(r'^\+?[0-9]{9,15}$');
                       if (!phoneRegex.hasMatch(normalized)) {
                         return l10n.phoneInvalidError;
+                      }
+                      return null;
+                    },
+                  ),
+                  AuthTextField(
+                    label: l10n.addressLabel,
+                    hintText: l10n.addressHint,
+                    controller: _addressController,
+                    prefixIcon: Icons.location_on_outlined,
+                    keyboardType: TextInputType.streetAddress,
+                    minLines: 2,
+                    maxLines: 3,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return l10n.addressRequiredError;
+                      }
+                      if (value.trim().length > 300) {
+                        return l10n.addressTooLongError;
                       }
                       return null;
                     },

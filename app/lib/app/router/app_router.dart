@@ -9,23 +9,32 @@ import 'package:app/features/authentication/presentation/pages/sign_in_page.dart
 import 'package:app/features/authentication/presentation/pages/sign_up_page.dart';
 import 'package:app/features/blog/presentation/bloc/blog_bloc.dart';
 import 'package:app/features/blog/presentation/bloc/blog_event.dart';
-import 'package:app/features/chat/presentation/bloc/chat_bloc.dart';
-import 'package:app/features/chat/presentation/bloc/chat_event.dart';
-import 'package:app/features/home/presentation/bloc/home_bloc.dart';
-import 'package:app/features/home/presentation/bloc/home_event.dart';
 import 'package:app/features/booking/presentation/bloc/booking_bloc.dart';
 import 'package:app/features/booking/presentation/bloc/booking_detail_bloc.dart';
 import 'package:app/features/booking/presentation/bloc/booking_detail_event.dart';
 import 'package:app/features/booking/presentation/bloc/booking_event.dart';
 import 'package:app/features/booking/presentation/pages/booking_detail_page.dart';
 import 'package:app/features/booking/presentation/pages/booking_history_page.dart';
+import 'package:app/features/chat/presentation/bloc/chat_bloc.dart';
+import 'package:app/features/chat/presentation/bloc/chat_event.dart';
+import 'package:app/features/home/presentation/bloc/home_bloc.dart';
+import 'package:app/features/home/presentation/bloc/home_event.dart';
+import 'package:app/features/onboarding/presentation/bloc/onboarding_bloc.dart';
+import 'package:app/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:app/features/pets/domain/entities/pet.dart';
 import 'package:app/features/pets/presentation/bloc/pets_bloc.dart';
 import 'package:app/features/pets/presentation/bloc/pets_event.dart';
 import 'package:app/features/pets/presentation/pages/my_pets_page.dart';
+import 'package:app/features/pets/presentation/pages/pet_profile_detail_page.dart';
+import 'package:app/features/pets/presentation/pages/profile_my_pets_page.dart';
+import 'package:app/features/profile/presentation/bloc/help_center_bloc.dart';
+import 'package:app/features/profile/presentation/bloc/help_center_event.dart';
+import 'package:app/features/profile/presentation/bloc/profile_address_bloc.dart';
+import 'package:app/features/profile/presentation/bloc/profile_address_event.dart';
 import 'package:app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:app/features/profile/presentation/bloc/profile_event.dart';
-import 'package:app/features/onboarding/presentation/bloc/onboarding_bloc.dart';
-import 'package:app/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:app/features/profile/presentation/pages/help_center_page.dart';
+import 'package:app/features/profile/presentation/pages/profile_address_page.dart';
 import 'package:app/features/sample_posts/presentation/bloc/sample_posts_bloc.dart';
 import 'package:app/features/sample_posts/presentation/pages/sample_posts_page.dart';
 import 'package:app/features/services/presentation/bloc/services_bloc.dart';
@@ -135,6 +144,54 @@ class AppRouter {
               ),
             ],
             child: MyPetsPage(serviceId: args?.serviceId),
+          );
+        },
+      ),
+      GoRoute(
+        path: ProfileMyPetsPage.routePath,
+        name: ProfileMyPetsPage.routeName,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (_) => getIt<PetsBloc>()..add(const PetsStarted()),
+            child: const ProfileMyPetsPage(),
+          );
+        },
+      ),
+      GoRoute(
+        path: PetProfileDetailPage.routePath,
+        name: PetProfileDetailPage.routeName,
+        builder: (context, state) {
+          final petId = state.pathParameters['petId'] ?? '';
+          final initialPet = state.extra is Pet ? state.extra as Pet : null;
+
+          return BlocProvider(
+            create: (_) => getIt<PetsBloc>()..add(const PetsStarted()),
+            child: PetProfileDetailPage(
+              petId: petId,
+              initialPet: initialPet,
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: ProfileAddressPage.routePath,
+        name: ProfileAddressPage.routeName,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (_) =>
+                getIt<ProfileAddressBloc>()..add(const ProfileAddressStarted()),
+            child: const ProfileAddressPage(),
+          );
+        },
+      ),
+      GoRoute(
+        path: HelpCenterPage.routePath,
+        name: HelpCenterPage.routeName,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (_) =>
+                getIt<HelpCenterBloc>()..add(const HelpCenterStarted()),
+            child: const HelpCenterPage(),
           );
         },
       ),

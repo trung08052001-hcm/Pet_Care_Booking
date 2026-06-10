@@ -16,6 +16,9 @@ const registerSchema = Joi.object({
   }),
   email: emailField.required(),
   phone: optionalPhoneField,
+  address: Joi.string().trim().max(300).allow("").default("").messages({
+    "string.max": "Address cannot exceed 300 characters.",
+  }),
   password: passwordField.required(),
   confirmPassword: Joi.string()
     .valid(Joi.ref("password"))
@@ -144,6 +147,19 @@ const refreshTokenSchema = Joi.object({
   }),
 });
 
+const addressSchema = Joi.object({
+  detail: Joi.string().trim().min(1).max(300).required().messages({
+    "string.empty": "Address is required.",
+    "string.max": "Address cannot exceed 300 characters.",
+    "any.required": "Address is required.",
+  }),
+  label: Joi.string().trim().max(50).allow("").default("").messages({
+    "string.max": "Address label cannot exceed 50 characters.",
+  }),
+  latitude: Joi.number().min(-90).max(90).allow(null).default(null),
+  longitude: Joi.number().min(-180).max(180).allow(null).default(null),
+});
+
 module.exports = {
   registerSchema,
   loginSchema,
@@ -153,4 +169,5 @@ module.exports = {
   googleLoginSchema,
   zaloLoginSchema,
   refreshTokenSchema,
+  addressSchema,
 };

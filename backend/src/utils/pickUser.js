@@ -3,6 +3,7 @@ const pickUser = (user) => ({
   fullName: user.fullName,
   email: user.email,
   phone: user.phone || null,
+  address: user.address || null,
   role: user.role,
   authProvider: user.authProvider,
   avatar: user.avatar || null,

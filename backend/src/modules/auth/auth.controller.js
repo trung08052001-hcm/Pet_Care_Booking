@@ -125,6 +125,30 @@ const getMe = asyncHandler(async (req, res) => {
   });
 });
 
+const getMyAddress = asyncHandler(async (req, res) => {
+  const address = await authService.getMyAddress(req.user._id);
+
+  res.status(200).json({
+    success: true,
+    message: "Address fetched successfully.",
+    data: {
+      address,
+    },
+  });
+});
+
+const updateMyAddress = asyncHandler(async (req, res) => {
+  const address = await authService.updateMyAddress(req.user._id, req.body);
+
+  res.status(200).json({
+    success: true,
+    message: "Address saved successfully.",
+    data: {
+      address,
+    },
+  });
+});
+
 module.exports = {
   register,
   login,
@@ -137,4 +161,6 @@ module.exports = {
   getMe,
   googleLogin,
   zaloLogin,
+  getMyAddress,
+  updateMyAddress,
 };

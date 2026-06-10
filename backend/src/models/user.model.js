@@ -29,6 +29,32 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    address: {
+      label: {
+        type: String,
+        trim: true,
+        maxlength: 50,
+        default: "",
+      },
+      detail: {
+        type: String,
+        trim: true,
+        maxlength: 300,
+        default: "",
+      },
+      latitude: {
+        type: Number,
+        default: null,
+      },
+      longitude: {
+        type: Number,
+        default: null,
+      },
+      updatedAt: {
+        type: Date,
+        default: null,
+      },
+    },
     role: {
       type: String,
       enum: ["user", "customer", "staff", "admin"],

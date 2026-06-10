@@ -22,6 +22,7 @@ class SignUpRequestModel {
     required this.fullName,
     required this.email,
     required this.phone,
+    required this.address,
     required this.password,
     required this.confirmPassword,
     required this.acceptTerms,
@@ -30,6 +31,7 @@ class SignUpRequestModel {
   final String fullName;
   final String email;
   final String phone;
+  final String address;
   final String password;
   final String confirmPassword;
   final bool acceptTerms;
@@ -38,6 +40,7 @@ class SignUpRequestModel {
         'fullName': fullName,
         'email': email,
         'phone': phone,
+        'address': address,
         'password': password,
         'confirmPassword': confirmPassword,
         'acceptTerms': acceptTerms,

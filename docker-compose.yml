@@ -1,0 +1,66 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: pet-care-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pet-care-backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env.docker
+    ports:
+      - "5000:5000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    volumes:
+      - ./backend/src/firebase:/app/src/firebase:ro
+
+  seed_admin:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pet-care-seed-admin
+    profiles:
+      - tools
+    env_file:
+      - ./backend/.env.docker
+    environment:
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@pawcare.local}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin@123456}
+      ADMIN_FULL_NAME: ${ADMIN_FULL_NAME:-PawCare Admin}
+      ADMIN_PHONE: ${ADMIN_PHONE:-}
+    command: ["node", "scripts/seed-admin.js"]
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  admin_web:
+    build:
+      context: ./admin_web
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:5000/api/v1}
+    container_name: pet-care-admin-web
+    restart: unless-stopped
+    ports:
+      - "5174:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:

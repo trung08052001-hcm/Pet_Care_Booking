@@ -14,6 +14,7 @@ abstract final class ApiEndpoints {
   static const String authZalo = '/auth/social/zalo';
   static const String authForgotPassword = '/auth/forgot-password';
   static const String authVerifyResetOtp = '/auth/verify-reset-otp';
+  static const String authMeAddress = '/auth/me/address';
 
   static const String pets = '/pets';
   static const String petDetail = '/pets/{petId}';

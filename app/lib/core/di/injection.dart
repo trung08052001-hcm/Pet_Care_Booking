@@ -5,7 +5,6 @@ import 'package:app/core/network/api_service.dart';
 import 'package:app/core/network/network_info.dart';
 import 'package:app/core/notifications/push_notification_service.dart';
 import 'package:app/core/storage/storage_service.dart';
-import 'package:app/features/booking/data/datasources/booking_local_data_source.dart';
 import 'package:app/features/authentication/data/datasources/auth_data_sources.dart';
 import 'package:app/features/authentication/data/repositories/auth_repository_impl.dart';
 import 'package:app/features/authentication/data/services/google_auth_service.dart';
@@ -20,6 +19,7 @@ import 'package:app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:app/features/booking/data/datasources/booking_appointment_mock_data_source.dart';
 import 'package:app/features/booking/data/datasources/booking_confirmation_mock_data_source.dart';
 import 'package:app/features/booking/data/datasources/booking_detail_local_data_source.dart';
+import 'package:app/features/booking/data/datasources/booking_local_data_source.dart';
 import 'package:app/features/booking/data/repositories/booking_appointment_repository_impl.dart';
 import 'package:app/features/booking/data/repositories/booking_confirmation_repository_impl.dart';
 import 'package:app/features/booking/data/repositories/booking_detail_repository_impl.dart';
@@ -43,8 +43,18 @@ import 'package:app/features/pets/domain/repositories/pets_repository.dart';
 import 'package:app/features/pets/domain/usecases/create_pet_usecase.dart';
 import 'package:app/features/pets/domain/usecases/get_my_pets_page_content_usecase.dart';
 import 'package:app/features/pets/presentation/bloc/pets_bloc.dart';
-import 'package:dio/dio.dart';
+import 'package:app/features/profile/data/datasources/help_center_mock_data_source.dart';
+import 'package:app/features/profile/data/datasources/profile_address_remote_data_source.dart';
+import 'package:app/features/profile/data/repositories/profile_address_repository_impl.dart';
+import 'package:app/features/profile/data/services/current_location_address_service.dart';
+import 'package:app/features/profile/domain/repositories/profile_address_repository.dart';
+import 'package:app/features/profile/domain/usecases/get_help_center_content_usecase.dart';
+import 'package:app/features/profile/domain/usecases/get_profile_address_usecase.dart';
+import 'package:app/features/profile/domain/usecases/save_profile_address_usecase.dart';
+import 'package:app/features/profile/presentation/bloc/help_center_bloc.dart';
+import 'package:app/features/profile/presentation/bloc/profile_address_bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
@@ -66,6 +76,8 @@ Future<void> configureDependencies(AppConfig appConfig) async {
   _registerOfflineDependencies();
   await _registerPetsDependencies();
   await _registerBookingDependencies();
+  await _registerProfileAddressDependencies();
+  await _registerHelpCenterDependencies();
 }
 
 AppConfig get currentAppConfig {
@@ -257,6 +269,50 @@ Future<void> _registerBookingDependencies() async {
       getIt<GetBookingDetailUseCase>(),
       getIt<CancelBookingUseCase>(),
     ),
+    lazySingleton: false,
+  );
+}
+
+Future<void> _registerProfileAddressDependencies() async {
+  await _replaceRegistration<ProfileAddressRemoteDataSource>(
+    () => ProfileAddressRemoteDataSourceImpl(getIt<Dio>()),
+  );
+  await _replaceRegistration<ProfileAddressRepository>(
+    () => ProfileAddressRepositoryImpl(
+      getIt<ProfileAddressRemoteDataSource>(),
+    ),
+  );
+  await _replaceRegistration<CurrentLocationAddressService>(
+    () => CurrentLocationAddressService(getIt<Dio>()),
+  );
+  await _replaceRegistration<GetProfileAddressUseCase>(
+    () => GetProfileAddressUseCase(getIt<ProfileAddressRepository>()),
+    lazySingleton: false,
+  );
+  await _replaceRegistration<SaveProfileAddressUseCase>(
+    () => SaveProfileAddressUseCase(getIt<ProfileAddressRepository>()),
+    lazySingleton: false,
+  );
+  await _replaceRegistration<ProfileAddressBloc>(
+    () => ProfileAddressBloc(
+      getIt<GetProfileAddressUseCase>(),
+      getIt<SaveProfileAddressUseCase>(),
+      getIt<CurrentLocationAddressService>(),
+    ),
+    lazySingleton: false,
+  );
+}
+
+Future<void> _registerHelpCenterDependencies() async {
+  await _replaceRegistration<HelpCenterMockDataSource>(
+    () => const HelpCenterMockDataSource(),
+  );
+  await _replaceRegistration<GetHelpCenterContentUseCase>(
+    () => GetHelpCenterContentUseCase(getIt<HelpCenterMockDataSource>()),
+    lazySingleton: false,
+  );
+  await _replaceRegistration<HelpCenterBloc>(
+    () => HelpCenterBloc(getIt<GetHelpCenterContentUseCase>()),
     lazySingleton: false,
   );
 }

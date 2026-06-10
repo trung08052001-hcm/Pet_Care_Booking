@@ -11,6 +11,7 @@ abstract interface class AuthRepository {
     required String fullName,
     required String email,
     required String phone,
+    required String address,
     required String password,
     required String confirmPassword,
     required bool acceptTerms,
