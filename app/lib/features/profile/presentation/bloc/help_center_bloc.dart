@@ -7,20 +7,20 @@ class HelpCenterBloc extends Bloc<HelpCenterEvent, HelpCenterState> {
   HelpCenterBloc(this._getHelpCenterContentUseCase)
       : super(const HelpCenterState()) {
     on<HelpCenterStarted>(_onStarted);
-    on<HelpCenterSearchChanged>(_onSearchChanged);
     on<HelpCenterCategoryPressed>(_onCategoryPressed);
     on<HelpCenterFaqPressed>(_onFaqPressed);
     on<HelpCenterContactPressed>(_onContactPressed);
     on<HelpCenterRequestPressed>(_onRequestPressed);
+    on<HelpCenterFeedbackSubmitted>(_onFeedbackSubmitted);
     on<HelpCenterFeedbackConsumed>(_onFeedbackConsumed);
   }
 
   final GetHelpCenterContentUseCase _getHelpCenterContentUseCase;
 
-  void _onStarted(
+  Future<void> _onStarted(
     HelpCenterStarted event,
     Emitter<HelpCenterState> emit,
-  ) {
+  ) async {
     emit(
       state.copyWith(
         status: HelpCenterStatus.loading,
@@ -29,31 +29,22 @@ class HelpCenterBloc extends Bloc<HelpCenterEvent, HelpCenterState> {
       ),
     );
 
-    final content = _getHelpCenterContentUseCase();
-    emit(
-      state.copyWith(
-        status: HelpCenterStatus.ready,
-        content: content,
-        filteredContent: content,
-      ),
-    );
-  }
-
-  void _onSearchChanged(
-    HelpCenterSearchChanged event,
-    Emitter<HelpCenterState> emit,
-  ) {
-    final content = state.content ?? _getHelpCenterContentUseCase();
-    emit(
-      state.copyWith(
-        status: HelpCenterStatus.ready,
-        content: content,
-        filteredContent: content.filter(event.query),
-        query: event.query,
-        clearMessage: true,
-        interaction: HelpCenterInteraction.none,
-      ),
-    );
+    try {
+      final content = await _getHelpCenterContentUseCase();
+      emit(
+        state.copyWith(
+          status: HelpCenterStatus.ready,
+          content: content,
+        ),
+      );
+    } on Exception catch (error) {
+      emit(
+        state.copyWith(
+          status: HelpCenterStatus.failure,
+          message: error.toString().replaceFirst('Exception: ', ''),
+        ),
+      );
+    }
   }
 
   void _onCategoryPressed(
@@ -62,7 +53,7 @@ class HelpCenterBloc extends Bloc<HelpCenterEvent, HelpCenterState> {
   ) {
     emit(
       state.copyWith(
-        message: 'Danh mục này sẽ được mở rộng ở bước kết nối dữ liệu.',
+        message: 'Đang mở thông tin hỗ trợ ${event.name}.',
         interaction: HelpCenterInteraction.category,
       ),
     );
@@ -102,6 +93,39 @@ class HelpCenterBloc extends Bloc<HelpCenterEvent, HelpCenterState> {
         interaction: HelpCenterInteraction.request,
       ),
     );
+  }
+
+  Future<void> _onFeedbackSubmitted(
+    HelpCenterFeedbackSubmitted event,
+    Emitter<HelpCenterState> emit,
+  ) async {
+    final message = event.message.trim();
+    if (message.isEmpty) {
+      emit(
+        state.copyWith(
+          message: 'Vui lòng nhập nội dung cần hỗ trợ.',
+          interaction: HelpCenterInteraction.request,
+        ),
+      );
+      return;
+    }
+
+    try {
+      await _getHelpCenterContentUseCase.submitFeedback(message);
+      emit(
+        state.copyWith(
+          message: 'Đã gửi yêu cầu hỗ trợ.',
+          interaction: HelpCenterInteraction.request,
+        ),
+      );
+    } on Exception catch (error) {
+      emit(
+        state.copyWith(
+          message: error.toString().replaceFirst('Exception: ', ''),
+          interaction: HelpCenterInteraction.request,
+        ),
+      );
+    }
   }
 
   void _onFeedbackConsumed(

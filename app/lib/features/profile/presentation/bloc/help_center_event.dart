@@ -11,22 +11,13 @@ final class HelpCenterStarted extends HelpCenterEvent {
   const HelpCenterStarted();
 }
 
-final class HelpCenterSearchChanged extends HelpCenterEvent {
-  const HelpCenterSearchChanged(this.query);
-
-  final String query;
-
-  @override
-  List<Object?> get props => [query];
-}
-
 final class HelpCenterCategoryPressed extends HelpCenterEvent {
-  const HelpCenterCategoryPressed(this.categoryId);
+  const HelpCenterCategoryPressed(this.name);
 
-  final String categoryId;
+  final String name;
 
   @override
-  List<Object?> get props => [categoryId];
+  List<Object?> get props => [name];
 }
 
 final class HelpCenterFaqPressed extends HelpCenterEvent {
@@ -44,6 +35,15 @@ final class HelpCenterContactPressed extends HelpCenterEvent {
 
 final class HelpCenterRequestPressed extends HelpCenterEvent {
   const HelpCenterRequestPressed();
+}
+
+final class HelpCenterFeedbackSubmitted extends HelpCenterEvent {
+  const HelpCenterFeedbackSubmitted(this.message);
+
+  final String message;
+
+  @override
+  List<Object?> get props => [message];
 }
 
 final class HelpCenterFeedbackConsumed extends HelpCenterEvent {

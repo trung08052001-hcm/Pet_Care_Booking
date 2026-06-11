@@ -12,6 +12,7 @@ final class StorageKeys {
   static const isAuthenticated = 'is_authenticated';
   static const cachedSamplePosts = 'cached_sample_posts';
   static const hasCompletedOnboarding = 'has_completed_onboarding';
+  static const localeLanguageCode = 'locale_language_code';
 }
 
 abstract interface class SecureStorageService {

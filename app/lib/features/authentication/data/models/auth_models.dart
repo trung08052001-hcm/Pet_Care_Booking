@@ -182,6 +182,7 @@ class AuthUserModel {
     required this.phone,
     required this.role,
     required this.authProvider,
+    this.avatar,
     required this.isActive,
     required this.acceptedTermsAt,
     required this.lastLoginAt,
@@ -197,6 +198,7 @@ class AuthUserModel {
       phone: json['phone'] as String?,
       role: json['role'] as String? ?? 'customer',
       authProvider: json['authProvider'] as String? ?? 'local',
+      avatar: json['avatar'] as String?,
       isActive: json['isActive'] == true,
       acceptedTermsAt: json['acceptedTermsAt'] as String?,
       lastLoginAt: json['lastLoginAt'] as String?,
@@ -211,6 +213,7 @@ class AuthUserModel {
   final String? phone;
   final String role;
   final String authProvider;
+  final String? avatar;
   final bool isActive;
   final String? acceptedTermsAt;
   final String? lastLoginAt;
@@ -224,6 +227,7 @@ class AuthUserModel {
         'phone': phone,
         'role': role,
         'authProvider': authProvider,
+        'avatar': avatar,
         'isActive': isActive,
         'acceptedTermsAt': acceptedTermsAt,
         'lastLoginAt': lastLoginAt,
@@ -238,6 +242,7 @@ class AuthUserModel {
         phone: phone,
         role: role,
         authProvider: authProvider,
+        avatar: avatar,
         isActive: isActive,
         acceptedTermsAt: acceptedTermsAt,
         lastLoginAt: lastLoginAt,

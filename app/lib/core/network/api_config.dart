@@ -14,6 +14,9 @@ abstract final class ApiEndpoints {
   static const String authZalo = '/auth/social/zalo';
   static const String authForgotPassword = '/auth/forgot-password';
   static const String authVerifyResetOtp = '/auth/verify-reset-otp';
+  static const String authMe = '/auth/me';
+  static const String authMeProfile = '/auth/me/profile';
+  static const String authMePassword = '/auth/me/password';
   static const String authMeAddress = '/auth/me/address';
 
   static const String pets = '/pets';
@@ -26,4 +29,7 @@ abstract final class ApiEndpoints {
   static const String notificationDeviceToken = '/notifications/device-token';
 
   static const String posts = '/posts';
+  static const String helpCenter = '/help-center';
+  static const String helpCenterFeedback = '/help-center/feedback';
+  static const String appReviews = '/app-reviews';
 }

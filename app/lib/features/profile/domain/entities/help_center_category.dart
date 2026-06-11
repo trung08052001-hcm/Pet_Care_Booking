@@ -1,24 +1,44 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-
 class HelpCenterCategory extends Equatable {
   const HelpCenterCategory({
-    required this.id,
-    required this.title,
-    required this.subtitle,
+    required this.name,
+    required this.detail,
     required this.icon,
+    required this.imageUrl,
+    required this.supportInfo,
+    required this.programDescription,
+    required this.actionLabel,
   });
 
-  final String id;
-  final String title;
-  final String subtitle;
-  final IconData icon;
+  final String name;
+  final String detail;
+  final String icon;
+  final String imageUrl;
+  final List<HelpCenterSupportInfo> supportInfo;
+  final String programDescription;
+  final String actionLabel;
 
   @override
   List<Object?> get props => [
-        id,
-        title,
-        subtitle,
+        name,
+        detail,
         icon,
+        imageUrl,
+        supportInfo,
+        programDescription,
+        actionLabel,
       ];
+}
+
+class HelpCenterSupportInfo extends Equatable {
+  const HelpCenterSupportInfo({
+    required this.label,
+    required this.value,
+  });
+
+  final String label;
+  final String value;
+
+  @override
+  List<Object?> get props => [label, value];
 }

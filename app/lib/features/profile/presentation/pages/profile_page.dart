@@ -1,4 +1,5 @@
 import 'package:app/app/theme/app_colors.dart';
+import 'package:app/core/app_localizations.dart';
 import 'package:app/features/authentication/presentation/pages/sign_in_page.dart';
 import 'package:app/features/booking/presentation/pages/booking_history_page.dart';
 import 'package:app/features/pets/presentation/pages/profile_my_pets_page.dart';
@@ -10,8 +11,11 @@ import 'package:app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:app/features/profile/presentation/bloc/profile_event.dart';
 import 'package:app/features/profile/presentation/bloc/profile_state.dart';
 import 'package:app/features/profile/presentation/mappers/profile_ui_mapper.dart';
+import 'package:app/features/profile/presentation/pages/app_review_page.dart';
 import 'package:app/features/profile/presentation/pages/help_center_page.dart';
+import 'package:app/features/profile/presentation/pages/language_settings_page.dart';
 import 'package:app/features/profile/presentation/pages/profile_address_page.dart';
+import 'package:app/features/profile/presentation/pages/profile_edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -101,6 +105,7 @@ class _ProfileContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<ProfileBloc>();
+    final l10n = AppLocalizations.of(context);
 
     return RefreshIndicator(
       color: AppColors.primary,
@@ -127,7 +132,10 @@ class _ProfileContent extends StatelessWidget {
                 children: [
                   _ProfileHeader(
                     user: content.user,
-                    onEditProfile: () => bloc.add(const ProfileEditPressed()),
+                    memberSinceLabel: l10n.profileMemberSince,
+                    editProfileLabel: l10n.profileEditLabel,
+                    onEditProfile: () =>
+                        context.pushNamed(ProfileEditPage.routeName),
                     onChangeAvatar: () =>
                         bloc.add(const ProfileAvatarChangePressed()),
                   ),
@@ -154,7 +162,7 @@ class _ProfileContent extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      content.supportSectionTitle,
+                      l10n.profileSupportTitle,
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -171,17 +179,25 @@ class _ProfileContent extends StatelessWidget {
                         context.pushNamed(HelpCenterPage.routeName);
                         return;
                       }
+                      if (type == ProfileMenuItemType.rateApp) {
+                        context.pushNamed(AppReviewPage.routeName);
+                        return;
+                      }
+                      if (type == ProfileMenuItemType.language) {
+                        context.pushNamed(LanguageSettingsPage.routeName);
+                        return;
+                      }
                       bloc.add(ProfileMenuItemPressed(type));
                     },
                   ),
                   const SizedBox(height: 28),
                   _LogoutButton(
-                    label: content.logoutLabel,
+                    label: l10n.profileLogout,
                     onPressed: () => bloc.add(const ProfileLogoutPressed()),
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    content.appVersionLabel,
+                    l10n.profileVersion,
                     style: const TextStyle(
                       fontSize: 12,
                       color: AppColors.mutedText,
@@ -251,11 +267,15 @@ class _ProfileAppBar extends StatelessWidget {
 class _ProfileHeader extends StatelessWidget {
   const _ProfileHeader({
     required this.user,
+    required this.memberSinceLabel,
+    required this.editProfileLabel,
     required this.onEditProfile,
     required this.onChangeAvatar,
   });
 
   final ProfileUser user;
+  final String memberSinceLabel;
+  final String editProfileLabel;
   final VoidCallback onEditProfile;
   final VoidCallback onChangeAvatar;
 
@@ -311,7 +331,7 @@ class _ProfileHeader extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          user.memberSinceLabel,
+          memberSinceLabel,
           style: TextStyle(
             fontSize: 14,
             color: AppColors.brownText.withValues(alpha: 0.65),
@@ -332,7 +352,7 @@ class _ProfileHeader extends StatelessWidget {
               elevation: 0,
             ),
             child: Text(
-              user.editProfileLabel,
+              editProfileLabel,
               style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
@@ -421,7 +441,7 @@ class _MenuTile extends StatelessWidget {
         ),
       ),
       title: Text(
-        item.title,
+        _titleFor(AppLocalizations.of(context), item.type),
         style: const TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.w600,
@@ -455,6 +475,18 @@ class _MenuTile extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _titleFor(AppLocalizations l10n, ProfileMenuItemType type) {
+    return switch (type) {
+      ProfileMenuItemType.myPets => l10n.profileMyPets,
+      ProfileMenuItemType.bookingHistory => l10n.profileBookingHistory,
+      ProfileMenuItemType.wallet => l10n.profileWallet,
+      ProfileMenuItemType.addresses => l10n.profileAddresses,
+      ProfileMenuItemType.helpCenter => l10n.profileHelpCenter,
+      ProfileMenuItemType.rateApp => l10n.profileRateApp,
+      ProfileMenuItemType.language => l10n.profileLanguage,
+    };
   }
 }
 

@@ -5,6 +5,7 @@ import 'package:app/features/pets/presentation/bloc/pets_bloc.dart';
 import 'package:app/features/pets/presentation/bloc/pets_event.dart';
 import 'package:app/features/pets/presentation/bloc/pets_state.dart';
 import 'package:app/features/pets/presentation/pages/pet_profile_detail_page.dart';
+import 'package:app/features/pets/presentation/widgets/add_pet_sheet.dart';
 import 'package:app/features/pets/presentation/widgets/pet_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,12 +21,22 @@ class ProfileMyPetsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<PetsBloc, PetsState>(
       listenWhen: (previous, current) =>
-          previous.message != current.message && current.message != null,
+          previous.interaction != current.interaction ||
+          (previous.message != current.message && current.message != null),
       listener: (context, state) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(state.message!)),
-        );
-        context.read<PetsBloc>().add(const PetsInteractionConsumed());
+        if (state.interaction == PetsInteraction.addPet) {
+          showAddPetSheet(context);
+          context.read<PetsBloc>().add(const PetsInteractionConsumed());
+          return;
+        }
+
+        if (state.message != null &&
+            state.interaction != PetsInteraction.petCreated) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message!)),
+          );
+          context.read<PetsBloc>().add(const PetsInteractionConsumed());
+        }
       },
       builder: (context, state) {
         final content = state.content;

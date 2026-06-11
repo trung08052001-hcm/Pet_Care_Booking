@@ -27,18 +27,29 @@ import 'package:app/features/pets/presentation/bloc/pets_event.dart';
 import 'package:app/features/pets/presentation/pages/my_pets_page.dart';
 import 'package:app/features/pets/presentation/pages/pet_profile_detail_page.dart';
 import 'package:app/features/pets/presentation/pages/profile_my_pets_page.dart';
+import 'package:app/features/profile/domain/entities/help_center_category.dart';
+import 'package:app/features/profile/domain/entities/help_center_content.dart';
+import 'package:app/features/profile/presentation/bloc/app_review_bloc.dart';
 import 'package:app/features/profile/presentation/bloc/help_center_bloc.dart';
 import 'package:app/features/profile/presentation/bloc/help_center_event.dart';
 import 'package:app/features/profile/presentation/bloc/profile_address_bloc.dart';
 import 'package:app/features/profile/presentation/bloc/profile_address_event.dart';
 import 'package:app/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:app/features/profile/presentation/bloc/profile_edit_bloc.dart';
+import 'package:app/features/profile/presentation/bloc/profile_edit_event.dart';
 import 'package:app/features/profile/presentation/bloc/profile_event.dart';
+import 'package:app/features/profile/presentation/pages/app_review_page.dart';
+import 'package:app/features/profile/presentation/pages/help_center_detail_page.dart';
+import 'package:app/features/profile/presentation/pages/help_center_faq_detail_page.dart';
 import 'package:app/features/profile/presentation/pages/help_center_page.dart';
+import 'package:app/features/profile/presentation/pages/language_settings_page.dart';
 import 'package:app/features/profile/presentation/pages/profile_address_page.dart';
+import 'package:app/features/profile/presentation/pages/profile_edit_page.dart';
 import 'package:app/features/sample_posts/presentation/bloc/sample_posts_bloc.dart';
 import 'package:app/features/sample_posts/presentation/pages/sample_posts_page.dart';
 import 'package:app/features/services/presentation/bloc/services_bloc.dart';
 import 'package:app/features/services/presentation/bloc/services_event.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
@@ -185,6 +196,17 @@ class AppRouter {
         },
       ),
       GoRoute(
+        path: ProfileEditPage.routePath,
+        name: ProfileEditPage.routeName,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (_) =>
+                getIt<ProfileEditBloc>()..add(const ProfileEditStarted()),
+            child: const ProfileEditPage(),
+          );
+        },
+      ),
+      GoRoute(
         path: HelpCenterPage.routePath,
         name: HelpCenterPage.routeName,
         builder: (context, state) {
@@ -193,6 +215,45 @@ class AppRouter {
                 getIt<HelpCenterBloc>()..add(const HelpCenterStarted()),
             child: const HelpCenterPage(),
           );
+        },
+      ),
+      GoRoute(
+        path: HelpCenterDetailPage.routePath,
+        name: HelpCenterDetailPage.routeName,
+        builder: (context, state) {
+          final topic = state.extra as HelpCenterCategory?;
+          if (topic == null) {
+            return const _RouteMissingPage(message: 'Không tìm thấy mục hỗ trợ.');
+          }
+          return HelpCenterDetailPage(topic: topic);
+        },
+      ),
+      GoRoute(
+        path: HelpCenterFaqDetailPage.routePath,
+        name: HelpCenterFaqDetailPage.routeName,
+        builder: (context, state) {
+          final faq = state.extra as HelpCenterFaq?;
+          if (faq == null) {
+            return const _RouteMissingPage(message: 'Không tìm thấy câu hỏi.');
+          }
+          return HelpCenterFaqDetailPage(faq: faq);
+        },
+      ),
+      GoRoute(
+        path: AppReviewPage.routePath,
+        name: AppReviewPage.routeName,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (_) => getIt<AppReviewBloc>(),
+            child: const AppReviewPage(),
+          );
+        },
+      ),
+      GoRoute(
+        path: LanguageSettingsPage.routePath,
+        name: LanguageSettingsPage.routeName,
+        builder: (context, state) {
+          return const LanguageSettingsPage();
         },
       ),
       GoRoute(
@@ -247,4 +308,19 @@ class AppRouter {
       ),
     ],
   );
+}
+
+class _RouteMissingPage extends StatelessWidget {
+  const _RouteMissingPage({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(backgroundColor: Colors.white),
+      body: Center(child: Text(message)),
+    );
+  }
 }

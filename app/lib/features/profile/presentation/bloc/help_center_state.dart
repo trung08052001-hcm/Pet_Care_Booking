@@ -5,6 +5,7 @@ enum HelpCenterStatus {
   initial,
   loading,
   ready,
+  failure,
 }
 
 enum HelpCenterInteraction {
@@ -19,16 +20,12 @@ class HelpCenterState extends Equatable {
   const HelpCenterState({
     this.status = HelpCenterStatus.initial,
     this.content,
-    this.filteredContent,
-    this.query = '',
     this.message,
     this.interaction = HelpCenterInteraction.none,
   });
 
   final HelpCenterStatus status;
   final HelpCenterContent? content;
-  final HelpCenterContent? filteredContent;
-  final String query;
   final String? message;
   final HelpCenterInteraction interaction;
 
@@ -38,8 +35,6 @@ class HelpCenterState extends Equatable {
   HelpCenterState copyWith({
     HelpCenterStatus? status,
     HelpCenterContent? content,
-    HelpCenterContent? filteredContent,
-    String? query,
     String? message,
     HelpCenterInteraction? interaction,
     bool clearMessage = false,
@@ -47,8 +42,6 @@ class HelpCenterState extends Equatable {
     return HelpCenterState(
       status: status ?? this.status,
       content: content ?? this.content,
-      filteredContent: filteredContent ?? this.filteredContent,
-      query: query ?? this.query,
       message: clearMessage ? null : (message ?? this.message),
       interaction: interaction ?? this.interaction,
     );
@@ -58,8 +51,6 @@ class HelpCenterState extends Equatable {
   List<Object?> get props => [
         status,
         content,
-        filteredContent,
-        query,
         message,
         interaction,
       ];

@@ -7,14 +7,15 @@ import 'package:app/core/common/app_bloc_observer.dart';
 import 'package:app/core/config/app_config.dart';
 import 'package:app/core/config/app_flavor.dart';
 import 'package:app/core/di/injection.dart';
-import 'package:app/core/locale_cubit.dart';
 import 'package:app/core/local/hive_local_store.dart';
+import 'package:app/core/locale_cubit.dart';
 import 'package:app/core/notifications/push_notification_service.dart';
+import 'package:app/core/storage/storage_service.dart';
 import 'package:app/features/authentication/data/services/zalo_auth_service.dart';
-import 'package:app/features/pets/data/services/pet_sync_service.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_event.dart';
+import 'package:app/features/pets/data/services/pet_sync_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -55,7 +56,7 @@ class MyApp extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => LocaleCubit()),
+        BlocProvider(create: (_) => LocaleCubit(getIt<AppPreferences>())),
         BlocProvider(
           create: (_) =>
               getIt<AuthBloc>()..add(const AuthSessionRestoreRequested()),

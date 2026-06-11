@@ -29,6 +29,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    avatar: {
+      type: String,
+      trim: true,
+      maxlength: 5500000,
+      default: null,
+    },
     address: {
       label: {
         type: String,

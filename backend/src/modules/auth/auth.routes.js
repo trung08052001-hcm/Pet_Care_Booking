@@ -10,20 +10,24 @@ const {
   getMyAddress,
   googleLogin,
   adminLogin,
+  changeMyPassword,
   login,
   logout,
   refreshToken,
   resetPassword,
   register,
+  updateMyProfile,
   updateMyAddress,
   verifyResetOtp,
   zaloLogin,
 } = require("./auth.controller");
 const {
   addressSchema,
+  changePasswordSchema,
   forgotPasswordSchema,
   googleLoginSchema,
   loginSchema,
+  profileSchema,
   refreshTokenSchema,
   registerSchema,
   resetPasswordSchema,
@@ -44,6 +48,13 @@ router.post("/logout", validate(refreshTokenSchema), logout);
 router.post("/social/google", validate(googleLoginSchema), googleLogin);
 router.post("/social/zalo", validate(zaloLoginSchema), zaloLogin);
 router.get("/me", authenticate, getMe);
+router.patch("/me/profile", authenticate, validate(profileSchema), updateMyProfile);
+router.patch(
+  "/me/password",
+  authenticate,
+  validate(changePasswordSchema),
+  changeMyPassword
+);
 router.get("/me/address", authenticate, getMyAddress);
 router.patch(
   "/me/address",

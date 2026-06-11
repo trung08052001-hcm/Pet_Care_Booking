@@ -43,16 +43,23 @@ import 'package:app/features/pets/domain/repositories/pets_repository.dart';
 import 'package:app/features/pets/domain/usecases/create_pet_usecase.dart';
 import 'package:app/features/pets/domain/usecases/get_my_pets_page_content_usecase.dart';
 import 'package:app/features/pets/presentation/bloc/pets_bloc.dart';
-import 'package:app/features/profile/data/datasources/help_center_mock_data_source.dart';
+import 'package:app/features/profile/data/datasources/app_review_remote_data_source.dart';
+import 'package:app/features/profile/data/datasources/help_center_remote_data_source.dart';
 import 'package:app/features/profile/data/datasources/profile_address_remote_data_source.dart';
+import 'package:app/features/profile/data/datasources/profile_edit_remote_data_source.dart';
 import 'package:app/features/profile/data/repositories/profile_address_repository_impl.dart';
 import 'package:app/features/profile/data/services/current_location_address_service.dart';
 import 'package:app/features/profile/domain/repositories/profile_address_repository.dart';
 import 'package:app/features/profile/domain/usecases/get_help_center_content_usecase.dart';
 import 'package:app/features/profile/domain/usecases/get_profile_address_usecase.dart';
+import 'package:app/features/profile/domain/usecases/get_profile_edit_user_usecase.dart';
 import 'package:app/features/profile/domain/usecases/save_profile_address_usecase.dart';
+import 'package:app/features/profile/domain/usecases/submit_app_review_usecase.dart';
+import 'package:app/features/profile/domain/usecases/update_profile_edit_usecase.dart';
+import 'package:app/features/profile/presentation/bloc/app_review_bloc.dart';
 import 'package:app/features/profile/presentation/bloc/help_center_bloc.dart';
 import 'package:app/features/profile/presentation/bloc/profile_address_bloc.dart';
+import 'package:app/features/profile/presentation/bloc/profile_edit_bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -77,7 +84,9 @@ Future<void> configureDependencies(AppConfig appConfig) async {
   await _registerPetsDependencies();
   await _registerBookingDependencies();
   await _registerProfileAddressDependencies();
+  await _registerProfileEditDependencies();
   await _registerHelpCenterDependencies();
+  await _registerAppReviewDependencies();
 }
 
 AppConfig get currentAppConfig {
@@ -303,16 +312,51 @@ Future<void> _registerProfileAddressDependencies() async {
   );
 }
 
+Future<void> _registerProfileEditDependencies() async {
+  await _replaceRegistration<ProfileEditRemoteDataSource>(
+    () => ProfileEditRemoteDataSource(getIt<Dio>()),
+  );
+  await _replaceRegistration<GetProfileEditUserUseCase>(
+    () => GetProfileEditUserUseCase(getIt<ProfileEditRemoteDataSource>()),
+    lazySingleton: false,
+  );
+  await _replaceRegistration<UpdateProfileEditUseCase>(
+    () => UpdateProfileEditUseCase(getIt<ProfileEditRemoteDataSource>()),
+    lazySingleton: false,
+  );
+  await _replaceRegistration<ProfileEditBloc>(
+    () => ProfileEditBloc(
+      getIt<GetProfileEditUserUseCase>(),
+      getIt<UpdateProfileEditUseCase>(),
+    ),
+    lazySingleton: false,
+  );
+}
+
 Future<void> _registerHelpCenterDependencies() async {
-  await _replaceRegistration<HelpCenterMockDataSource>(
-    () => const HelpCenterMockDataSource(),
+  await _replaceRegistration<HelpCenterRemoteDataSource>(
+    () => HelpCenterRemoteDataSource(getIt<Dio>()),
   );
   await _replaceRegistration<GetHelpCenterContentUseCase>(
-    () => GetHelpCenterContentUseCase(getIt<HelpCenterMockDataSource>()),
+    () => GetHelpCenterContentUseCase(getIt<HelpCenterRemoteDataSource>()),
     lazySingleton: false,
   );
   await _replaceRegistration<HelpCenterBloc>(
     () => HelpCenterBloc(getIt<GetHelpCenterContentUseCase>()),
+    lazySingleton: false,
+  );
+}
+
+Future<void> _registerAppReviewDependencies() async {
+  await _replaceRegistration<AppReviewRemoteDataSource>(
+    () => AppReviewRemoteDataSource(getIt<Dio>()),
+  );
+  await _replaceRegistration<SubmitAppReviewUseCase>(
+    () => SubmitAppReviewUseCase(getIt<AppReviewRemoteDataSource>()),
+    lazySingleton: false,
+  );
+  await _replaceRegistration<AppReviewBloc>(
+    () => AppReviewBloc(getIt<SubmitAppReviewUseCase>()),
     lazySingleton: false,
   );
 }

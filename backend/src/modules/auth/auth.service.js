@@ -411,7 +411,7 @@ const loginWithZalo = async (payload, metadata = {}) => {
 };
 
 const getMyAddress = async (userId) => {
-  const user = await User.findById(userId).select("address");
+  const user = await User.findById(userId).select("address isActive");
 
   if (!user || !user.isActive) {
     throw new ApiError(401, "User is not authorized.");
@@ -439,6 +439,41 @@ const updateMyAddress = async (userId, payload) => {
   return user.address;
 };
 
+const updateMyProfile = async (userId, payload) => {
+  const user = await User.findById(userId);
+
+  if (!user || !user.isActive) {
+    throw new ApiError(401, "User is not authorized.");
+  }
+
+  if (Object.prototype.hasOwnProperty.call(payload, "avatarDataUrl")) {
+    user.avatar = payload.avatarDataUrl || null;
+  }
+
+  await user.save();
+
+  return user;
+};
+
+const changeMyPassword = async (userId, payload) => {
+  const user = await User.findById(userId).select("+password");
+
+  if (!user || !user.isActive) {
+    throw new ApiError(401, "User is not authorized.");
+  }
+
+  const isCurrentPasswordValid = await user.comparePassword(
+    payload.currentPassword
+  );
+
+  if (!isCurrentPasswordValid) {
+    throw new ApiError(400, "Current password is incorrect.");
+  }
+
+  user.password = payload.newPassword;
+  await user.save();
+};
+
 module.exports = {
   register,
   login,
@@ -451,5 +486,7 @@ module.exports = {
   loginWithGoogle,
   loginWithZalo,
   getMyAddress,
+  updateMyProfile,
+  changeMyPassword,
   updateMyAddress,
 };

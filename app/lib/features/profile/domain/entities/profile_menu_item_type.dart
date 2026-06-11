@@ -5,4 +5,5 @@ enum ProfileMenuItemType {
   addresses,
   helpCenter,
   rateApp,
+  language,
 }

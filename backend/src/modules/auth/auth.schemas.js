@@ -160,6 +160,39 @@ const addressSchema = Joi.object({
   longitude: Joi.number().min(-180).max(180).allow(null).default(null),
 });
 
+const avatarDataUrlField = Joi.string()
+  .trim()
+  .max(5500000)
+  .pattern(/^data:image\/(png|jpe?g|webp);base64,[A-Za-z0-9+/=]+$/)
+  .allow(null, "")
+  .messages({
+    "string.max": "Avatar image is too large.",
+    "string.pattern.base": "Avatar image must be a base64 data URL.",
+  });
+
+const profileSchema = Joi.object({
+  avatarDataUrl: avatarDataUrlField.default(null),
+});
+
+const changePasswordSchema = Joi.object({
+  currentPassword: passwordField.required().messages({
+    "any.required": "Current password is required.",
+    "string.empty": "Current password is required.",
+  }),
+  newPassword: passwordField.required().invalid(Joi.ref("currentPassword")).messages({
+    "any.invalid": "New password must be different from current password.",
+    "any.required": "New password is required.",
+    "string.empty": "New password is required.",
+  }),
+  confirmPassword: Joi.string()
+    .valid(Joi.ref("newPassword"))
+    .required()
+    .messages({
+      "any.only": "Confirm password does not match.",
+      "any.required": "Confirm password is required.",
+    }),
+});
+
 module.exports = {
   registerSchema,
   loginSchema,
@@ -170,4 +203,6 @@ module.exports = {
   zaloLoginSchema,
   refreshTokenSchema,
   addressSchema,
+  profileSchema,
+  changePasswordSchema,
 };

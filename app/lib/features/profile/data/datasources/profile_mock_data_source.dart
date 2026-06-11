@@ -49,6 +49,11 @@ class ProfileMockDataSource {
           type: ProfileMenuItemType.rateApp,
           title: 'Đánh giá ứng dụng',
         ),
+        ProfileMenuItem(
+          id: 'menu-language',
+          type: ProfileMenuItemType.language,
+          title: 'Ngôn ngữ',
+        ),
       ],
       logoutLabel: 'Đăng xuất',
       appVersionLabel: 'Phiên bản 2.4.0 (2024)',

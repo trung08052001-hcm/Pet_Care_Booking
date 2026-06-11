@@ -8,6 +8,7 @@ class AuthUser extends Equatable {
     required this.phone,
     required this.role,
     required this.authProvider,
+    this.avatar,
     required this.isActive,
     required this.acceptedTermsAt,
     required this.lastLoginAt,
@@ -21,6 +22,7 @@ class AuthUser extends Equatable {
   final String? phone;
   final String role;
   final String authProvider;
+  final String? avatar;
   final bool isActive;
   final String? acceptedTermsAt;
   final String? lastLoginAt;
@@ -35,6 +37,7 @@ class AuthUser extends Equatable {
         phone,
         role,
         authProvider,
+        avatar,
         isActive,
         acceptedTermsAt,
         lastLoginAt,

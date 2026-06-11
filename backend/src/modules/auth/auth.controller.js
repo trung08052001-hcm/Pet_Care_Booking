@@ -137,6 +137,27 @@ const getMyAddress = asyncHandler(async (req, res) => {
   });
 });
 
+const updateMyProfile = asyncHandler(async (req, res) => {
+  const user = await authService.updateMyProfile(req.user._id, req.body);
+
+  res.status(200).json({
+    success: true,
+    message: "Profile updated successfully.",
+    data: {
+      user: pickUser(user),
+    },
+  });
+});
+
+const changeMyPassword = asyncHandler(async (req, res) => {
+  await authService.changeMyPassword(req.user._id, req.body);
+
+  res.status(200).json({
+    success: true,
+    message: "Password changed successfully.",
+  });
+});
+
 const updateMyAddress = asyncHandler(async (req, res) => {
   const address = await authService.updateMyAddress(req.user._id, req.body);
 
@@ -162,5 +183,7 @@ module.exports = {
   googleLogin,
   zaloLogin,
   getMyAddress,
+  updateMyProfile,
+  changeMyPassword,
   updateMyAddress,
 };

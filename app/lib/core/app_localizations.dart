@@ -1,3 +1,5 @@
+import 'package:app/core/l10n/app_strings_en.dart';
+import 'package:app/core/l10n/app_strings_vi.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -15,206 +17,8 @@ class AppLocalizations {
   ];
 
   static const Map<String, Map<String, String>> _localizedValues = {
-    'en': {
-      'appTitle': 'Flutter Product Base',
-      'pageTitle': 'Flutter Product Base',
-      'onboardingBrand': 'PawSitive Care',
-      'skip': 'Skip',
-      'continueLabel': 'Continue',
-      'getStarted': 'Get Started',
-      'swipeToContinue': 'Swipe to continue',
-      'signInTitle': 'Welcome back',
-      'signInSubtitle':
-          'Sign in to continue caring for your pet with easy booking and trusted support.',
-      'signInCta': 'Sign In',
-      'signUpTitle': 'Create account',
-      'signUpSubtitle':
-          'Set up your PawSitive Care account to manage appointments and pet care in one place.',
-      'signUpCta': 'Sign Up',
-      'identifierLabel': 'Email or phone number',
-      'identifierHint': 'example@email.com or 0901234567',
-      'emailLabel': 'Email',
-      'emailHint': 'example@email.com',
-      'passwordLabel': 'Password',
-      'passwordHint': 'Enter your password',
-      'rememberMe': 'Remember me',
-      'forgotPassword': 'Forgot password?',
-      'orContinueWith': 'Or continue with',
-      'noAccountPrompt': 'Don\'t have an account?',
-      'alreadyHaveAccountPrompt': 'Already have an account?',
-      'signUpLink': 'Sign Up',
-      'signInLink': 'Sign In',
-      'fullNameLabel': 'Full name',
-      'fullNameHint': 'Nguyen Van A',
-      'phoneLabel': 'Phone number',
-      'phoneHint': '090 123 4567',
-      'addressLabel': 'Address',
-      'addressHint': 'Enter your address',
-      'confirmPasswordLabel': 'Confirm password',
-      'confirmPasswordHint': 'Re-enter your password',
-      'acceptTermsPrefix': 'I agree to the ',
-      'termsAndPolicy': 'Terms & Privacy Policy',
-      'emailRequiredError': 'Please enter your email.',
-      'emailInvalidError': 'Please enter a valid email.',
-      'identifierRequiredError': 'Please enter your email or phone number.',
-      'identifierInvalidError': 'Please enter a valid email or phone number.',
-      'passwordRequiredError': 'Please enter your password.',
-      'passwordShortError': 'Password must be at least 8 characters.',
-      'fullNameRequiredError': 'Please enter your full name.',
-      'phoneRequiredError': 'Please enter your phone number.',
-      'phoneInvalidError': 'Please enter a valid phone number.',
-      'addressRequiredError': 'Please enter your address.',
-      'addressTooLongError': 'Address cannot exceed 300 characters.',
-      'confirmPasswordRequiredError': 'Please confirm your password.',
-      'confirmPasswordMismatchError': 'Passwords do not match.',
-      'acceptTermsError': 'Please accept the terms to continue.',
-      'forgotPasswordTitle': 'Forgot password',
-      'forgotPasswordSubtitle':
-          'Enter your email and we will send a 6-digit verification code.',
-      'sendOtpCta': 'Send OTP',
-      'otpSentMessage':
-          'If the account exists, a verification code has been sent.',
-      'otpVerifiedMessage': 'OTP verified successfully.',
-      'resendingOtp': 'Sending...',
-      'otpTitle': 'Verify OTP',
-      'otpSubtitle': 'We sent a 6-digit verification code to {value}.',
-      'otpLabel': 'Verification code',
-      'verifyOtpCta': 'Verify code',
-      'resendOtp': 'Resend code',
-      'otpRequiredError': 'Please enter the OTP code.',
-      'otpInvalidError': 'OTP must contain 6 digits.',
-      'resetPasswordTitle': 'Create new password',
-      'resetPasswordSubtitle':
-          'Set a new password for {value} to secure your account again.',
-      'resetPasswordCta': 'Update password',
-      'newPasswordLabel': 'New password',
-      'newPasswordHint': 'Enter your new password',
-      'confirmNewPasswordLabel': 'Confirm new password',
-      'confirmNewPasswordHint': 'Re-enter your new password',
-      'onboardingTitle1': 'Care with heart',
-      'onboardingDescription1':
-          'Everything your pet needs in one calm place, from daily support to trusted guidance.',
-      'onboardingBadge1': 'Dedicated care',
-      'onboardingTitle2': 'Expert companions',
-      'onboardingDescription2':
-          'Connect with experienced pet specialists who understand nutrition, health, and behavior.',
-      'onboardingBadge2': 'Top experts',
-      'onboardingTitle3': 'Easy booking',
-      'onboardingDescription3':
-          'Book appointments in minutes and keep every important visit organized in one flow.',
-      'onboardingBadge3': 'Fast schedule',
-      'headline': 'Production-ready Flutter base',
-      'description':
-          'Feature-first clean architecture using Bloc, Dio, Retrofit, and GetIt.',
-      'flavor': 'Flavor: {value}',
-      'baseUrl': 'Base URL: {value}',
-      'couldNotLoadPosts': 'Could not load sample posts',
-      'retry': 'Retry',
-      'unknownError': 'Unknown error.',
-      'changeLanguage': 'Change language',
-      'english': 'English',
-      'vietnamese': 'Vietnamese',
-    },
-    'vi': {
-      'appTitle': 'Nen tang Flutter',
-      'pageTitle': 'Nen tang Flutter',
-      'onboardingBrand': 'PawSitive Care',
-      'skip': 'Bo qua',
-      'continueLabel': 'Tiep tuc',
-      'getStarted': 'Bat dau ngay',
-      'swipeToContinue': 'Vuot de tiep tuc',
-      'signInTitle': 'Chao mung ban tro lai',
-      'signInSubtitle':
-          'Dang nhap de tiep tuc cham soc thu cung, dat lich nhanh va theo doi moi ho so de dang.',
-      'signInCta': 'Dang nhap',
-      'signUpTitle': 'Tao tai khoan moi',
-      'signUpSubtitle':
-          'Tao tai khoan PawSitive Care de quan ly lich hen va hanh trinh cham soc thu cung o mot noi.',
-      'signUpCta': 'Dang ky',
-      'identifierLabel': 'Email hoac so dien thoai',
-      'identifierHint': 'example@email.com hoac 0901234567',
-      'emailLabel': 'Email',
-      'emailHint': 'example@email.com',
-      'passwordLabel': 'Mat khau',
-      'passwordHint': 'Nhap mat khau cua ban',
-      'rememberMe': 'Nho dang nhap',
-      'forgotPassword': 'Quen mat khau?',
-      'orContinueWith': 'Hoac dang nhap nhanh voi',
-      'noAccountPrompt': 'Chua co tai khoan?',
-      'alreadyHaveAccountPrompt': 'Da co tai khoan?',
-      'signUpLink': 'Dang ky ngay',
-      'signInLink': 'Dang nhap',
-      'fullNameLabel': 'Ho va ten',
-      'fullNameHint': 'Nguyen Van A',
-      'phoneLabel': 'So dien thoai',
-      'phoneHint': '090 123 4567',
-      'addressLabel': 'Dia chi',
-      'addressHint': 'Nhap dia chi cua ban',
-      'confirmPasswordLabel': 'Xac nhan mat khau',
-      'confirmPasswordHint': 'Nhap lai mat khau',
-      'acceptTermsPrefix': 'Toi dong y voi ',
-      'termsAndPolicy': 'Dieu khoan & Chinh sach',
-      'emailRequiredError': 'Vui long nhap email.',
-      'emailInvalidError': 'Email khong hop le.',
-      'identifierRequiredError': 'Vui long nhap email hoac so dien thoai.',
-      'identifierInvalidError': 'Email hoac so dien thoai khong hop le.',
-      'passwordRequiredError': 'Vui long nhap mat khau.',
-      'passwordShortError': 'Mat khau phai co it nhat 8 ky tu.',
-      'fullNameRequiredError': 'Vui long nhap ho va ten.',
-      'phoneRequiredError': 'Vui long nhap so dien thoai.',
-      'phoneInvalidError': 'So dien thoai khong hop le.',
-      'addressRequiredError': 'Vui long nhap dia chi.',
-      'addressTooLongError': 'Dia chi khong duoc vuot qua 300 ky tu.',
-      'confirmPasswordRequiredError': 'Vui long nhap lai mat khau.',
-      'confirmPasswordMismatchError': 'Mat khau xac nhan khong khop.',
-      'acceptTermsError': 'Ban can dong y dieu khoan de tiep tuc.',
-      'forgotPasswordTitle': 'Quen mat khau',
-      'forgotPasswordSubtitle':
-          'Nhap email de nhan ma xac minh 6 so.',
-      'sendOtpCta': 'Gui ma OTP',
-      'otpSentMessage':
-          'Neu tai khoan ton tai, ma xac minh da duoc gui.',
-      'otpVerifiedMessage': 'Xac minh OTP thanh cong.',
-      'resendingOtp': 'Dang gui...',
-      'otpTitle': 'Nhap ma OTP',
-      'otpSubtitle': 'Chung toi da gui ma xac minh 6 so den {value}.',
-      'otpLabel': 'Ma xac minh',
-      'verifyOtpCta': 'Xac minh',
-      'resendOtp': 'Gui lai ma',
-      'otpRequiredError': 'Vui long nhap ma OTP.',
-      'otpInvalidError': 'Ma OTP phai gom 6 chu so.',
-      'resetPasswordTitle': 'Tao mat khau moi',
-      'resetPasswordSubtitle':
-          'Dat mat khau moi cho {value} de bao ve tai khoan cua ban.',
-      'resetPasswordCta': 'Cap nhat mat khau',
-      'newPasswordLabel': 'Mat khau moi',
-      'newPasswordHint': 'Nhap mat khau moi',
-      'confirmNewPasswordLabel': 'Xac nhan mat khau moi',
-      'confirmNewPasswordHint': 'Nhap lai mat khau moi',
-      'onboardingTitle1': 'Cham soc tan tam',
-      'onboardingDescription1':
-          'Chung toi cham soc cac be thu cung cua ban bang su tan tam, nhe nhang va dang tin cay moi ngay.',
-      'onboardingBadge1': 'Tan tam',
-      'onboardingTitle2': 'Doi ngu chuyen gia',
-      'onboardingDescription2':
-          'Ket noi voi doi ngu chuyen gia giau kinh nghiem trong cham soc, dinh duong va suc khoe thu cung.',
-      'onboardingBadge2': 'Chuyen gia',
-      'onboardingTitle3': 'Dat lich de dang',
-      'onboardingDescription3':
-          'Dat lich nhanh gon, theo doi lich hen de dang va luon san sang cho moi lan tham kham.',
-      'onboardingBadge3': 'Dat lich nhanh',
-      'headline': 'Bo khung Flutter san sang cho production',
-      'description':
-          'Kien truc feature-first clean architecture voi Bloc, Dio, Retrofit va GetIt.',
-      'flavor': 'Moi truong: {value}',
-      'baseUrl': 'Duong dan API: {value}',
-      'couldNotLoadPosts': 'Khong the tai danh sach bai viet mau',
-      'retry': 'Thu lai',
-      'unknownError': 'Da xay ra loi khong xac dinh.',
-      'changeLanguage': 'Doi ngon ngu',
-      'english': 'Tieng Anh',
-      'vietnamese': 'Tieng Viet',
-    },
+    'en': appStringsEn,
+    'vi': appStringsVi,
   };
 
   static AppLocalizations of(BuildContext context) {
@@ -233,7 +37,9 @@ class AppLocalizations {
         ? locale.languageCode
         : 'en';
 
-    return _localizedValues[languageCode]![key]!;
+    return _localizedValues[languageCode]![key] ??
+        _localizedValues['en']![key] ??
+        key;
   }
 
   String get appTitle => _text('appTitle');
@@ -323,8 +129,33 @@ class AppLocalizations {
   String get changeLanguage => _text('changeLanguage');
   String get english => _text('english');
   String get vietnamese => _text('vietnamese');
+  String get languageSettingsTitle => _text('languageSettingsTitle');
+  String get languageSettingsSubtitle => _text('languageSettingsSubtitle');
+  String get chooseLanguage => _text('chooseLanguage');
+  String get englishDescription => _text('englishDescription');
+  String get vietnameseDescription => _text('vietnameseDescription');
+  String get currentLanguage => _text('currentLanguage');
+  String get languageSaved => _text('languageSaved');
+  String get profileEditLabel => _text('profileEditLabel');
+  String get profileSupportTitle => _text('profileSupportTitle');
+  String get profileLogout => _text('profileLogout');
+  String get profileVersion => _text('profileVersion');
+  String get profileMemberSince => _text('profileMemberSince');
+  String get profileMyPets => _text('profileMyPets');
+  String get profileBookingHistory => _text('profileBookingHistory');
+  String get profileWallet => _text('profileWallet');
+  String get profileAddresses => _text('profileAddresses');
+  String get profileHelpCenter => _text('profileHelpCenter');
+  String get profileRateApp => _text('profileRateApp');
+  String get profileLanguage => _text('profileLanguage');
+  String get navHome => _text('navHome');
+  String get navServices => _text('navServices');
+  String get navBlog => _text('navBlog');
+  String get navChat => _text('navChat');
+  String get navProfile => _text('navProfile');
 
-  String flavorLabel(String value) => _text('flavor').replaceFirst('{value}', value);
+  String flavorLabel(String value) =>
+      _text('flavor').replaceFirst('{value}', value);
 
   String baseUrlLabel(String value) =>
       _text('baseUrl').replaceFirst('{value}', value);

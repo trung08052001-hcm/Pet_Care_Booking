@@ -136,6 +136,7 @@ class AuthInterceptor extends QueuedInterceptor {
       ),
     );
     final headers = Map<String, dynamic>.from(request.headers)
+      ..removeWhere((key, value) => key.toLowerCase() == 'authorization')
       ..['Authorization'] = 'Bearer $accessToken';
     final extra = Map<String, dynamic>.from(request.extra)
       ..['tokenRefreshAttempted'] = true;

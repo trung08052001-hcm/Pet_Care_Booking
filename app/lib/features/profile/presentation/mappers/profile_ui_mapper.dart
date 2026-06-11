@@ -10,6 +10,7 @@ abstract final class ProfileUiMapper {
       ProfileMenuItemType.addresses => Icons.location_on_outlined,
       ProfileMenuItemType.helpCenter => Icons.help_outline_rounded,
       ProfileMenuItemType.rateApp => Icons.star_outline_rounded,
+      ProfileMenuItemType.language => Icons.language_rounded,
     };
   }
 }
