@@ -17,6 +17,7 @@ class MainShellPage extends StatelessWidget {
 
   static const routeName = 'main-shell';
   static const routePath = '/home';
+  static const chatTabIndex = 3;
 
   static const _pages = [
     HomePage(),

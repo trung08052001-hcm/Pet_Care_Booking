@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/core/usecase/usecase.dart';
 import 'package:app/features/chat/domain/entities/chat_message.dart';
 import 'package:app/features/chat/domain/repositories/chat_repository.dart';
@@ -18,6 +20,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatStarted>(_onStarted);
     on<ChatRefreshRequested>(_onRefreshRequested);
     on<ChatMessageSendRequested>(_onMessageSendRequested);
+    on<ChatIncomingMessageReceived>(_onIncomingMessageReceived);
     on<ChatFaqPressed>(_onFaqPressed);
     on<ChatSeeAllFaqsPressed>(_onSeeAllFaqsPressed);
     on<ChatNotificationsPressed>(_onNotificationsPressed);
@@ -29,6 +32,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final GetChatPageContentUseCase _getChatPageContentUseCase;
   final SendChatMessageUseCase _sendChatMessageUseCase;
   final ChatRepository _repository;
+  StreamSubscription<ChatMessage>? _messageSubscription;
 
   Future<void> _onStarted(ChatStarted event, Emitter<ChatState> emit) =>
       _loadChat(emit);
@@ -68,9 +72,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           agent: content.agent,
           faqs: content.faqs,
           messages: content.messages,
+          isRealtimeConnected: true,
           clearMessage: true,
         ),
       ),
+    );
+    await _messageSubscription?.cancel();
+    _messageSubscription = _repository.incomingMessages.listen(
+      (message) => add(ChatIncomingMessageReceived(message)),
     );
   }
 
@@ -103,21 +112,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     String text,
     Emitter<ChatState> emit,
   ) async {
-    final userMessage = _repository.createUserMessage(text);
-
     emit(
       state.copyWith(
-        messages: [...state.messages, userMessage],
         isSending: true,
         interaction: ChatInteraction.none,
         clearMessage: true,
-      ),
-    );
-
-    emit(
-      state.copyWith(
-        isSending: false,
-        isAgentTyping: true,
       ),
     );
 
@@ -125,35 +124,49 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     result.fold(
       (failure) => emit(
         state.copyWith(
+          isSending: false,
           isAgentTyping: false,
           message: failure.message,
         ),
       ),
       (agentMessage) {
-        final updatedMessages = [
-          ...state.messages.map(
-            (message) => message.id == userMessage.id
-                ? ChatMessage(
-                    id: message.id,
-                    sender: message.sender,
-                    text: message.text,
-                    sentAt: message.sentAt,
-                    imageAttachmentTitle: message.imageAttachmentTitle,
-                    isRead: true,
-                  )
-                : message,
-          ),
-          agentMessage,
-        ];
+        final hasMessage = state.messages.any(
+          (message) => message.id == agentMessage.id,
+        );
+        final updatedMessages = hasMessage
+            ? state.messages
+            : [...state.messages, agentMessage];
 
         emit(
           state.copyWith(
             messages: updatedMessages,
+            isSending: false,
             isAgentTyping: false,
             clearMessage: true,
           ),
         );
       },
+    );
+  }
+
+  void _onIncomingMessageReceived(
+    ChatIncomingMessageReceived event,
+    Emitter<ChatState> emit,
+  ) {
+    final hasMessage = state.messages.any(
+      (message) => message.id == event.message.id,
+    );
+    if (hasMessage) {
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        messages: [...state.messages, event.message],
+        isAgentTyping: false,
+        isRealtimeConnected: true,
+        clearMessage: true,
+      ),
     );
   }
 
@@ -200,5 +213,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     emit(
       state.copyWith(interaction: ChatInteraction.pickEmoji),
     );
+  }
+
+  @override
+  Future<void> close() async {
+    await _messageSubscription?.cancel();
+    return super.close();
   }
 }

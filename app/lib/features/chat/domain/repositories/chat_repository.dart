@@ -5,7 +5,9 @@ import 'package:app/features/chat/domain/entities/chat_page_content.dart';
 abstract interface class ChatRepository {
   ResultFuture<ChatPageContent> getChatPageContent();
 
-  ResultFuture<ChatMessage> getAgentReply(String userMessage);
+  Stream<ChatMessage> get incomingMessages;
+
+  ResultFuture<ChatMessage> sendMessage(String text);
 
   ChatMessage createUserMessage(String text);
 }

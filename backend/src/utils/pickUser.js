@@ -8,6 +8,8 @@ const pickUser = (user) => ({
   authProvider: user.authProvider,
   avatar: user.avatar || null,
   isActive: user.isActive,
+  isOnline: Boolean(user.isOnline),
+  lastSeenAt: user.lastSeenAt || null,
   acceptedTermsAt: user.acceptedTermsAt || null,
   lastLoginAt: user.lastLoginAt || null,
   createdAt: user.createdAt,

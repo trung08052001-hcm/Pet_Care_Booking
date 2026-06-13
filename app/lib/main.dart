@@ -10,21 +10,30 @@ import 'package:app/core/di/injection.dart';
 import 'package:app/core/local/hive_local_store.dart';
 import 'package:app/core/locale_cubit.dart';
 import 'package:app/core/notifications/push_notification_service.dart';
+import 'package:app/core/presence/presence_socket_service.dart';
 import 'package:app/core/storage/storage_service.dart';
 import 'package:app/features/authentication/data/services/zalo_auth_service.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_event.dart';
 import 'package:app/features/pets/data/services/pet_sync_service.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const BootstrapApp());
 
   await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   await HiveLocalStore.init();
 
   final appConfig = AppConfig.fromFlavor(AppFlavor.dev);
@@ -41,6 +50,7 @@ Future<void> _startBackgroundServices() async {
   try {
     getIt<PetSyncService>().start();
     await getIt<PushNotificationService>().init();
+    await getIt<PresenceSocketService>().start();
   } on Exception catch (error, stackTrace) {
     debugPrint('Background service init failed: $error');
     debugPrintStack(stackTrace: stackTrace);

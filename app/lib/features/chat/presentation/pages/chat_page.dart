@@ -1,6 +1,5 @@
 import 'package:app/app/theme/app_colors.dart';
 import 'package:app/features/chat/domain/entities/chat_agent.dart';
-import 'package:app/features/chat/domain/entities/chat_faq_item.dart';
 import 'package:app/features/chat/domain/entities/chat_message.dart';
 import 'package:app/features/chat/domain/entities/chat_message_sender.dart';
 import 'package:app/features/chat/presentation/bloc/chat_bloc.dart';
@@ -144,12 +143,6 @@ class _ChatBody extends StatelessWidget {
               onNotificationsPressed: () =>
                   bloc.add(const ChatNotificationsPressed()),
             ),
-            _FaqSection(
-              title: state.faqSectionTitle,
-              faqs: state.faqs,
-              onSeeAll: () => bloc.add(const ChatSeeAllFaqsPressed()),
-              onFaqTap: (id) => bloc.add(ChatFaqPressed(id)),
-            ),
             Expanded(
               child: ListView(
                 controller: scrollController,
@@ -225,131 +218,6 @@ class _ChatAppBar extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _FaqSection extends StatelessWidget {
-  const _FaqSection({
-    required this.title,
-    required this.faqs,
-    required this.onSeeAll,
-    required this.onFaqTap,
-  });
-
-  final String title;
-  final List<ChatFaqItem> faqs;
-  final VoidCallback onSeeAll;
-  final ValueChanged<String> onFaqTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.brownText,
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: onSeeAll,
-                style: TextButton.styleFrom(
-                  foregroundColor: AppColors.primary,
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  minimumSize: Size.zero,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: const Text(
-                  'Xem tất cả',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          SizedBox(
-            height: 88,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: faqs.length,
-              separatorBuilder: (context, _) => const SizedBox(width: 12),
-              itemBuilder: (context, index) {
-                final faq = faqs[index];
-                return _FaqCard(
-                  faq: faq,
-                  onTap: () => onFaqTap(faq.id),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _FaqCard extends StatelessWidget {
-  const _FaqCard({
-    required this.faq,
-    required this.onTap,
-  });
-
-  final ChatFaqItem faq;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 200,
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: AppColors.cardBg,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(
-              ChatUiMapper.faqIcon(faq.icon),
-              color: AppColors.primary,
-              size: 22,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              faq.question,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                height: 1.3,
-                color: AppColors.brownText,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

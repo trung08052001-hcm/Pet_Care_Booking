@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
+const http = require("http");
+const { Server } = require("socket.io");
 
 const app = require("./app");
 const env = require("./config/env");
 const connectDatabase = require("./config/db");
+const { initializeChatSocket } = require("./socket/chatSocket");
 const {
   startBookingReminderScheduler,
   stopBookingReminderScheduler,
@@ -11,7 +14,17 @@ const {
 const startServer = async () => {
   await connectDatabase();
 
-  const server = app.listen(env.port, () => {
+  const server = http.createServer(app);
+  const io = new Server(server, {
+    cors: {
+      origin: true,
+      credentials: true,
+    },
+  });
+
+  initializeChatSocket(io);
+
+  server.listen(env.port, () => {
     console.log(`[server] Listening on port ${env.port}`);
   });
   startBookingReminderScheduler();

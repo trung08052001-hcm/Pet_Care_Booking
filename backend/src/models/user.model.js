@@ -70,6 +70,15 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    isOnline: {
+      type: Boolean,
+      default: false,
+      index: true,
+    },
+    lastSeenAt: {
+      type: Date,
+      default: null,
+    },
     authProvider: {
       type: String,
       enum: ["local", "google", "zalo"],

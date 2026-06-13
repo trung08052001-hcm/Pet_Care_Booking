@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:app/app/router/app_router.dart';
+import 'package:app/app/shell/main_shell_page.dart';
 import 'package:app/core/local/hive_box_names.dart';
 import 'package:app/core/local/hive_local_store.dart';
 import 'package:app/core/network/api_service.dart';
 import 'package:app/core/network/network_info.dart';
+import 'package:app/core/storage/storage_service.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -16,6 +20,8 @@ class PushNotificationService {
     this._store,
     this._networkInfo,
     this._connectivity,
+    this._secureStorageService,
+    this._appRouter,
   );
 
   final FirebaseMessaging _messaging;
@@ -24,8 +30,11 @@ class PushNotificationService {
   final HiveLocalStore _store;
   final NetworkInfo _networkInfo;
   final Connectivity _connectivity;
+  final SecureStorageService _secureStorageService;
+  final AppRouter _appRouter;
 
   StreamSubscription<RemoteMessage>? _foregroundSubscription;
+  StreamSubscription<RemoteMessage>? _messageOpenedSubscription;
   StreamSubscription<String>? _tokenSubscription;
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
 
@@ -53,9 +62,14 @@ class PushNotificationService {
     );
     _foregroundSubscription ??= FirebaseMessaging.onMessage.listen((message) {
       _saveForegroundMessage(message);
-      _showForegroundNotification(message);
+      if (!_isChatMessage(message)) {
+        _showForegroundNotification(message);
+      }
     });
+    _messageOpenedSubscription ??=
+        FirebaseMessaging.onMessageOpenedApp.listen(_openFromMessage);
     await syncPendingToken();
+    await _openInitialMessage();
   }
 
   Future<void> _initLocalNotifications() async {
@@ -66,7 +80,12 @@ class PushNotificationService {
       iOS: darwinInit,
       macOS: darwinInit,
     );
-    await _localNotifications.initialize(settings);
+    await _localNotifications.initialize(
+      settings,
+      onDidReceiveNotificationResponse: (response) {
+        _openFromPayload(response.payload);
+      },
+    );
     await _localNotifications
         .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin
@@ -81,9 +100,11 @@ class PushNotificationService {
 
   Future<void> dispose() async {
     await _foregroundSubscription?.cancel();
+    await _messageOpenedSubscription?.cancel();
     await _tokenSubscription?.cancel();
     await _connectivitySubscription?.cancel();
     _foregroundSubscription = null;
+    _messageOpenedSubscription = null;
     _tokenSubscription = null;
     _connectivitySubscription = null;
   }
@@ -97,7 +118,7 @@ class PushNotificationService {
 
   Future<void> _registerToken(String token) async {
     try {
-      if (!await _networkInfo.isConnected) {
+      if (!await _networkInfo.isConnected || !await _hasAuthToken()) {
         throw StateError('Offline');
       }
       await _apiService.registerDeviceToken({
@@ -123,7 +144,10 @@ class PushNotificationService {
       key: 'pending_fcm_token',
     );
     final token = pending?['token'] as String?;
-    if (token == null || token.isEmpty || !await _networkInfo.isConnected) {
+    if (token == null ||
+        token.isEmpty ||
+        !await _networkInfo.isConnected ||
+        !await _hasAuthToken()) {
       return;
     }
 
@@ -141,6 +165,11 @@ class PushNotificationService {
     }
   }
 
+  Future<void> registerCurrentTokenForAuthenticatedUser() async {
+    await _registerCurrentToken();
+    await syncPendingToken();
+  }
+
   Future<void> _saveForegroundMessage(RemoteMessage message) {
     final key =
         message.messageId ?? DateTime.now().microsecondsSinceEpoch.toString();
@@ -156,6 +185,45 @@ class PushNotificationService {
         'read': false,
       },
     );
+  }
+
+  Future<bool> _hasAuthToken() async {
+    final token = await _secureStorageService.read(StorageKeys.authToken);
+    if (token == null || token.isEmpty) {
+      return false;
+    }
+
+    return !_isJwtExpired(token);
+  }
+
+  bool _isJwtExpired(String token) {
+    final parts = token.split('.');
+    if (parts.length != 3) {
+      return true;
+    }
+
+    try {
+      final payload = jsonDecode(
+        utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))),
+      );
+      if (payload is! Map<String, dynamic>) {
+        return true;
+      }
+
+      final exp = payload['exp'];
+      if (exp is! num) {
+        return true;
+      }
+
+      final expiresAt = DateTime.fromMillisecondsSinceEpoch(
+        exp.toInt() * 1000,
+      );
+      return expiresAt.isBefore(
+        DateTime.now().add(const Duration(seconds: 10)),
+      );
+    } on Exception {
+      return true;
+    }
   }
 
   Future<void> _showForegroundNotification(RemoteMessage message) async {
@@ -181,7 +249,44 @@ class PushNotificationService {
         ),
         iOS: const DarwinNotificationDetails(),
       ),
-      payload: message.data['bookingId'] as String?,
+      payload: jsonEncode(message.data),
     );
+  }
+
+  bool _isChatMessage(RemoteMessage message) {
+    return message.data['type'] == 'chat_message';
+  }
+
+  Future<void> _openInitialMessage() async {
+    final initialMessage = await _messaging.getInitialMessage();
+    if (initialMessage != null) {
+      await Future<void>.delayed(const Duration(milliseconds: 300));
+      _openFromMessage(initialMessage);
+    }
+  }
+
+  void _openFromMessage(RemoteMessage message) {
+    if (_isChatMessage(message)) {
+      _openChat();
+    }
+  }
+
+  void _openFromPayload(String? payload) {
+    if (payload == null || payload.isEmpty) {
+      return;
+    }
+
+    try {
+      final data = jsonDecode(payload);
+      if (data is Map<String, dynamic> && data['type'] == 'chat_message') {
+        _openChat();
+      }
+    } on Exception {
+      return;
+    }
+  }
+
+  void _openChat() {
+    _appRouter.router.go('${MainShellPage.routePath}?tab=chat');
   }
 }

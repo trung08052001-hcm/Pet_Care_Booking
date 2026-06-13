@@ -1,5 +1,6 @@
 abstract final class ApiConfig {
-  static const String devBaseUrl = 'http://192.168.1.29:5000/api/v1';
+  // static const String devBaseUrl = 'http://192.168.1.13:5000/api/v1';
+  static const String devBaseUrl = 'http://192.168.50.23:5000/api/v1';
   static const String stgBaseUrl = 'https://stg-api.pawsitive-care.com/api/v1';
   static const String prodBaseUrl = 'https://api.pawsitive-care.com/api/v1';
 
@@ -27,6 +28,9 @@ abstract final class ApiEndpoints {
   static const String bookingCancel = '/bookings/{bookingId}/cancel';
   static const String bookingAvailability = '/bookings/availability';
   static const String notificationDeviceToken = '/notifications/device-token';
+  static const String chatConversations = '/chat/conversations';
+  static const String chatMessages = '/chat/conversations/{conversationId}/messages';
+  static const String chatRead = '/chat/conversations/{conversationId}/read';
 
   static const String posts = '/posts';
   static const String helpCenter = '/help-center';

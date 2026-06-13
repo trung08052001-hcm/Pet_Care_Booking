@@ -3,6 +3,7 @@ const express = require("express");
 const appReviewRoutes = require("../modules/appReviews/appReview.routes");
 const authRoutes = require("../modules/auth/auth.routes");
 const bookingRoutes = require("../modules/bookings/booking.routes");
+const chatRoutes = require("../modules/chat/chat.routes");
 const healthRoutes = require("../modules/health/health.routes");
 const helpCenterRoutes = require("../modules/helpCenter/helpCenter.routes");
 const notificationRoutes = require("../modules/notifications/notification.routes");
@@ -17,6 +18,7 @@ router.use("/auth", authRoutes);
 router.use("/pets", petRoutes);
 router.use("/services", serviceRoutes);
 router.use("/bookings", bookingRoutes);
+router.use("/chat", chatRoutes);
 router.use("/notifications", notificationRoutes);
 router.use("/app-reviews", appReviewRoutes);
 

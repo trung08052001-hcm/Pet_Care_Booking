@@ -1,9 +1,11 @@
+import 'package:app/app/router/app_router.dart';
 import 'package:app/core/config/app_config.dart';
 import 'package:app/core/di/injection.config.dart';
 import 'package:app/core/local/hive_local_store.dart';
 import 'package:app/core/network/api_service.dart';
 import 'package:app/core/network/network_info.dart';
 import 'package:app/core/notifications/push_notification_service.dart';
+import 'package:app/core/presence/presence_socket_service.dart';
 import 'package:app/core/storage/storage_service.dart';
 import 'package:app/features/authentication/data/datasources/auth_data_sources.dart';
 import 'package:app/features/authentication/data/repositories/auth_repository_impl.dart';
@@ -34,6 +36,14 @@ import 'package:app/features/booking/domain/usecases/submit_booking_usecase.dart
 import 'package:app/features/booking/presentation/bloc/booking_appointment_bloc.dart';
 import 'package:app/features/booking/presentation/bloc/booking_confirmation_bloc.dart';
 import 'package:app/features/booking/presentation/bloc/booking_detail_bloc.dart';
+import 'package:app/features/chat/data/datasources/chat_mock_data_source.dart';
+import 'package:app/features/chat/data/datasources/chat_remote_data_source.dart';
+import 'package:app/features/chat/data/datasources/chat_socket_service.dart';
+import 'package:app/features/chat/data/repositories/chat_repository_impl.dart';
+import 'package:app/features/chat/domain/repositories/chat_repository.dart';
+import 'package:app/features/chat/domain/usecases/get_chat_page_content_usecase.dart';
+import 'package:app/features/chat/domain/usecases/send_chat_message_usecase.dart';
+import 'package:app/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:app/features/pets/data/datasources/pets_local_data_source.dart';
 import 'package:app/features/pets/data/datasources/pets_mock_data_source.dart';
 import 'package:app/features/pets/data/datasources/pets_remote_data_source.dart';
@@ -47,12 +57,17 @@ import 'package:app/features/profile/data/datasources/app_review_remote_data_sou
 import 'package:app/features/profile/data/datasources/help_center_remote_data_source.dart';
 import 'package:app/features/profile/data/datasources/profile_address_remote_data_source.dart';
 import 'package:app/features/profile/data/datasources/profile_edit_remote_data_source.dart';
+import 'package:app/features/profile/data/datasources/profile_mock_data_source.dart';
+import 'package:app/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:app/features/profile/data/repositories/profile_address_repository_impl.dart';
 import 'package:app/features/profile/data/services/current_location_address_service.dart';
+import 'package:app/features/profile/domain/repositories/profile_repository.dart';
 import 'package:app/features/profile/domain/repositories/profile_address_repository.dart';
 import 'package:app/features/profile/domain/usecases/get_help_center_content_usecase.dart';
+import 'package:app/features/profile/domain/usecases/get_profile_page_content_usecase.dart';
 import 'package:app/features/profile/domain/usecases/get_profile_address_usecase.dart';
 import 'package:app/features/profile/domain/usecases/get_profile_edit_user_usecase.dart';
+import 'package:app/features/profile/domain/usecases/logout_usecase.dart';
 import 'package:app/features/profile/domain/usecases/save_profile_address_usecase.dart';
 import 'package:app/features/profile/domain/usecases/submit_app_review_usecase.dart';
 import 'package:app/features/profile/domain/usecases/update_profile_edit_usecase.dart';
@@ -60,6 +75,7 @@ import 'package:app/features/profile/presentation/bloc/app_review_bloc.dart';
 import 'package:app/features/profile/presentation/bloc/help_center_bloc.dart';
 import 'package:app/features/profile/presentation/bloc/profile_address_bloc.dart';
 import 'package:app/features/profile/presentation/bloc/profile_edit_bloc.dart';
+import 'package:app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -83,10 +99,47 @@ Future<void> configureDependencies(AppConfig appConfig) async {
   _registerOfflineDependencies();
   await _registerPetsDependencies();
   await _registerBookingDependencies();
+  await _registerChatDependencies();
   await _registerProfileAddressDependencies();
   await _registerProfileEditDependencies();
+  await _registerProfileDependencies();
   await _registerHelpCenterDependencies();
   await _registerAppReviewDependencies();
+}
+
+Future<void> _registerChatDependencies() async {
+  await _replaceRegistration<ChatRemoteDataSource>(
+    () => ChatRemoteDataSource(getIt<Dio>()),
+  );
+  await _replaceRegistration<ChatSocketService>(
+    () => ChatSocketService(
+      getIt<AppConfig>(),
+      getIt<SecureStorageService>(),
+    ),
+  );
+  await _replaceRegistration<ChatRepository>(
+    () => ChatRepositoryImpl(
+      getIt<ChatMockDataSource>(),
+      getIt<ChatRemoteDataSource>(),
+      getIt<ChatSocketService>(),
+    ),
+  );
+  await _replaceRegistration<GetChatPageContentUseCase>(
+    () => GetChatPageContentUseCase(getIt<ChatRepository>()),
+    lazySingleton: false,
+  );
+  await _replaceRegistration<SendChatMessageUseCase>(
+    () => SendChatMessageUseCase(getIt<ChatRepository>()),
+    lazySingleton: false,
+  );
+  await _replaceRegistration<ChatBloc>(
+    () => ChatBloc(
+      getIt<GetChatPageContentUseCase>(),
+      getIt<SendChatMessageUseCase>(),
+      getIt<ChatRepository>(),
+    ),
+    lazySingleton: false,
+  );
 }
 
 AppConfig get currentAppConfig {
@@ -113,6 +166,8 @@ void _registerAuthDependencies() {
       getIt<AuthRemoteDataSource>(),
       getIt<AuthLocalDataSource>(),
       getIt<NetworkInfo>(),
+      getIt<PushNotificationService>(),
+      getIt<PresenceSocketService>(),
     ),
   );
   getIt.registerFactory<SignInUseCase>(
@@ -169,6 +224,14 @@ void _registerOfflineDependencies() {
       getIt<HiveLocalStore>(),
       getIt<NetworkInfo>(),
       getIt<Connectivity>(),
+      getIt<SecureStorageService>(),
+      getIt<AppRouter>(),
+    ),
+  );
+  getIt.registerLazySingleton<PresenceSocketService>(
+    () => PresenceSocketService(
+      getIt<AppConfig>(),
+      getIt<SecureStorageService>(),
     ),
   );
 }
@@ -328,6 +391,28 @@ Future<void> _registerProfileEditDependencies() async {
     () => ProfileEditBloc(
       getIt<GetProfileEditUserUseCase>(),
       getIt<UpdateProfileEditUseCase>(),
+    ),
+    lazySingleton: false,
+  );
+}
+
+Future<void> _registerProfileDependencies() async {
+  await _replaceRegistration<ProfileRepository>(
+    () => ProfileRepositoryImpl(
+      getIt<ProfileMockDataSource>(),
+      getIt<ProfileEditRemoteDataSource>(),
+      getIt<HiveLocalStore>(),
+      getIt<NetworkInfo>(),
+    ),
+  );
+  await _replaceRegistration<GetProfilePageContentUseCase>(
+    () => GetProfilePageContentUseCase(getIt<ProfileRepository>()),
+    lazySingleton: false,
+  );
+  await _replaceRegistration<ProfileBloc>(
+    () => ProfileBloc(
+      getIt<GetProfilePageContentUseCase>(),
+      getIt<LogoutUseCase>(),
     ),
     lazySingleton: false,
   );

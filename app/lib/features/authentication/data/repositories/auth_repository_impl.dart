@@ -1,5 +1,7 @@
 import 'package:app/core/error/app_error.dart';
 import 'package:app/core/network/network_info.dart';
+import 'package:app/core/notifications/push_notification_service.dart';
+import 'package:app/core/presence/presence_socket_service.dart';
 import 'package:app/features/authentication/data/datasources/auth_data_sources.dart';
 import 'package:app/features/authentication/data/models/auth_models.dart';
 import 'package:app/features/authentication/domain/entities/auth_session.dart';
@@ -11,11 +13,15 @@ class AuthRepositoryImpl implements AuthRepository {
     this._remoteDataSource,
     this._localDataSource,
     this._networkInfo,
+    this._pushNotificationService,
+    this._presenceSocketService,
   );
 
   final AuthRemoteDataSource _remoteDataSource;
   final AuthLocalDataSource _localDataSource;
   final NetworkInfo _networkInfo;
+  final PushNotificationService _pushNotificationService;
+  final PresenceSocketService _presenceSocketService;
 
   @override
   Future<Either<Failure, AuthSession>> signIn({
@@ -34,6 +40,8 @@ class AuthRepositoryImpl implements AuthRepository {
         ),
       );
       await _localDataSource.saveSession(session);
+      await _pushNotificationService.registerCurrentTokenForAuthenticatedUser();
+      await _presenceSocketService.start();
       return Right(session.toEntity());
     } on Exception catch (exception, stackTrace) {
       return Left(
@@ -72,6 +80,8 @@ class AuthRepositoryImpl implements AuthRepository {
         ),
       );
       await _localDataSource.saveSession(session);
+      await _pushNotificationService.registerCurrentTokenForAuthenticatedUser();
+      await _presenceSocketService.start();
       return Right(session.toEntity());
     } on Exception catch (exception, stackTrace) {
       return Left(
@@ -96,6 +106,8 @@ class AuthRepositoryImpl implements AuthRepository {
         GoogleLoginRequestModel(idToken: idToken),
       );
       await _localDataSource.saveSession(session);
+      await _pushNotificationService.registerCurrentTokenForAuthenticatedUser();
+      await _presenceSocketService.start();
       return Right(session.toEntity());
     } on Exception catch (exception, stackTrace) {
       return Left(
@@ -126,6 +138,8 @@ class AuthRepositoryImpl implements AuthRepository {
         ),
       );
       await _localDataSource.saveSession(session);
+      await _pushNotificationService.registerCurrentTokenForAuthenticatedUser();
+      await _presenceSocketService.start();
       return Right(session.toEntity());
     } on Exception catch (exception, stackTrace) {
       return Left(
@@ -190,6 +204,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, void>> logout() async {
     try {
+      await _presenceSocketService.stop();
       await _localDataSource.clearSession();
       return const Right(null);
     } on Exception catch (exception, stackTrace) {
@@ -206,6 +221,14 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, AuthSession?>> restoreSession() async {
     try {
       final session = await _localDataSource.getCachedSession();
+      if (session != null && await _networkInfo.isConnected) {
+        try {
+          await _pushNotificationService.registerCurrentTokenForAuthenticatedUser();
+          await _presenceSocketService.start();
+        } on Exception {
+          // Notification sync must not invalidate a valid auth session.
+        }
+      }
       return Right(session?.toEntity());
     } on Exception catch (exception, stackTrace) {
       await _localDataSource.clearSession();

@@ -91,6 +91,10 @@ class AppRouter {
         path: MainShellPage.routePath,
         name: MainShellPage.routeName,
         builder: (context, state) {
+          final initialIndex =
+              state.uri.queryParameters['tab'] == 'chat'
+                  ? MainShellPage.chatTabIndex
+                  : 0;
           return MultiBlocProvider(
             providers: [
               BlocProvider(
@@ -112,7 +116,7 @@ class AppRouter {
                     getIt<ProfileBloc>()..add(const ProfileStarted()),
               ),
               BlocProvider(
-                create: (_) => MainShellBloc(),
+                create: (_) => MainShellBloc(initialIndex: initialIndex),
               ),
             ],
             child: const MainShellPage(),

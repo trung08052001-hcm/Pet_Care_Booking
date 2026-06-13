@@ -76,6 +76,10 @@ import 'package:app/features/booking/presentation/bloc/booking_service_selection
     as _i632;
 import 'package:app/features/chat/data/datasources/chat_mock_data_source.dart'
     as _i273;
+import 'package:app/features/chat/data/datasources/chat_remote_data_source.dart'
+    as _i981;
+import 'package:app/features/chat/data/datasources/chat_socket_service.dart'
+    as _i982;
 import 'package:app/features/chat/data/repositories/chat_repository_impl.dart'
     as _i387;
 import 'package:app/features/chat/domain/repositories/chat_repository.dart'
@@ -177,6 +181,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i273.ChatMockDataSource>(
       () => _i273.ChatMockDataSource(),
     );
+    gh.lazySingleton<_i981.ChatRemoteDataSource>(
+      () => _i981.ChatRemoteDataSource(gh<_i361.Dio>()),
+    );
+    gh.lazySingleton<_i982.ChatSocketService>(
+      () => _i982.ChatSocketService(
+        gh<_i1068.AppConfig>(),
+        gh<_i179.SecureStorageService>(),
+      ),
+    );
     gh.lazySingleton<_i197.HomeMockDataSource>(
       () => _i197.HomeMockDataSource(),
     );
@@ -233,7 +246,11 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i73.PetsRepositoryImpl(gh<_i741.PetsMockDataSource>()),
     );
     gh.lazySingleton<_i336.ChatRepository>(
-      () => _i387.ChatRepositoryImpl(gh<_i273.ChatMockDataSource>()),
+      () => _i387.ChatRepositoryImpl(
+        gh<_i273.ChatMockDataSource>(),
+        gh<_i981.ChatRemoteDataSource>(),
+        gh<_i982.ChatSocketService>(),
+      ),
     );
     gh.factory<_i922.LogoutUseCase>(
       () => _i922.LogoutUseCase(gh<_i853.AuthRepository>()),

@@ -3,7 +3,8 @@ import 'package:app/app/shell/presentation/bloc/main_shell_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainShellBloc extends Bloc<MainShellEvent, MainShellState> {
-  MainShellBloc() : super(const MainShellState()) {
+  MainShellBloc({int initialIndex = 0})
+      : super(MainShellState(currentIndex: initialIndex)) {
     on<MainShellTabChanged>(_onTabChanged);
   }
 

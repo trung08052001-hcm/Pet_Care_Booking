@@ -22,6 +22,6 @@ class SendChatMessageUseCase implements UseCase<ChatMessage, SendChatMessagePara
 
   @override
   ResultFuture<ChatMessage> call(SendChatMessageParams params) {
-    return _repository.getAgentReply(params.text);
+    return _repository.sendMessage(params.text);
   }
 }

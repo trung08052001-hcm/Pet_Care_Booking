@@ -7,8 +7,8 @@ type LoginPageProps = {
 };
 
 export function LoginPage({ onSignIn }: LoginPageProps) {
-  const [identifier, setIdentifier] = useState("admin@pawcare.com");
-  const [password, setPassword] = useState("pawcareadmin");
+  const [identifier, setIdentifier] = useState("admin@pawcare.local");
+  const [password, setPassword] = useState("Admin@123456");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

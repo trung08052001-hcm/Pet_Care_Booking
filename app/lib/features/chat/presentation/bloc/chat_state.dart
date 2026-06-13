@@ -29,6 +29,7 @@ class ChatState extends Equatable {
     this.messages = const [],
     this.isAgentTyping = false,
     this.isSending = false,
+    this.isRealtimeConnected = false,
     this.message,
     this.interaction = ChatInteraction.none,
   });
@@ -41,6 +42,7 @@ class ChatState extends Equatable {
   final List<ChatMessage> messages;
   final bool isAgentTyping;
   final bool isSending;
+  final bool isRealtimeConnected;
   final String? message;
   final ChatInteraction interaction;
 
@@ -56,6 +58,7 @@ class ChatState extends Equatable {
     List<ChatMessage>? messages,
     bool? isAgentTyping,
     bool? isSending,
+    bool? isRealtimeConnected,
     String? message,
     ChatInteraction? interaction,
     bool clearMessage = false,
@@ -69,6 +72,7 @@ class ChatState extends Equatable {
       messages: messages ?? this.messages,
       isAgentTyping: isAgentTyping ?? this.isAgentTyping,
       isSending: isSending ?? this.isSending,
+      isRealtimeConnected: isRealtimeConnected ?? this.isRealtimeConnected,
       message: clearMessage ? null : (message ?? this.message),
       interaction: interaction ?? this.interaction,
     );
@@ -84,6 +88,7 @@ class ChatState extends Equatable {
         messages,
         isAgentTyping,
         isSending,
+        isRealtimeConnected,
         message,
         interaction,
       ];

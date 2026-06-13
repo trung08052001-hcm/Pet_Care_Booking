@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:app/app/theme/app_colors.dart';
 import 'package:app/core/app_localizations.dart';
 import 'package:app/features/authentication/presentation/pages/sign_in_page.dart';
@@ -132,10 +135,14 @@ class _ProfileContent extends StatelessWidget {
                 children: [
                   _ProfileHeader(
                     user: content.user,
-                    memberSinceLabel: l10n.profileMemberSince,
                     editProfileLabel: l10n.profileEditLabel,
-                    onEditProfile: () =>
-                        context.pushNamed(ProfileEditPage.routeName),
+                    onEditProfile: () {
+                      context.pushNamed(ProfileEditPage.routeName).then((_) {
+                        if (context.mounted) {
+                          bloc.add(const ProfileRefreshRequested());
+                        }
+                      });
+                    },
                     onChangeAvatar: () =>
                         bloc.add(const ProfileAvatarChangePressed()),
                   ),
@@ -267,20 +274,20 @@ class _ProfileAppBar extends StatelessWidget {
 class _ProfileHeader extends StatelessWidget {
   const _ProfileHeader({
     required this.user,
-    required this.memberSinceLabel,
     required this.editProfileLabel,
     required this.onEditProfile,
     required this.onChangeAvatar,
   });
 
   final ProfileUser user;
-  final String memberSinceLabel;
   final String editProfileLabel;
   final VoidCallback onEditProfile;
   final VoidCallback onChangeAvatar;
 
   @override
   Widget build(BuildContext context) {
+    final avatarBytes = _bytesFromDataUrl(user.avatarUrl);
+
     return Column(
       children: [
         Stack(
@@ -288,15 +295,19 @@ class _ProfileHeader extends StatelessWidget {
             CircleAvatar(
               radius: 48,
               backgroundColor: AppColors.heroBg,
-              child: Text(
-                user.avatarInitials ??
-                    (user.fullName.isNotEmpty ? user.fullName[0] : '?'),
-                style: const TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.brown,
-                ),
-              ),
+              backgroundImage:
+                  avatarBytes == null ? null : MemoryImage(avatarBytes),
+              child: avatarBytes == null
+                  ? Text(
+                      user.avatarInitials ??
+                          (user.fullName.isNotEmpty ? user.fullName[0] : '?'),
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.brown,
+                      ),
+                    )
+                  : null,
             ),
             Positioned(
               right: 0,
@@ -327,14 +338,6 @@ class _ProfileHeader extends StatelessWidget {
             fontSize: 22,
             fontWeight: FontWeight.w800,
             color: AppColors.brownText,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          memberSinceLabel,
-          style: TextStyle(
-            fontSize: 14,
-            color: AppColors.brownText.withValues(alpha: 0.65),
           ),
         ),
         const SizedBox(height: 18),
@@ -517,5 +520,21 @@ class _LogoutButton extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+Uint8List? _bytesFromDataUrl(String? dataUrl) {
+  if (dataUrl == null || !dataUrl.startsWith('data:image/')) {
+    return null;
+  }
+  final commaIndex = dataUrl.indexOf(',');
+  if (commaIndex == -1) {
+    return null;
+  }
+
+  try {
+    return base64Decode(dataUrl.substring(commaIndex + 1));
+  } on FormatException {
+    return null;
   }
 }

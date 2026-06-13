@@ -45,12 +45,18 @@ const sendToUser = async (userId, message) => {
     }, {}),
   });
 
-  const failedTokens = [];
+  const failures = [];
   response.responses.forEach((item, index) => {
     if (!item.success) {
-      failedTokens.push(tokens[index].token);
+      failures.push({
+        token: tokens[index].token,
+        code: item.error?.code || "unknown",
+        message: item.error?.message || "Unknown Firebase error.",
+      });
     }
   });
+
+  const failedTokens = failures.map((item) => item.token);
 
   if (failedTokens.length > 0) {
     await DeviceToken.updateMany(
@@ -62,6 +68,11 @@ const sendToUser = async (userId, message) => {
   return {
     successCount: response.successCount,
     failureCount: response.failureCount,
+    failures: failures.map((item) => ({
+      tokenPrefix: item.token.slice(0, 12),
+      code: item.code,
+      message: item.message,
+    })),
   };
 };
 

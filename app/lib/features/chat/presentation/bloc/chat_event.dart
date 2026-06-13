@@ -1,3 +1,4 @@
+import 'package:app/features/chat/domain/entities/chat_message.dart';
 import 'package:equatable/equatable.dart';
 
 sealed class ChatEvent extends Equatable {
@@ -22,6 +23,15 @@ final class ChatMessageSendRequested extends ChatEvent {
 
   @override
   List<Object?> get props => [text];
+}
+
+final class ChatIncomingMessageReceived extends ChatEvent {
+  const ChatIncomingMessageReceived(this.message);
+
+  final ChatMessage message;
+
+  @override
+  List<Object?> get props => [message];
 }
 
 final class ChatFaqPressed extends ChatEvent {
