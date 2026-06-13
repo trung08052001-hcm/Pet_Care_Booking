@@ -34,17 +34,21 @@ class _SignInPageState extends State<SignInPage> {
   Future<void> _submitGoogleSignIn() async {
     final googleService = getIt<GoogleAuthService>();
     try {
+      debugPrint('[Auth][Google] Button pressed. Starting Google SDK sign-in.');
       final idToken = await googleService.signInAndGetIdToken();
+      debugPrint('[Auth][Google] ID token received. Dispatching backend login.');
       if (!mounted) return;
       context.read<AuthBloc>().add(
             AuthSignInWithGoogleRequested(idToken: idToken),
           );
     } on GoogleAuthException catch (e) {
+      debugPrint('[Auth][Google] SDK failed: ${e.message}');
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.message)),
       );
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[Auth][Google] Unexpected failure: $e');
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Không thể đăng nhập với Google.')),
@@ -55,7 +59,12 @@ class _SignInPageState extends State<SignInPage> {
   Future<void> _submitZaloOAuth() async {
     final zaloService = getIt<ZaloAuthService>();
     try {
+      debugPrint('[Auth][Zalo] Button pressed. Starting Zalo SDK login.');
       final result = await zaloService.login();
+      debugPrint(
+        '[Auth][Zalo] SDK success. oauthCode=${result.oauthCode != null}, '
+        'accessToken=${result.accessToken != null}. Dispatching backend login.',
+      );
       if (!mounted) return;
       context.read<AuthBloc>().add(
             AuthSignInWithZaloRequested(
@@ -65,11 +74,13 @@ class _SignInPageState extends State<SignInPage> {
             ),
           );
     } on ZaloAuthException catch (e) {
+      debugPrint('[Auth][Zalo] SDK failed: ${e.message}');
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.message)),
       );
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[Auth][Zalo] Unexpected failure: $e');
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Không thể đăng nhập với Zalo.')),

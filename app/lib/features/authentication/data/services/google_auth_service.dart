@@ -4,10 +4,14 @@ import 'package:google_sign_in/google_sign_in.dart';
 class GoogleAuthService {
   const GoogleAuthService();
 
+  static const String _webClientId =
+      '674702415842-qp6pb8fg2tf0eujddj4o97mtobug60lm.apps.googleusercontent.com';
+
   Future<String> signInAndGetIdToken() async {
     try {
       final googleSignIn = GoogleSignIn(
         scopes: const ['email', 'profile'],
+        serverClientId: _webClientId,
       );
 
       await googleSignIn.signOut();

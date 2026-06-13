@@ -32,9 +32,9 @@ class ZaloAuthService {
         );
       }
 
-      final isSuccess = res?['isSuccess'] == true;
+      final isSuccess = res['isSuccess'] == true;
       if (!isSuccess) {
-        final error = res?['error'] as Map<dynamic, dynamic>?;
+        final error = res['error'] as Map<dynamic, dynamic>?;
         final errorCode = error?['errorCode']?.toString();
         final errorMessage = error?['errorMessage']?.toString();
         final code = errorCode ?? 'unknown';

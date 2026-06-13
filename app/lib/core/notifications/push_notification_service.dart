@@ -119,23 +119,28 @@ class PushNotificationService {
   Future<void> _registerToken(String token) async {
     try {
       if (!await _networkInfo.isConnected || !await _hasAuthToken()) {
-        throw StateError('Offline');
+        await _cachePendingToken(token);
+        return;
       }
       await _apiService.registerDeviceToken({
         'token': token,
         'platform': 'flutter',
       });
-    } on Exception {
-      await _store.putMap(
-        boxName: HiveBoxNames.appCache,
-        key: 'pending_fcm_token',
-        value: {
-          'token': token,
-          'platform': 'flutter',
-          'updatedAt': DateTime.now().toIso8601String(),
-        },
-      );
+    } on Object {
+      await _cachePendingToken(token);
     }
+  }
+
+  Future<void> _cachePendingToken(String token) {
+    return _store.putMap(
+      boxName: HiveBoxNames.appCache,
+      key: 'pending_fcm_token',
+      value: {
+        'token': token,
+        'platform': 'flutter',
+        'updatedAt': DateTime.now().toIso8601String(),
+      },
+    );
   }
 
   Future<void> syncPendingToken() async {
@@ -166,8 +171,12 @@ class PushNotificationService {
   }
 
   Future<void> registerCurrentTokenForAuthenticatedUser() async {
-    await _registerCurrentToken();
-    await syncPendingToken();
+    try {
+      await _registerCurrentToken();
+      await syncPendingToken();
+    } on Object {
+      return;
+    }
   }
 
   Future<void> _saveForegroundMessage(RemoteMessage message) {

@@ -40,8 +40,7 @@ class AuthRepositoryImpl implements AuthRepository {
         ),
       );
       await _localDataSource.saveSession(session);
-      await _pushNotificationService.registerCurrentTokenForAuthenticatedUser();
-      await _presenceSocketService.start();
+      await _startPostLoginServices();
       return Right(session.toEntity());
     } on Exception catch (exception, stackTrace) {
       return Left(
@@ -80,8 +79,7 @@ class AuthRepositoryImpl implements AuthRepository {
         ),
       );
       await _localDataSource.saveSession(session);
-      await _pushNotificationService.registerCurrentTokenForAuthenticatedUser();
-      await _presenceSocketService.start();
+      await _startPostLoginServices();
       return Right(session.toEntity());
     } on Exception catch (exception, stackTrace) {
       return Left(
@@ -106,8 +104,7 @@ class AuthRepositoryImpl implements AuthRepository {
         GoogleLoginRequestModel(idToken: idToken),
       );
       await _localDataSource.saveSession(session);
-      await _pushNotificationService.registerCurrentTokenForAuthenticatedUser();
-      await _presenceSocketService.start();
+      await _startPostLoginServices();
       return Right(session.toEntity());
     } on Exception catch (exception, stackTrace) {
       return Left(
@@ -138,8 +135,7 @@ class AuthRepositoryImpl implements AuthRepository {
         ),
       );
       await _localDataSource.saveSession(session);
-      await _pushNotificationService.registerCurrentTokenForAuthenticatedUser();
-      await _presenceSocketService.start();
+      await _startPostLoginServices();
       return Right(session.toEntity());
     } on Exception catch (exception, stackTrace) {
       return Left(
@@ -238,6 +234,20 @@ class AuthRepositoryImpl implements AuthRepository {
           stackTrace: stackTrace,
         ),
       );
+    }
+  }
+
+  Future<void> _startPostLoginServices() async {
+    try {
+      await _pushNotificationService.registerCurrentTokenForAuthenticatedUser();
+    } on Object {
+      // Push notification sync is best-effort and must not block login.
+    }
+
+    try {
+      await _presenceSocketService.start();
+    } on Object {
+      // Presence socket can reconnect later; auth session is already valid.
     }
   }
 }
