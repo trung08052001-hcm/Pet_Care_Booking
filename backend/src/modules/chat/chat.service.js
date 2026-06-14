@@ -24,6 +24,30 @@ const toIdString = (value) => {
   return value.toString();
 };
 
+const buildMessagePreview = (message) => {
+  if (message.text) {
+    return message.text;
+  }
+
+  const attachment = message.attachments?.[0];
+  if (!attachment) {
+    return "";
+  }
+
+  return attachment.type === "image"
+    ? "Đã gửi một hình ảnh"
+    : `Đã gửi tệp ${attachment.name}`;
+};
+
+const normalizeAttachments = (attachments = []) =>
+  attachments.map((attachment) => ({
+    type: attachment.type === "image" ? "image" : "file",
+    name: String(attachment.name || "attachment").trim(),
+    dataUrl: String(attachment.dataUrl || "").trim(),
+    mimeType: String(attachment.mimeType || "").trim(),
+    sizeBytes: Number(attachment.sizeBytes) || 0,
+  }));
+
 const assertConversationAccess = (conversation, user) => {
   if (!conversation) {
     throw new ApiError(404, "Conversation not found.");
@@ -125,7 +149,7 @@ const sendChatNotification = async ({ conversation, message, sender }) => {
               senderRole === "admin"
                 ? "Admin đã trả lời bạn"
                 : "Tin nhắn mới từ khách hàng",
-            body: message.text,
+            body: buildMessagePreview(message),
             data: {
               type: "chat_message",
               conversationId: conversation._id.toString(),
@@ -165,6 +189,9 @@ const sendMessage = async (conversationId, user, payload) => {
   assertConversationAccess(conversation, user);
 
   const senderRole = getSenderRole(user);
+  const attachments = normalizeAttachments(payload.attachments);
+  const messageType = attachments[0]?.type || "text";
+
   if (senderRole === "admin" && !conversation.assignedAdmin) {
     conversation.assignedAdmin = user._id;
     const hasAdminParticipant = conversation.participants.some(
@@ -184,7 +211,9 @@ const sendMessage = async (conversationId, user, payload) => {
     conversation: conversation._id,
     sender: user._id,
     senderRole,
-    text: payload.text,
+    type: messageType,
+    text: payload.text || "",
+    attachments,
     readBy: [
       {
         user: user._id,
@@ -194,7 +223,7 @@ const sendMessage = async (conversationId, user, payload) => {
   });
 
   conversation.lastMessage = {
-    text: message.text,
+    text: buildMessagePreview(message),
     sender: user._id,
     senderRole,
     createdAt: message.createdAt,

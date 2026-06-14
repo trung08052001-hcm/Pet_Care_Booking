@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/core/usecase/usecase.dart';
+import 'package:app/features/chat/domain/entities/chat_attachment.dart';
 import 'package:app/features/chat/domain/entities/chat_message.dart';
 import 'package:app/features/chat/domain/repositories/chat_repository.dart';
 import 'package:app/features/chat/domain/usecases/get_chat_page_content_usecase.dart';
@@ -88,11 +89,17 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) async {
     final text = event.text.trim();
-    if (text.isEmpty || state.isSending || state.isAgentTyping) {
+    if ((text.isEmpty && event.attachments.isEmpty) ||
+        state.isSending ||
+        state.isAgentTyping) {
       return;
     }
 
-    await _sendUserMessage(text, emit);
+    await _sendUserMessage(
+      text,
+      emit,
+      attachments: event.attachments,
+    );
   }
 
   Future<void> _onFaqPressed(
@@ -110,8 +117,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   Future<void> _sendUserMessage(
     String text,
-    Emitter<ChatState> emit,
-  ) async {
+    Emitter<ChatState> emit, {
+    List<ChatAttachment> attachments = const [],
+  }) async {
     emit(
       state.copyWith(
         isSending: true,
@@ -120,7 +128,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       ),
     );
 
-    final result = await _sendChatMessageUseCase(SendChatMessageParams(text));
+    final result = await _sendChatMessageUseCase(
+      SendChatMessageParams(
+        text,
+        attachments: attachments,
+      ),
+    );
     result.fold(
       (failure) => emit(
         state.copyWith(

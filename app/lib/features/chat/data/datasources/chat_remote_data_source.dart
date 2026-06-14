@@ -1,4 +1,5 @@
 import 'package:app/core/network/api_config.dart';
+import 'package:app/features/chat/domain/entities/chat_attachment.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
@@ -47,10 +48,16 @@ class ChatRemoteDataSource {
   Future<Map<String, dynamic>> sendMessage({
     required String conversationId,
     required String text,
+    List<ChatAttachment> attachments = const [],
   }) async {
     final response = await _dio.post<Map<String, dynamic>>(
       ApiEndpoints.chatMessages.replaceAll('{conversationId}', conversationId),
-      data: {'text': text},
+      data: {
+        'text': text,
+        if (attachments.isNotEmpty)
+          'attachments':
+              attachments.map((attachment) => attachment.toJson()).toList(),
+      },
     );
 
     final data = response.data?['data'];

@@ -1,448 +1,777 @@
-# AI Context — Pet Booking
+# PawSitive Care - Project Handover Documentation
 
-> **Mục đích file:** Tài liệu ngữ cảnh cho Cursor, Claude, ChatGPT và các AI khác. Đọc file này **trước** khi sửa code, thêm tính năng, hoặc debug. Cập nhật file khi kiến trúc / luồng nghiệp vụ thay đổi đáng kể.
+> Last updated: 2026-06-14
 
----
+## 1. Tong quan du an
 
-## 1. Tổng quan dự án
+PawSitive Care la he thong dat lich cham soc thu cung gom 3 phan chinh:
 
-| Mục | Nội dung |
-|-----|----------|
-| **Tên** | Pet Booking (PawSitive Care) |
-| **Mô tả** | Hệ thống đặt lịch chăm sóc, spa, thú y cho thú cưng |
-| **Repo** | Monorepo tại thư mục gốc |
-| **Ưu tiên phát triển** | **Flutter app** (`app/`) → **Backend** (`backend/`) → Web (`web/`) phụ |
+- Mobile app Flutter cho user.
+- Backend REST API + WebSocket + FCM.
+- Admin web ReactJS cho nhan vien/admin quan ly.
 
----
+Muc tieu chinh cua he thong:
 
-## 2. Cấu trúc thư mục
+- User dang ky, dang nhap bang local, Google hoac Zalo.
+- User quan ly ho so ca nhan, dia chi, thu cung.
+- User dat lich dich vu cham soc thu cung.
+- He thong chan trung khung gio dat lich.
+- User va admin chat realtime.
+- Backend gui push notification qua Firebase Cloud Messaging.
+- Admin web xem booking, chat voi user, quan ly giao dien tong quan.
 
-```
-/
-├── ai-context.md          ← File này
-├── app/                   ← Flutter (mobile) — TRỌNG TÂM
-├── backend/               ← Node.js + Express + MongoDB
-└── web/                   ← React + Vite + TanStack Query + Zustand
-```
+## 2. Tech stack
 
-### Backend (`backend/src/`)
+### Backend
 
-| Thư mục | Vai trò |
-|---------|---------|
-| `config/` | `env.js`, `db.js`, `firebase.js` |
-| `middlewares/` | `validate` (Joi), `errorHandler`, `auth.middleware`, `asyncHandler` |
-| `modules/*/` | MVC theo domain: `auth`, `pets`, `services`, `bookings`, `health` |
-| `models/` | Mongoose: `user`, `refreshToken`, … |
-| `validators/` | Joi helpers dùng chung |
-| `utils/` | JWT (`token.js`), password hash, `apiError`, `parseSchema` |
-| `services/` | `email.service.js` (Mailtrap / dev log OTP) |
-| `firebase/` | `serviceAccountKey.json` (không commit secret lên git công khai) |
+- Runtime: Node.js CommonJS.
+- Framework: Express.js.
+- Database: MongoDB + Mongoose.
+- Auth: JWT access token + refresh token.
+- Validation: Joi.
+- Realtime: Socket.IO.
+- Push notification: Firebase Admin SDK / FCM.
+- Security middleware: helmet, cors, express-rate-limit.
+- Logger: morgan.
+- Email/OTP: nodemailer.
 
-### Flutter (`app/lib/`)
+### Mobile app
 
-| Layer | Đường dẫn mẫu |
-|-------|----------------|
-| **App shell** | `app/shell/` — `MainShellPage`, bottom nav 5 tab |
-| **Navigation helpers** | `app/navigation/` — ví dụ `booking_navigation.dart` |
-| **Presentation** | `features/<feature>/presentation/` — Bloc, Pages, Widgets |
-| **Domain** | `features/<feature>/domain/` — Entities, Repository interfaces, UseCases |
-| **Data** | `features/<feature>/data/` — Models, Retrofit API, Repository impl, DataSources, Mock |
-| **Core** | `core/` — DI (`injection.dart`), Dio, config, storage, errors |
+- Framework: Flutter.
+- State management: BLoC / Cubit.
+- Network: Dio + Retrofit.
+- DI: GetIt + Injectable.
+- Local storage: Hive, SharedPreferences, Flutter Secure Storage.
+- Auth SDK: Google Sign-In, Zalo Flutter.
+- Notification: Firebase Messaging + Flutter Local Notifications.
+- Realtime chat: socket_io_client.
+- Location: geolocator.
+- File/Image: image_picker, file_picker.
 
----
+### Admin web
 
-## 3. Tech stack
+- Framework: ReactJS + TypeScript.
+- Build tool: Vite.
+- Icons: lucide-react.
+- Realtime chat: socket.io-client.
+- API calls: fetch.
 
-### Mobile — Flutter (`app/`)
+### DevOps
 
-- [x] **State:** `flutter_bloc` (Bloc, không dùng Cubit cho auth chính)
-- [x] **Network:** `dio` + `retrofit` (`AuthApiService`, …)
-- [x] **DI:** `get_it` + `injectable` (`configureDependencies` trong `core/di/injection.dart`)
-- [x] **Routing:** `go_router` (`app/router/app_router.dart`)
-- [x] **Storage:** `flutter_secure_storage` (token), `shared_preferences` (user cache, flags)
-- [x] **Kiến trúc:** Clean Architecture — Data → Domain → Presentation
-- [x] **Social login:** Firebase Auth + `google_sign_in`, Zalo qua `zalo_flutter` / `flutter_zalokit`
-- [x] **Main shell:** 5 tab bottom nav — Trang chủ, Dịch vụ, Blog, Chat, Profile (`MainShellPage`, route `/home`)
-- [x] **Booking UI:** Luồng đặt lịch 4 bước + màn chi tiết lịch hẹn (mock data, chưa nối API backend)
+- Docker Compose services:
+  - `mongo`
+  - `backend`
+  - `admin_web`
+  - `seed_admin`
 
-**Base URL dev (mặc định):** `http://192.168.1.29:5000/api/v1` — có thể override bằng `--dart-define=DEV_BASE_URL=...`. Android emulator thường dùng `http://10.0.2.2:5000/api/v1`.
+## 3. Cau truc thu muc
 
-### Backend (`backend/`)
-
-- [x] **Runtime:** Node.js (CommonJS)
-- [x] **Framework:** Express
-- [x] **DB:** MongoDB + Mongoose
-- [x] **Kiến trúc:** MVC modular (`modules/<name>/`)
-- [x] **Auth:** JWT tự implement (`utils/token.js` — HS256, crypto Node), Refresh Token lưu DB
-- [x] **Validation:** **Joi** — middleware `validate(schema)` trên routes + `auth.schemas.js`
-- [x] **Google:** Firebase Admin — verify `idToken`
-- [x] **Email OTP:** Nodemailer + Mailtrap (dev)
-
-### Web (`web/`) — phụ
-
-- [x] React, Vite, TypeScript
-- [x] TanStack Query, Zustand, Axios, Zod, Tailwind
-- [ ] Đồng bộ 100% luồng auth recovery với app (đang lag một phần)
-
----
-
-## 4. API & quy ước response
-
-**Prefix:** `/api/v1`
-
-### Response chuẩn
-
-**Thành công:**
-
-```json
-{
-  "success": true,
-  "message": "Mô tả ngắn",
-  "data": { }
-}
+```text
+Pet_Care_Booking/
+  backend/              Backend Express API
+  app/                  Flutter mobile app
+  admin_web/            React admin dashboard
+  docs/                 Extra documentation
+  docker-compose.yml    Docker compose setup
+  ai-context.md         Project handover documentation
 ```
 
-**Lỗi (bắt buộc cho mọi endpoint):**
+### Backend structure
 
-```json
-{
-  "success": false,
-  "message": "Thông báo lỗi cho người dùng"
-}
+```text
+backend/src/
+  app.js
+  server.js
+  config/
+  middlewares/
+  models/
+  modules/
+    appReviews/
+    auth/
+    bookings/
+    chat/
+    health/
+    helpCenter/
+    notifications/
+    pets/
+    services/
+  routes/
+  socket/
+  utils/
 ```
 
-- Dùng class `ApiError(statusCode, message)` và `throw` trong service.
-- `errorHandler` middleware chuẩn hóa Joi, Mongoose, duplicate key (`11000`).
-- **Không** trả HTML/text lỗi thô cho client Flutter.
-- Dev có thể kèm `stack` khi `NODE_ENV=development`.
+Backend duoc chia theo module. Moi module thuong co:
 
-### Auth endpoints (`/api/v1/auth`)
+- `*.routes.js`: khai bao endpoint.
+- `*.controller.js`: xu ly request/response.
+- `*.service.js`: logic nghiep vu.
+- `*.schemas.js`: Joi validation.
 
-| Method | Path | Joi schema | Mô tả |
-|--------|------|------------|--------|
-| POST | `/register` | `registerSchema` | Đăng ký local |
-| POST | `/login` | `loginSchema` | Email hoặc SĐT + password |
-| POST | `/forgot-password` | `forgotPasswordSchema` | Gửi OTP qua email |
-| POST | `/verify-reset-otp` | `verifyResetOtpSchema` | Xác minh OTP 6 số |
-| POST | `/reset-password` | `resetPasswordSchema` | Đổi MK (`resetToken` = OTP đã verify, cùng hash trên user) |
-| POST | `/refresh-token` | `refreshTokenSchema` | Làm mới JWT |
-| POST | `/logout` | `refreshTokenSchema` | Thu hồi refresh token |
-| POST | `/social/google` | `googleLoginSchema` | Body: `{ "idToken": "..." }` |
-| POST | `/social/zalo` | `zaloLoginSchema` | `oauthCode` và/hoặc `accessToken` |
-| GET | `/me` | — | Cần header `Authorization: Bearer <accessToken>` |
+### Flutter structure
 
-**Token response (`data`):**
-
-```json
-{
-  "user": { "id", "fullName", "email", "phone", "role", "authProvider", ... },
-  "tokens": {
-    "tokenType": "Bearer",
-    "accessToken": "...",
-    "refreshToken": "..."
-  }
-}
+```text
+app/lib/
+  app/
+  core/
+    network/
+    storage/
+    notifications/
+    presence/
+    location/
+  features/
+    authentication/
+    booking/
+    chat/
+    home/
+    pets/
+    profile/
+    services/
+    blog/
+    shell/
 ```
 
----
+Flutter dang di theo huong clean-ish architecture:
 
-## 5. Authentication — hiện trạng chi tiết
+- `data/`: datasource, repository impl, model, mapper.
+- `domain/`: entity, repository contract, usecase.
+- `presentation/`: page, bloc, state, event.
 
-### 5.1. Đăng ký / đăng nhập local
+### Admin web structure
 
-- [x] Register: lưu user MongoDB (`authProvider: "local"`)
-- [x] Login: identifier = email **hoặc** phone
-- [x] Password tối thiểu **8** ký tự (Joi + Mongoose)
+```text
+admin_web/src/
+  app/
+  features/
+    chat/
+  shared/
+    api/
+  styles/
+```
 
-### 5.2. Google Sign-In
+## 4. API overview
 
-- [x] Flutter: `GoogleAuthService` → Firebase credential → `idToken`
-- [x] Backend: `loginWithGoogle` trong `auth.service.js`
-- [x] Verify token: `google-auth.service.js` + `GOOGLE_OAUTH_CLIENT_IDS`
-- [x] **Account merge:** Tìm user theo `(authProvider=google, providerId)` **hoặc** `email`; nếu tạo mới bị duplicate email (`11000`) thì **fallback** `findOne({ email })` và cập nhật — tránh 409 khi user đã đăng ký email trước đó
-- [x] Sau login: cấp access + refresh JWT giống local
+Base URL local mac dinh:
 
-**File quan trọng:**
+```text
+http://localhost:5000/api/v1
+```
 
-- `backend/src/modules/auth/auth.service.js` → `loginWithGoogle`
-- `app/lib/features/authentication/data/services/google_auth_service.dart`
-- `app/android/app/google-services.json`
-- `backend/src/firebase/serviceAccountKey.json`
+Flutter dev base URL hien tai:
 
-### 5.3. Zalo Sign-In
+```text
+http://192.168.1.29:5000/api/v1
+```
 
-- [x] Flutter: `zalo_flutter` → `AuthSignInWithZaloRequested`
-- [x] Backend: `zalo-oauth.service.js` + `loginWithZalo`
-- [ ] Production: cần hash key / OAuth Zalo Dashboard khớp package `com.example.app`
+Backend hien co 36 REST endpoints dang duoc mount qua `/api/v1`.
 
-### 5.4. Quên mật khẩu (Forgot Password) — **theo Email**
+Ngoai REST API, he thong co:
 
-> **Đã thống nhất:** Không dùng SĐT + Zalo OTP cho forgot password. Luồng chuẩn là **email + OTP 6 số**.
+- WebSocket Socket.IO cho chat realtime va presence.
+- FCM cho push notification.
 
-**Backend flow:**
+## 5. REST API list
 
-1. **`POST /forgot-password`** — body `{ "email": "user@example.com" }`
-   - Luôn trả success-shaped (không lộ email có tồn tại hay không)
-   - Nếu user active: sinh OTP 6 số → hash (`createTokenHash`) → lưu `user.passwordResetTokenHash` + `passwordResetExpiresAt`
-   - Gửi mail qua Mailtrap; **dev:** in OTP ra terminal: `[email:dev] Password reset OTP for ...`
+### 5.1 Health API
 
-2. **`POST /verify-reset-otp`** — `{ "email", "otp" }`
-   - So khớp hash + chưa hết hạn
+| Method | Endpoint | Auth | Mo ta |
+|---|---|---|---|
+| GET | `/health` | No | Kiem tra backend song/chay |
 
-3. **`POST /reset-password`** — `{ "resetToken", "password", "confirmPassword" }`
-   - `resetToken` = **cùng mã OTP** (đã hash trên user)
-   - Revoke refresh tokens cũ, cấp JWT mới (auto login)
+### 5.2 Auth API
 
-**Thời hạn OTP:** cấu hình `OTP_EXPIRES_MINUTES` (mặc định **10** phút trong `.env.example`; có thể set 15).
+| Method | Endpoint | Auth | Mo ta |
+|---|---|---|---|
+| POST | `/auth/register` | No | Dang ky user moi |
+| POST | `/auth/login` | No | Dang nhap local user |
+| POST | `/auth/admin/login` | No | Dang nhap admin web, chi cho role `admin` |
+| POST | `/auth/forgot-password` | No | Gui OTP quen mat khau |
+| POST | `/auth/verify-reset-otp` | No | Xac thuc OTP reset password |
+| POST | `/auth/reset-password` | No | Dat lai mat khau |
+| POST | `/auth/refresh-token` | No | Lay access token moi |
+| POST | `/auth/logout` | No | Logout, huy refresh token |
+| POST | `/auth/social/google` | No | Dang nhap bang Google |
+| POST | `/auth/social/zalo` | No | Dang nhap bang Zalo |
+| GET | `/auth/me` | Bearer token | Lay thong tin user hien tai |
+| PATCH | `/auth/me/profile` | Bearer token | Cap nhat fullName, phone, avatar |
+| PATCH | `/auth/me/password` | Bearer token | Doi mat khau user |
+| GET | `/auth/me/address` | Bearer token | Lay dia chi user |
+| PATCH | `/auth/me/address` | Bearer token | Cap nhat dia chi user |
 
-**Flutter:**
+### 5.3 Pet API
 
-- [x] `ForgotPasswordPage` — nhập **email**, gọi `requestPasswordResetOtp`
-- [x] `ForgotPasswordOtpPage` — nhập OTP, gọi `verifyPasswordResetOtp`
-- [ ] **Chưa hoàn chỉnh:** Sau verify OTP hiện `go` về **Sign In**; màn `ResetPasswordPage` còn legacy (phone) — **cần nối** `POST /reset-password` với OTP làm `resetToken` rồi vào home
+| Method | Endpoint | Auth | Mo ta |
+|---|---|---|---|
+| GET | `/pets` | Bearer token | Lay danh sach thu cung cua user |
+| POST | `/pets` | Bearer token | Tao thu cung moi |
+| GET | `/pets/:petId` | Bearer token | Lay chi tiet thu cung |
 
-**Mail dev (Mailtrap):**
+Pet data hien luu:
 
-```env
-SMTP_HOST=sandbox.smtp.mailtrap.io
-SMTP_PORT=2525
+- `owner`
+- `name`
+- `ageYears`
+- `weightKg`
+- `petType`: `dog`, `cat`, `rabbit`, `bird`
+- `vaccinationStatus`
+- `imageDataUrl`
+
+### 5.4 Service API
+
+| Method | Endpoint | Auth | Mo ta |
+|---|---|---|---|
+| GET | `/services` | No | Lay danh sach dich vu |
+
+Ghi chu: Service hien dang la API list. Can xem lai du lieu service dang static hay seed tu DB truoc khi dua vao production.
+
+### 5.5 Booking API
+
+| Method | Endpoint | Auth | Mo ta |
+|---|---|---|---|
+| GET | `/bookings/availability` | Bearer token | Lay khung gio con trong |
+| GET | `/bookings` | Bearer token | Lay lich su dat lich cua user |
+| POST | `/bookings` | Bearer token | Tao booking moi |
+| GET | `/bookings/:bookingId` | Bearer token | Lay chi tiet booking |
+| PATCH | `/bookings/:bookingId/cancel` | Bearer token | Huy booking |
+
+Booking co unique index:
+
+```text
+dateKey + timeSlotId
+```
+
+Index nay giup chan nhieu user dat cung mot khung gio neu status la:
+
+- `upcoming`
+- `completed`
+
+### 5.6 Chat API
+
+| Method | Endpoint | Auth | Mo ta |
+|---|---|---|---|
+| GET | `/chat/conversations` | Bearer token | Admin lay danh sach conversation, user lay conversation cua minh |
+| POST | `/chat/conversations` | Bearer token | Tao hoac lay conversation cua user hien tai |
+| GET | `/chat/conversations/:conversationId/messages` | Bearer token | Lay tin nhan trong conversation |
+| POST | `/chat/conversations/:conversationId/messages` | Bearer token | Gui tin nhan text/image/file |
+| PATCH | `/chat/conversations/:conversationId/read` | Bearer token | Danh dau da doc |
+
+Chat message ho tro:
+
+- Text.
+- Image attachment.
+- File attachment.
+
+Ghi chu hien tai:
+
+- File/anh dang duoc luu dang `dataUrl/base64` trong MongoDB.
+- Cach nay phu hop dev/test nhanh.
+- Production nen dua file sang Cloudinary, S3, Firebase Storage hoac object storage khac, MongoDB chi luu URL.
+
+### 5.7 Notification API
+
+| Method | Endpoint | Auth | Mo ta |
+|---|---|---|---|
+| POST | `/notifications/device-token` | Bearer token | Luu FCM token cua thiet bi |
+| POST | `/notifications/test` | Bearer token | Gui notification test toi user hien tai |
+
+Notification dang dung de:
+
+- Dat lich thanh cong.
+- Nhac lich truoc 1 ngay / 1 gio.
+- Booking bi huy/thay doi.
+- Tin nhan chat khi app o background/closed.
+
+### 5.8 Help Center API
+
+| Method | Endpoint | Auth | Mo ta |
+|---|---|---|---|
+| GET | `/help-center` | No | Lay noi dung trung tam tro giup |
+| POST | `/help-center/feedback` | Bearer token | User gui yeu cau ho tro/feedback |
+
+### 5.9 App Review API
+
+| Method | Endpoint | Auth | Mo ta |
+|---|---|---|---|
+| POST | `/app-reviews` | Bearer token | User gui danh gia ung dung |
+| GET | `/app-reviews` | Admin token | Admin lay danh sach danh gia |
+
+## 6. API dang khai bao o Flutter nhung backend can kiem tra
+
+Trong Flutter co endpoint:
+
+```text
+GET /posts
+```
+
+Nhung backend hien tai chua mount route `/posts` trong `backend/src/routes/index.js`.
+
+Neu app con dung blog/news:
+
+- Can tao backend module `posts`.
+- Hoac xoa endpoint/mock neu chua dung.
+
+## 7. WebSocket realtime
+
+Backend Socket.IO duoc khoi tao trong:
+
+```text
+backend/src/server.js
+backend/src/socket/chatSocket.js
+```
+
+Socket auth:
+
+- Client gui access token qua `socket.handshake.auth.token`.
+- Backend verify JWT.
+- Neu token sai/het han, socket bi tu choi.
+
+### Client emit events
+
+| Event | Payload | Mo ta |
+|---|---|---|
+| `presence:online` | none | Bao user/admin dang online |
+| `chat:join` | `{ conversationId }` | Join room conversation |
+| `chat:typing` | `{ conversationId, isTyping }` | Gui trang thai dang nhap |
+| `chat:send` | `{ conversationId, text }` | Gui tin nhan qua socket |
+
+### Server emit events
+
+| Event | Payload | Mo ta |
+|---|---|---|
+| `presence:user-updated` | `{ user }` | Bao admin user online/offline |
+| `chat:message` | `{ conversationId, message }` | Tin nhan moi |
+| `chat:typing` | `{ conversationId, userId, isTyping }` | Trang thai dang nhap |
+
+### Presence online/offline
+
+User model co:
+
+- `isOnline`
+- `lastSeenAt`
+
+Khi socket connect:
+
+- Backend set `isOnline = true`.
+- Emit `presence:user-updated` cho room `admins`.
+
+Khi socket disconnect:
+
+- Backend doi 1.5 giay.
+- Neu user khong con socket active thi set `isOnline = false`.
+- Cap nhat `lastSeenAt`.
+
+## 8. Firebase Cloud Messaging
+
+FCM trong he thong dung de hien notification system tren Android/iOS.
+
+Nguyen tac nen dung:
+
+- Neu user dang mo man hinh chat va dang xem conversation: khong can day notification system.
+- Neu app background/closed: backend gui FCM.
+- Khi user bam notification chat: app nen dieu huong vao tab Chat.
+
+File lien quan:
+
+```text
+backend/src/firebase/serviceAccountKey.json
+app/lib/core/notifications/push_notification_service.dart
+```
+
+Luu y bao mat:
+
+- Khong commit `serviceAccountKey.json` len git public.
+- Nen dung secret manager hoac environment mount khi deploy.
+
+## 9. Database models
+
+Backend hien co cac model:
+
+| Model | File | Mo ta |
+|---|---|---|
+| User | `user.model.js` | Tai khoan user/admin, auth provider, profile, address, presence |
+| RefreshToken | `refreshToken.model.js` | Refresh token da cap |
+| Pet | `pet.model.js` | Thu cung cua user |
+| Booking | `booking.model.js` | Lich hen/dat lich |
+| ChatConversation | `chatConversation.model.js` | Phong chat user-admin |
+| ChatMessage | `chatMessage.model.js` | Tin nhan chat text/image/file |
+| DeviceToken | `deviceToken.model.js` | FCM token cua thiet bi |
+| HelpFeedback | `helpFeedback.model.js` | Yeu cau ho tro cua user |
+| AppReview | `appReview.model.js` | Danh gia ung dung |
+
+## 10. Auth va role
+
+User role hien tai:
+
+```text
+user
+customer
+staff
+admin
+```
+
+Dang ky mac dinh:
+
+```text
+role = user
+```
+
+Admin web login:
+
+```text
+POST /auth/admin/login
+```
+
+Chi tai khoan co `role = admin` moi vao admin web.
+
+## 11. Booking flow
+
+Luang dat lich:
+
+1. User dang nhap.
+2. User tao/lua chon thu cung.
+3. App goi `/bookings/availability` de lay khung gio.
+4. Khung gio da co booking se bi khoa tren UI.
+5. User chon service, ngay, gio.
+6. App goi `POST /bookings`.
+7. Backend check trung lich bang unique index.
+8. Backend luu booking.
+9. Backend co the gui FCM dat lich thanh cong.
+10. App hien chi tiet lich hen.
+
+Huy lich:
+
+1. User bam huy.
+2. App goi `PATCH /bookings/:bookingId/cancel`.
+3. Backend doi status sang `cancelled`.
+4. Khung gio co the duoc mo lai cho lich moi.
+
+## 12. Chat flow
+
+REST + WebSocket dang duoc dung ket hop:
+
+1. Mo man hinh chat.
+2. App goi REST API lay conversation.
+3. App goi REST API lay lich su tin nhan.
+4. App connect WebSocket bang access token.
+5. App emit `chat:join`.
+6. Khi user/gui admin gui tin moi:
+   - REST API luu DB.
+   - Backend emit `chat:message`.
+   - Ben con lai nhan realtime qua socket.
+7. Neu ben nhan offline/background, backend gui FCM.
+
+## 13. Offline strategy
+
+App dang co Hive/local storage.
+
+Huong dung hop ly:
+
+- Auth token: secure storage.
+- Profile cache: Hive/local DB.
+- Pet cache: Hive/local DB.
+- Booking cache: chi doc offline, khong cho dat/huy offline.
+- Chat cache: co the cache tin gan nhat, nhung gui tin nen can online.
+
+Quy tac nen giu:
+
+- Pet co the tao draft offline, online lai sync sau.
+- Booking bat buoc online de tranh trung khung gio.
+- Address/profile co the sua offline neu co queue sync, nhung hien tai nen update online de don gian.
+
+## 14. Environment variables backend
+
+Backend can cac bien moi truong chinh:
+
+```text
+PORT=5000
+NODE_ENV=development
+API_PREFIX=/api/v1
+MONGODB_URI=mongodb://127.0.0.1:27017/pet-booking
+CLIENT_URL=http://localhost:3000
+ACCESS_TOKEN_SECRET=...
+ACCESS_TOKEN_EXPIRES_IN=15m
+REFRESH_TOKEN_SECRET=...
+REFRESH_TOKEN_EXPIRES_IN=7d
+GOOGLE_OAUTH_CLIENT_IDS=...
+ZALO_APP_ID=...
+ZALO_APP_SECRET=...
+ZALO_CALLBACK_URL=...
+FIREBASE_SERVICE_ACCOUNT_PATH=src/firebase/serviceAccountKey.json
+SMTP_HOST=...
+SMTP_PORT=...
 SMTP_SECURE=false
 SMTP_USER=...
 SMTP_PASS=...
-MAIL_FROM="Pet Booking <noreply@mailtrap.io>"
+MAIL_FROM=...
 OTP_EXPIRES_MINUTES=10
 OTP_RESEND_COOLDOWN_SECONDS=60
 ```
 
-Nếu SMTP chưa cấu hình + `NODE_ENV=development` → chỉ log OTP ra console (vẫn test được).
+Docker dung:
 
-### 5.5. User model (`authProvider`)
-
-| Giá trị | Ý nghĩa |
-|---------|---------|
-| `local` | Email/password |
-| `google` | Google Sign-In |
-| `zalo` | Zalo OAuth |
-
----
-
-## 6. Flutter app — Main shell & features (mock-first)
-
-### 6.1. Bottom navigation (`MainShellPage`)
-
-| Index | Tab | Feature | Bloc |
-|-------|-----|---------|------|
-| 0 | Trang chủ | `features/home/` | `HomeBloc` |
-| 1 | Dịch vụ | `features/services/` | `ServicesBloc` |
-| 2 | Blog | `features/blog/` | `BlogBloc` |
-| 3 | Chat | `features/chat/` | `ChatBloc` |
-| 4 | Profile | `features/profile/` | `ProfileBloc` |
-
-- Route: `/home` (`MainShellPage.routeName` = `main-shell`)
-- `IndexedStack` giữ state từng tab; `MainShellBloc` quản lý `currentIndex`
-- **Không** có tab “Đặt lịch” riêng — vào booking qua nút trên Home / Dịch vụ
-
-### 6.2. Luồng đặt lịch (Booking flow)
-
-**Entry points:**
-
-- Home → “Đặt lịch ngay” → `openBookingPetSelection(context)`
-- Services → “Đặt ngay” trên từng dịch vụ → `openBookingPetSelection(context, serviceId: ...)`
-- Helper: `app/lib/app/navigation/booking_navigation.dart`
-
-**Route booking:**
-
-| Route | Name | Mô tả |
-|-------|------|--------|
-| `/booking/my-pets` | `booking-my-pets` | Shell 4 bước (`MyPetsPage`) |
-| `/booking/detail/:bookingId` | `booking-detail` | Chi tiết lịch hẹn sau khi hoàn tất |
-
-**4 bước (`BookingStep`):**
-
-| Bước | Enum | UI | Bloc chính |
-|------|------|-----|------------|
-| 1 | `pet` | `_BookingPetStepContent` trong `my_pets_page.dart` | `BookingBloc` + `PetsBloc` |
-| 2 | `service` | `BookingServiceStepContent` | `BookingServiceSelectionBloc` |
-| 3 | `appointment` | `BookingAppointmentStepContent` | `BookingAppointmentBloc` |
-| 4 | `confirmation` | `BookingConfirmationStepContent` | `BookingConfirmationBloc` |
-
-**Orchestrator:** `BookingBloc` (`features/booking/presentation/bloc/`) giữ state xuyên suốt:
-
-- `selectedPetId`, `selectedServiceIds`, `totalVnd`
-- `selectedAppointmentDate`, `selectedTimeSlotId`, `selectedTimeSlotLabel`
-- `bookingReference` (mã sau submit)
-- `currentStep`, `serviceId` (preselect từ tab Dịch vụ)
-
-**Stepper UI:** `booking_progress_stepper.dart` — 4 bước: Thú cưng → Dịch vụ → Lịch hẹn → Xác nhận
-
-**Sau hoàn tất bước 4:**
-
-1. `SubmitBookingUseCase` → mock tạo mã `PSxxxxx`
-2. `BookingDetailMapper` build `BookingDetail` → lưu `BookingDetailLocalDataSource` (in-memory)
-3. `openBookingDetail(context, bookingId: ...)` → `BookingDetailPage`
-
-**Màn chi tiết lịch hẹn (`BookingDetailPage`):**
-
-- Bloc: `BookingDetailBloc` — load detail, hủy lịch (`CancelBookingUseCase`)
-- Hiển thị: mã `#PS…`, badge trạng thái (Sắp tới / Hoàn thành / Đã hủy), pet, dịch vụ + giá, ngày/giờ, địa điểm, tóm tắt thanh toán, nút Hủy lịch / Hỗ trợ
-- **Lưu ý:** Dữ liệu booking hiện **chỉ trong RAM** (session app). Đóng app hoàn toàn → mất. Khi có API backend cần thay `BookingDetailLocalDataSource` bằng persist/remote.
-
-### 6.3. Mock data booking (dev)
-
-| Nguồn | File | Ghi chú |
-|-------|------|---------|
-| Thú cưng | `features/pets/data/` | Pet mẫu `pet-mochi` (Mochi), `pet-luna` |
-| Dịch vụ bookable | `booking_service_mock_data_source.dart` | IDs: `booking-spa`, `booking-grooming`, `booking-boarding`, … |
-| Map từ tab Dịch vụ | cùng file | VD: `grooming-cleaning` → `booking-grooming` |
-| Lịch hẹn | `booking_appointment_mock_data_source.dart` | Tháng 10/2023, slot sáng/chiều, một số slot “Hết chỗ” |
-| Xác nhận | `booking_confirmation_mock_data_source.dart` | Line items, ví PawSitive / MoMo trên detail |
-| Chi tiết sau submit | `booking_detail_local_data_source.dart` + `booking_detail_mapper.dart` | Build từ `BookingConfirmationRequest` + content |
-
-### 6.4. File quan trọng — booking
-
-```
-app/lib/features/booking/
-├── domain/entities/          booking_step.dart, booking_detail.dart, appointment_*, …
-├── domain/repositories/      booking_*_repository.dart
-├── domain/usecases/          get_appointment_*, get_booking_confirmation, submit_booking,
-│                             get_booking_detail, cancel_booking
-├── data/datasources/         *_mock_data_source.dart, booking_detail_local_data_source.dart
-├── data/repositories/        *_repository_impl.dart
-├── data/mappers/             booking_detail_mapper.dart
-└── presentation/
-    ├── bloc/                 booking_bloc, booking_*_bloc
-    ├── pages/                booking_detail_page.dart
-    └── widgets/              booking_*_step_content.dart, booking_progress_stepper.dart
-
-app/lib/features/pets/presentation/pages/my_pets_page.dart   ← shell 4 bước
-app/lib/app/router/app_router.dart                           ← routes booking
-app/lib/app/navigation/booking_navigation.dart               ← openBookingPetSelection, openBookingDetail
+```text
+backend/.env.docker
 ```
 
-### 6.5. DI & codegen
+Local dev dung:
 
-- Thêm `@injectable` / `@LazySingleton` → chạy `dart run build_runner build` trong `app/`
-- `AuthRepository` đăng ký **thủ công** trong `injection.dart` (`_registerAuthDependencies`) — codegen có thể cảnh báo `LogoutUseCase` / `AuthRepository` unregistered (runtime vẫn OK)
+```text
+backend/.env
+```
 
----
+Can chu y:
 
-## 7. Tiến độ tính năng (tóm tắt)
+- Neu backend chay Docker thi `MONGODB_URI` phai tro toi `mongo:27017`.
+- Neu backend chay local thi `MONGODB_URI` thuong la `127.0.0.1:27017`.
+- Google/Zalo login phu thuoc config app id, client id, hash key, SHA-1/SHA-256 va package name.
 
-### Authentication
+## 15. Cach chay du an
 
-- [x] Register / Login local
-- [x] JWT + Refresh token + Logout
-- [x] Google Sign-In (merge email)
-- [x] Zalo Sign-In (cần cấu hình dashboard)
-- [x] Joi validation toàn route auth
-- [x] Global error handler
-- [x] Forgot password: email → OTP (Mailtrap + dev console)
-- [x] Verify OTP (backend + Flutter)
-- [ ] Forgot password: màn đặt mật khẩu mới trên Flutter (nối `reset-password`)
-
-### Flutter — Main tabs (mock UI + Bloc)
-
-- [x] Home — banner, quick actions, “Đặt lịch ngay”
-- [x] Services — danh sách dịch vụ, “Đặt ngay” → booking với `serviceId`
-- [x] Blog — search, filter, featured/latest, weekly tip
-- [x] Chat — FAQ, messages, typing, send
-- [x] Profile — menu, logout (`LogoutUseCase` + `AuthRepository.logout()`)
-
-### Flutter — Booking flow (mock, chưa API)
-
-- [x] Bước 1: Chọn thú cưng (`MyPetsPage` + `PetsBloc`)
-- [x] Bước 2: Chọn dịch vụ (multi-select, tổng tiền)
-- [x] Bước 3: Chọn ngày & khung giờ (sáng/chiều, slot hết chỗ)
-- [x] Bước 4: Xác nhận & thanh toán (mock submit)
-- [x] Màn chi tiết lịch hẹn sau submit (`BookingDetailPage`)
-- [x] Hủy lịch trên màn detail (mock, cập nhật status in-memory)
-- [ ] Nối API backend `bookings` (create, get, cancel)
-- [ ] Persist booking local (SharedPreferences / SQLite) hoặc fetch từ server
-
-### Nghiệp vụ booking (backend skeleton)
-
-- [ ] `pets`, `services`, `bookings` — có route/controller khung, chưa hoàn thiện product
-
-### Web
-
-- [x] Login / Register cơ bản
-- [ ] Parity đầy đủ với Flutter auth recovery
-
----
-
-## 8. Quy tắc viết code (Coding Conventions)
-
-### Backend
-
-1. **Luôn** trả lỗi JSON: `{ success: false, message: "..." }` — dùng `ApiError` + `next(error)` hoặc `asyncHandler`.
-2. **Validation:** Thêm Joi schema trong `*.schemas.js`, gắn `validate(schema)` trên route — không validate thủ công rải rác trong controller.
-3. **Controller mỏng:** Chỉ nhận request, gọi service, trả response.
-4. **Service:** Business logic, gọi model, throw `ApiError` với status phù hợp (400, 401, 403, 409, 502).
-5. **Không** commit `.env`, `serviceAccountKey.json`, secret Zalo/Google vào repo public.
-6. **Password:** Hash qua `utils/password.js` (không lưu plain text).
-7. **OTP / token:** Chỉ lưu **hash** (`createTokenHash`), không lưu OTP thô trong DB.
-
-### Flutter
-
-1. **Luồng:** UI → Bloc Event → UseCase → Repository → Retrofit/Dio.
-2. **Lỗi API:** Map qua `FailureMapper` / `ApiException` — hiển thị `message` từ backend (field `message` trong JSON).
-3. **Không** gọi Dio trực tiếp từ Widget; luôn qua repository.
-4. **Đăng ký DI:** Thêm dependency trong `injection.dart` (hoặc module injectable tương ứng).
-5. **Retrofit:** Cập nhật `auth_api_service.dart` + chạy `build_runner` hoặc sửa `.g.dart` đồng bộ.
-6. **State social login:** Dùng `AuthAction.signInWithGoogle` / `signInWithZalo` riêng để loading từng nút.
-
-### Chung
-
-- Giữ thay đổi **nhỏ, đúng scope** — không refactor lan man khi user chỉ yêu cầu một task.
-- Đồng bộ validation Flutter (form) với Joi backend (độ dài password, email, OTP 6 số).
-- Message lỗi **tiếng Anh** trên API (hiện tại); UI Flutter có i18n (`AppLocalizations`).
-
----
-
-## 9. Biến môi trường quan trọng
-
-Tham chiếu `backend/.env.example`. Tối thiểu để chạy local:
-
-| Nhóm | Biến |
-|------|------|
-| Server | `PORT`, `NODE_ENV`, `API_PREFIX`, `MONGODB_URI`, `CLIENT_URL` |
-| JWT | `ACCESS_TOKEN_SECRET`, `REFRESH_TOKEN_SECRET`, `*_EXPIRES_IN` |
-| Google | `FIREBASE_SERVICE_ACCOUNT_PATH`, `GOOGLE_OAUTH_CLIENT_IDS` |
-| Zalo | `ZALO_APP_ID`, `ZALO_APP_SECRET`, `ZALO_CALLBACK_URL` |
-| Email OTP | `SMTP_*`, `MAIL_FROM`, `OTP_EXPIRES_MINUTES`, `OTP_RESEND_COOLDOWN_SECONDS` |
-
----
-
-## 10. Lệnh chạy nhanh (dev)
+### Backend local
 
 ```bash
-# Backend
 cd backend
 npm install
 npm run dev
+```
 
-# Flutter
+Backend chay o:
+
+```text
+http://localhost:5000/api/v1
+```
+
+### Admin web local
+
+```bash
+cd admin_web
+npm install
+npm run dev
+```
+
+Admin web mac dinh chay o:
+
+```text
+http://localhost:5173
+```
+
+### Flutter app
+
+```bash
 cd app
 flutter pub get
-dart run build_runner build   # sau khi thêm @injectable
 flutter run
 ```
 
-**Health check:** `GET /api/v1/health`
+Neu test tren Android emulator:
 
----
+- `localhost` trong app la localhost cua emulator, khong phai may tinh.
+- Nen dung IP LAN cua may, vi du `192.168.1.29`.
 
-## 11. Ghi chú cho AI khi nhận task mới
+### Docker
 
-1. Xác định layer: backend / Flutter / web — **ưu tiên app** trừ khi user nói rõ khác.
-2. Đọc module liên quan trong `backend/src/modules/` hoặc `app/lib/features/`.
-3. Không đổi contract API đã có mà không cập nhật Flutter (Retrofit + models).
-4. Forgot password: nhớ luồng **email**, không quay lại phone/Zalo OTP trừ khi user yêu cầu rõ.
-5. Khi thêm endpoint: Joi schema + route `validate` + service + (nếu cần) Flutter repository/bloc.
-6. **Booking:** Feature mới theo pattern `domain → data (mock trước) → presentation (Bloc)`. Orchestrator là `BookingBloc`; mỗi bước có Bloc riêng được `BlocProvider` trong `MyPetsPage`. Sau submit → `BookingDetailPage`, không về home trừ khi user back.
-7. **Main shell:** 5 tab — không thêm tab “Đặt lịch” trừ khi user yêu cầu redesign nav.
-8. Cập nhật **checkbox tiến độ** trong file này nếu hoàn thành hạng mục lớn.
+```bash
+docker compose up --build
+```
 
----
+Seed admin:
 
-*Cập nhật lần cuối: Flutter booking flow 4 bước + BookingDetailPage (mock in-memory); main shell 5 tab; auth Google/Zalo/email OTP.*
+```bash
+docker compose --profile tools run --rm seed_admin
+```
+
+## 16. Cach test API bang Postman
+
+### Register
+
+```http
+POST /api/v1/auth/register
+Content-Type: application/json
+```
+
+```json
+{
+  "fullName": "Postman Test",
+  "email": "postman@example.com",
+  "password": "12345678",
+  "phone": "0912345678",
+  "address": "123 Nguyen Trai, TP.HCM"
+}
+```
+
+### Login
+
+```http
+POST /api/v1/auth/login
+Content-Type: application/json
+```
+
+```json
+{
+  "email": "postman@example.com",
+  "password": "12345678"
+}
+```
+
+Lay `accessToken`, sau do them header:
+
+```text
+Authorization: Bearer <accessToken>
+```
+
+### Create pet
+
+```http
+POST /api/v1/pets
+Authorization: Bearer <accessToken>
+Content-Type: application/json
+```
+
+```json
+{
+  "name": "Milo",
+  "ageYears": 2,
+  "weightKg": 5.5,
+  "petType": "dog",
+  "vaccinationStatus": "vaccinated",
+  "imageDataUrl": "data:image/png;base64,..."
+}
+```
+
+### Create booking
+
+```http
+POST /api/v1/bookings
+Authorization: Bearer <accessToken>
+Content-Type: application/json
+```
+
+```json
+{
+  "petId": "<petId>",
+  "serviceIds": ["grooming"],
+  "dateKey": "2026-06-14",
+  "timeSlotId": "10:00",
+  "timeSlotLabel": "10:00"
+}
+```
+
+### Send chat message
+
+```http
+POST /api/v1/chat/conversations/<conversationId>/messages
+Authorization: Bearer <accessToken>
+Content-Type: application/json
+```
+
+```json
+{
+  "text": "Xin chao admin",
+  "attachments": []
+}
+```
+
+## 17. Danh gia source hien tai
+
+### Diem tot
+
+- Backend da chia module ro rang theo domain.
+- Da co validation Joi cho nhieu API quan trong.
+- Auth co access token va refresh token.
+- Booking co unique index de chan trung lich.
+- Chat da co REST API ket hop WebSocket.
+- Da co FCM device token va notification test.
+- Flutter co BLoC, repository, datasource, mapper, DI.
+- Admin web da co base UI va ket noi chat realtime.
+- Docker Compose da co MongoDB, backend, admin web.
+
+### Rủi ro / technical debt
+
+- Upload anh/file dang luu base64 trong MongoDB, se nang DB neu dung that.
+- Chua co phan quyen chi tiet cho staff/admin ngoai role basic.
+- Mot so API admin quan ly service/customer/pet/report/notification chua day du, admin web hien nhieu phan van la UI/static.
+- Backend chua co test tu dong cho service/controller.
+- Flutter test con it, moi co smoke/sample test.
+- Chua co CI/CD.
+- Chua co centralized logging/monitoring.
+- Chua co API documentation OpenAPI/Swagger.
+- Chua co migration/seed data chuan cho service, help center, posts.
+- Refresh token va auto retry tren app can duoc audit ky vi da tung co loi 401.
+- Google/Zalo login phu thuoc config ngoai source, de loi neu doi `google-services.json`, SHA key, Zalo hash key.
+- Chat attachment nen co limit/scan file chat hon khi production.
+- FCM lifecycle can test tren real device voi background/terminated state.
+
+## 18. Nhung phan con thieu nen lam tiep
+
+### Backend
+
+- Tao Swagger/OpenAPI cho toan bo REST API.
+- Tao API admin:
+  - Quan ly booking.
+  - Quan ly service.
+  - Quan ly customer.
+  - Quan ly pet.
+  - Quan ly report.
+  - Quan ly notification.
+  - Quan ly feedback/app review.
+- Them unit/integration test.
+- Them upload service dung Cloudinary/S3/Firebase Storage.
+- Them audit log cho admin action.
+- Them pagination/filter/sort chuan cho list API.
+- Them error code chuan thay vi chi message text.
+
+### Flutter app
+
+- Hoan thien offline cache strategy bang Hive.
+- Them queue sync cho pet draft.
+- Audit refresh token interceptor.
+- Them test cho AuthBloc, BookingBloc, ChatBloc, PetBloc.
+- Chuan hoa da ngon ngu en/vi cho tat ca man hinh.
+- Toi uu image cache va loading state.
+
+### Admin web
+
+- Ket noi tat ca page voi API that.
+- Them route guard theo admin token.
+- Them refresh token flow.
+- Them empty/loading/error state cho tung page.
+- Them UI quan ly feedback/review.
+- Them upload service image neu co.
+
+### DevOps
+
+- Them `.env.example` day du va khong chua secret that.
+- Them GitHub Actions build/test.
+- Them Docker healthcheck cho backend.
+- Them production deployment guide.
+- Them backup MongoDB.
+
+## 19. Quyen han va bao mat can chu y
+
+- Khong commit secret:
+  - Firebase service account.
+  - JWT secret.
+  - Zalo app secret.
+  - SMTP password.
+- Admin role hien co the sua truc tiep trong MongoDB.
+- Nen them API quan ly role chi cho super admin neu du an lon hon.
+- Nen them rate limit rieng cho login/register/forgot password.
+- Nen validate kich thuoc base64 upload tu client va server.
+
+## 20. Ket luan ban giao
+
+Du an da co nen tang kha day du cho mot san pham pet care booking:
+
+- Mobile app co auth, booking, pet, profile, chat, notification.
+- Backend co REST API, WebSocket, MongoDB, FCM.
+- Admin web co UI dashboard va chat.
+
+Trang thai hien tai phu hop de tiep tuc phat trien MVP.
+
+Truoc khi dua len production, nen uu tien:
+
+1. Chuyen upload anh/file sang object storage.
+2. Hoan thien admin API va noi du lieu that vao admin web.
+3. Viet Swagger/OpenAPI.
+4. Them test backend va Flutter BLoC.
+5. Kiem tra lai auth refresh token, Google/Zalo login, FCM lifecycle tren real device.
+6. Them logging, monitoring, backup va CI/CD.

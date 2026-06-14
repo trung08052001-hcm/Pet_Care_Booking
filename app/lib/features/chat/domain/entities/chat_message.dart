@@ -1,3 +1,4 @@
+import 'package:app/features/chat/domain/entities/chat_attachment.dart';
 import 'package:app/features/chat/domain/entities/chat_message_sender.dart';
 import 'package:equatable/equatable.dart';
 
@@ -7,6 +8,7 @@ class ChatMessage extends Equatable {
     required this.sender,
     required this.text,
     required this.sentAt,
+    this.attachments = const [],
     this.imageAttachmentTitle,
     this.isRead = false,
   });
@@ -15,11 +17,16 @@ class ChatMessage extends Equatable {
   final ChatMessageSender sender;
   final String text;
   final DateTime sentAt;
+  final List<ChatAttachment> attachments;
   final String? imageAttachmentTitle;
   final bool isRead;
 
   bool get hasImageAttachment =>
-      imageAttachmentTitle != null && imageAttachmentTitle!.isNotEmpty;
+      attachments.any((attachment) => attachment.isImage) ||
+      (imageAttachmentTitle != null && imageAttachmentTitle!.isNotEmpty);
+
+  bool get hasFileAttachment =>
+      attachments.any((attachment) => !attachment.isImage);
 
   @override
   List<Object?> get props => [
@@ -27,6 +34,7 @@ class ChatMessage extends Equatable {
         sender,
         text,
         sentAt,
+        attachments,
         imageAttachmentTitle,
         isRead,
       ];

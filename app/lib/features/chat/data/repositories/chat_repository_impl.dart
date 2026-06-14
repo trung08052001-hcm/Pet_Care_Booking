@@ -4,6 +4,7 @@ import 'package:app/features/chat/data/datasources/chat_mock_data_source.dart';
 import 'package:app/features/chat/data/datasources/chat_remote_data_source.dart';
 import 'package:app/features/chat/data/datasources/chat_socket_service.dart';
 import 'package:app/features/chat/data/mappers/chat_message_mapper.dart';
+import 'package:app/features/chat/domain/entities/chat_attachment.dart';
 import 'package:app/features/chat/domain/entities/chat_message.dart';
 import 'package:app/features/chat/domain/entities/chat_page_content.dart';
 import 'package:app/features/chat/domain/repositories/chat_repository.dart';
@@ -66,7 +67,10 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  ResultFuture<ChatMessage> sendMessage(String text) async {
+  ResultFuture<ChatMessage> sendMessage(
+    String text, {
+    List<ChatAttachment> attachments = const [],
+  }) async {
     try {
       var conversationId = _conversationId;
       if (conversationId == null || conversationId.isEmpty) {
@@ -82,6 +86,7 @@ class ChatRepositoryImpl implements ChatRepository {
       final message = await _remoteDataSource.sendMessage(
         conversationId: conversationId,
         text: text,
+        attachments: attachments,
       );
       return Right(ChatMessageMapper.fromJson(message));
     } on Exception catch (exception, stackTrace) {

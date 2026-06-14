@@ -33,7 +33,15 @@ type ChatMessage = {
   conversationId: string;
   sender: ChatUser | null;
   senderRole: "customer" | "admin";
+  type?: "text" | "image" | "file";
   text: string;
+  attachments?: Array<{
+    type: "image" | "file";
+    name: string;
+    dataUrl: string;
+    mimeType?: string;
+    sizeBytes?: number;
+  }>;
   createdAt: string;
 };
 
@@ -429,7 +437,27 @@ export function ChatPage() {
               key={message.id}
             >
               <div className={message.senderRole === "admin" ? "bubble outgoing" : "bubble incoming"}>
-                {message.text}
+                {message.text ? <p className="message-text">{message.text}</p> : null}
+                {message.attachments?.map((attachment) =>
+                  attachment.type === "image" ? (
+                    <img
+                      className="chat-image-attachment"
+                      key={`${message.id}-${attachment.name}`}
+                      src={attachment.dataUrl}
+                      alt={attachment.name}
+                    />
+                  ) : (
+                    <a
+                      className="chat-file-attachment"
+                      download={attachment.name}
+                      href={attachment.dataUrl}
+                      key={`${message.id}-${attachment.name}`}
+                    >
+                      <Image size={16} />
+                      <span>{attachment.name}</span>
+                    </a>
+                  ),
+                )}
               </div>
               <small className={message.senderRole === "admin" ? "message-time right" : "message-time left"}>
                 {formatTime(message.createdAt)}

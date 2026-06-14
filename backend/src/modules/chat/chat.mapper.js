@@ -21,6 +21,7 @@ const mapMessage = (message) => ({
   senderRole: message.senderRole,
   type: message.type,
   text: message.text,
+  attachments: message.attachments || [],
   readBy: message.readBy,
   createdAt: message.createdAt,
   updatedAt: message.updatedAt,
