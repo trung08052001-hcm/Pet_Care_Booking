@@ -18,6 +18,12 @@ import 'package:app/features/authentication/domain/usecases/sign_in_with_google_
 import 'package:app/features/authentication/domain/usecases/sign_in_with_zalo_usecase.dart';
 import 'package:app/features/authentication/domain/usecases/sign_up_usecase.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:app/features/blog/data/datasources/blog_mock_data_source.dart';
+import 'package:app/features/blog/data/datasources/blog_remote_data_source.dart';
+import 'package:app/features/blog/data/repositories/blog_repository_impl.dart';
+import 'package:app/features/blog/domain/repositories/blog_repository.dart';
+import 'package:app/features/blog/domain/usecases/get_blog_page_content_usecase.dart';
+import 'package:app/features/blog/presentation/bloc/blog_bloc.dart';
 import 'package:app/features/booking/data/datasources/booking_appointment_mock_data_source.dart';
 import 'package:app/features/booking/data/datasources/booking_confirmation_mock_data_source.dart';
 import 'package:app/features/booking/data/datasources/booking_detail_local_data_source.dart';
@@ -36,6 +42,7 @@ import 'package:app/features/booking/domain/usecases/submit_booking_usecase.dart
 import 'package:app/features/booking/presentation/bloc/booking_appointment_bloc.dart';
 import 'package:app/features/booking/presentation/bloc/booking_confirmation_bloc.dart';
 import 'package:app/features/booking/presentation/bloc/booking_detail_bloc.dart';
+import 'package:app/features/chat/data/datasources/chat_local_data_source.dart';
 import 'package:app/features/chat/data/datasources/chat_mock_data_source.dart';
 import 'package:app/features/chat/data/datasources/chat_remote_data_source.dart';
 import 'package:app/features/chat/data/datasources/chat_socket_service.dart';
@@ -44,6 +51,10 @@ import 'package:app/features/chat/domain/repositories/chat_repository.dart';
 import 'package:app/features/chat/domain/usecases/get_chat_page_content_usecase.dart';
 import 'package:app/features/chat/domain/usecases/send_chat_message_usecase.dart';
 import 'package:app/features/chat/presentation/bloc/chat_bloc.dart';
+import 'package:app/features/home/data/repositories/home_repository_impl.dart';
+import 'package:app/features/home/domain/repositories/home_repository.dart';
+import 'package:app/features/home/domain/usecases/get_home_dashboard_usecase.dart';
+import 'package:app/features/home/presentation/bloc/home_bloc.dart';
 import 'package:app/features/pets/data/datasources/pets_local_data_source.dart';
 import 'package:app/features/pets/data/datasources/pets_mock_data_source.dart';
 import 'package:app/features/pets/data/datasources/pets_remote_data_source.dart';
@@ -58,15 +69,15 @@ import 'package:app/features/profile/data/datasources/help_center_remote_data_so
 import 'package:app/features/profile/data/datasources/profile_address_remote_data_source.dart';
 import 'package:app/features/profile/data/datasources/profile_edit_remote_data_source.dart';
 import 'package:app/features/profile/data/datasources/profile_mock_data_source.dart';
-import 'package:app/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:app/features/profile/data/repositories/profile_address_repository_impl.dart';
+import 'package:app/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:app/features/profile/data/services/current_location_address_service.dart';
-import 'package:app/features/profile/domain/repositories/profile_repository.dart';
 import 'package:app/features/profile/domain/repositories/profile_address_repository.dart';
+import 'package:app/features/profile/domain/repositories/profile_repository.dart';
 import 'package:app/features/profile/domain/usecases/get_help_center_content_usecase.dart';
-import 'package:app/features/profile/domain/usecases/get_profile_page_content_usecase.dart';
 import 'package:app/features/profile/domain/usecases/get_profile_address_usecase.dart';
 import 'package:app/features/profile/domain/usecases/get_profile_edit_user_usecase.dart';
+import 'package:app/features/profile/domain/usecases/get_profile_page_content_usecase.dart';
 import 'package:app/features/profile/domain/usecases/logout_usecase.dart';
 import 'package:app/features/profile/domain/usecases/save_profile_address_usecase.dart';
 import 'package:app/features/profile/domain/usecases/submit_app_review_usecase.dart';
@@ -74,8 +85,17 @@ import 'package:app/features/profile/domain/usecases/update_profile_edit_usecase
 import 'package:app/features/profile/presentation/bloc/app_review_bloc.dart';
 import 'package:app/features/profile/presentation/bloc/help_center_bloc.dart';
 import 'package:app/features/profile/presentation/bloc/profile_address_bloc.dart';
-import 'package:app/features/profile/presentation/bloc/profile_edit_bloc.dart';
 import 'package:app/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:app/features/profile/presentation/bloc/profile_edit_bloc.dart';
+import 'package:app/features/services/data/datasources/services_local_data_source.dart';
+import 'package:app/features/services/data/datasources/services_mock_data_source.dart';
+import 'package:app/features/services/data/datasources/services_remote_data_source.dart';
+import 'package:app/features/services/data/repositories/services_repository_impl.dart';
+import 'package:app/features/services/domain/repositories/services_repository.dart';
+import 'package:app/features/services/domain/usecases/get_service_detail_usecase.dart';
+import 'package:app/features/services/domain/usecases/get_services_page_content_usecase.dart';
+import 'package:app/features/services/presentation/bloc/service_detail_bloc.dart';
+import 'package:app/features/services/presentation/bloc/services_bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -100,6 +120,9 @@ Future<void> configureDependencies(AppConfig appConfig) async {
   await _registerPetsDependencies();
   await _registerBookingDependencies();
   await _registerChatDependencies();
+  await _registerBlogDependencies();
+  await _registerServicesDependencies();
+  await _registerHomeDependencies();
   await _registerProfileAddressDependencies();
   await _registerProfileEditDependencies();
   await _registerProfileDependencies();
@@ -107,7 +130,48 @@ Future<void> configureDependencies(AppConfig appConfig) async {
   await _registerAppReviewDependencies();
 }
 
+Future<void> _registerHomeDependencies() async {
+  await _replaceRegistration<HomeRepository>(
+    () => HomeRepositoryImpl(
+      getIt(),
+      getIt<ServicesRepository>(),
+    ),
+  );
+  await _replaceRegistration<GetHomeDashboardUseCase>(
+    () => GetHomeDashboardUseCase(getIt<HomeRepository>()),
+    lazySingleton: false,
+  );
+  await _replaceRegistration<HomeBloc>(
+    () => HomeBloc(getIt<GetHomeDashboardUseCase>()),
+    lazySingleton: false,
+  );
+}
+
+Future<void> _registerBlogDependencies() async {
+  await _replaceRegistration<BlogRemoteDataSource>(
+    () => BlogRemoteDataSource(getIt<Dio>()),
+  );
+  await _replaceRegistration<BlogRepository>(
+    () => BlogRepositoryImpl(
+      getIt<BlogMockDataSource>(),
+      getIt<BlogRemoteDataSource>(),
+      getIt<NetworkInfo>(),
+    ),
+  );
+  await _replaceRegistration<GetBlogPageContentUseCase>(
+    () => GetBlogPageContentUseCase(getIt<BlogRepository>()),
+    lazySingleton: false,
+  );
+  await _replaceRegistration<BlogBloc>(
+    () => BlogBloc(getIt<GetBlogPageContentUseCase>()),
+    lazySingleton: false,
+  );
+}
+
 Future<void> _registerChatDependencies() async {
+  await _replaceRegistration<ChatLocalDataSource>(
+    () => ChatLocalDataSource(getIt<HiveLocalStore>()),
+  );
   await _replaceRegistration<ChatRemoteDataSource>(
     () => ChatRemoteDataSource(getIt<Dio>()),
   );
@@ -122,6 +186,8 @@ Future<void> _registerChatDependencies() async {
       getIt<ChatMockDataSource>(),
       getIt<ChatRemoteDataSource>(),
       getIt<ChatSocketService>(),
+      getIt<NetworkInfo>(),
+      getIt<ChatLocalDataSource>(),
     ),
   );
   await _replaceRegistration<GetChatPageContentUseCase>(
@@ -137,6 +203,7 @@ Future<void> _registerChatDependencies() async {
       getIt<GetChatPageContentUseCase>(),
       getIt<SendChatMessageUseCase>(),
       getIt<ChatRepository>(),
+      getIt<Connectivity>(),
     ),
     lazySingleton: false,
   );
@@ -341,6 +408,39 @@ Future<void> _registerBookingDependencies() async {
       getIt<GetBookingDetailUseCase>(),
       getIt<CancelBookingUseCase>(),
     ),
+    lazySingleton: false,
+  );
+}
+
+Future<void> _registerServicesDependencies() async {
+  await _replaceRegistration<ServicesLocalDataSource>(
+    () => ServicesLocalDataSource(getIt<HiveLocalStore>()),
+  );
+  await _replaceRegistration<ServicesRemoteDataSource>(
+    () => ServicesRemoteDataSource(getIt<Dio>()),
+  );
+  await _replaceRegistration<ServicesRepository>(
+    () => ServicesRepositoryImpl(
+      getIt<ServicesMockDataSource>(),
+      getIt<ServicesRemoteDataSource>(),
+      getIt<ServicesLocalDataSource>(),
+      getIt<NetworkInfo>(),
+    ),
+  );
+  await _replaceRegistration<GetServicesPageContentUseCase>(
+    () => GetServicesPageContentUseCase(getIt<ServicesRepository>()),
+    lazySingleton: false,
+  );
+  await _replaceRegistration<GetServiceDetailUseCase>(
+    () => GetServiceDetailUseCase(getIt<ServicesRepository>()),
+    lazySingleton: false,
+  );
+  await _replaceRegistration<ServicesBloc>(
+    () => ServicesBloc(getIt<GetServicesPageContentUseCase>()),
+    lazySingleton: false,
+  );
+  await _replaceRegistration<ServiceDetailBloc>(
+    () => ServiceDetailBloc(getIt<GetServiceDetailUseCase>()),
     lazySingleton: false,
   );
 }

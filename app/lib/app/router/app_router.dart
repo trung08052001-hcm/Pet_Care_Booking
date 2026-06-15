@@ -7,8 +7,10 @@ import 'package:app/features/authentication/presentation/pages/forgot_password_p
 import 'package:app/features/authentication/presentation/pages/reset_password_page.dart';
 import 'package:app/features/authentication/presentation/pages/sign_in_page.dart';
 import 'package:app/features/authentication/presentation/pages/sign_up_page.dart';
+import 'package:app/features/blog/domain/entities/blog_post.dart';
 import 'package:app/features/blog/presentation/bloc/blog_bloc.dart';
 import 'package:app/features/blog/presentation/bloc/blog_event.dart';
+import 'package:app/features/blog/presentation/pages/blog_detail_page.dart';
 import 'package:app/features/booking/presentation/bloc/booking_bloc.dart';
 import 'package:app/features/booking/presentation/bloc/booking_detail_bloc.dart';
 import 'package:app/features/booking/presentation/bloc/booking_detail_event.dart';
@@ -47,8 +49,11 @@ import 'package:app/features/profile/presentation/pages/profile_address_page.dar
 import 'package:app/features/profile/presentation/pages/profile_edit_page.dart';
 import 'package:app/features/sample_posts/presentation/bloc/sample_posts_bloc.dart';
 import 'package:app/features/sample_posts/presentation/pages/sample_posts_page.dart';
+import 'package:app/features/services/presentation/bloc/service_detail_bloc.dart';
+import 'package:app/features/services/presentation/bloc/service_detail_event.dart';
 import 'package:app/features/services/presentation/bloc/services_bloc.dart';
 import 'package:app/features/services/presentation/bloc/services_event.dart';
+import 'package:app/features/services/presentation/pages/service_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -120,6 +125,31 @@ class AppRouter {
               ),
             ],
             child: const MainShellPage(),
+          );
+        },
+      ),
+      GoRoute(
+        path: ServiceDetailPage.routePath,
+        name: ServiceDetailPage.routeName,
+        builder: (context, state) {
+          final serviceId = state.pathParameters['serviceId'] ?? '';
+          return BlocProvider(
+            create: (_) => getIt<ServiceDetailBloc>()
+              ..add(ServiceDetailStarted(serviceId)),
+            child: ServiceDetailPage(serviceId: serviceId),
+          );
+        },
+      ),
+      GoRoute(
+        path: BlogDetailPage.routePath,
+        name: BlogDetailPage.routeName,
+        builder: (context, state) {
+          final postId = state.pathParameters['postId'] ?? '';
+          final initialPost =
+              state.extra is BlogPost ? state.extra as BlogPost : null;
+          return BlogDetailPage(
+            postId: postId,
+            initialPost: initialPost,
           );
         },
       ),

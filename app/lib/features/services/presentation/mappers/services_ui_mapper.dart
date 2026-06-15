@@ -2,23 +2,19 @@ import 'package:app/features/services/domain/entities/service_category_filter.da
 import 'package:flutter/material.dart';
 
 abstract final class ServicesUiMapper {
-  static String formatPriceFrom(int priceVnd) {
-    final digits = priceVnd.toString();
-    final buffer = StringBuffer();
-    for (var i = 0; i < digits.length; i++) {
-      if (i > 0 && (digits.length - i) % 3 == 0) {
-        buffer.write('.');
-      }
-      buffer.write(digits[i]);
-    }
-    return 'Từ $bufferđ';
-  }
-
   static String categoryLabel(ServiceCategoryFilter category) {
     return switch (category) {
       ServiceCategoryFilter.all => 'Tất cả',
       ServiceCategoryFilter.dog => 'Chó',
       ServiceCategoryFilter.cat => 'Mèo',
+    };
+  }
+
+  static String subtitle(ServiceCategoryFilter category) {
+    return switch (category) {
+      ServiceCategoryFilter.all => 'Tận tâm nâng niu thú cưng của bạn mỗi ngày',
+      ServiceCategoryFilter.dog => 'Các dịch vụ chuyên biệt dành cho chó của bạn',
+      ServiceCategoryFilter.cat => 'Các dịch vụ nhẹ nhàng và an toàn dành cho mèo',
     };
   }
 
@@ -35,6 +31,4 @@ abstract final class ServicesUiMapper {
         ),
     };
   }
-
-  static Color placeholderColor(int argb) => Color(argb);
 }

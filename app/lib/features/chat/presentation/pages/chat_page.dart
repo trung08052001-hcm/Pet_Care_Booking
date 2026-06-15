@@ -690,13 +690,22 @@ class _MessageBubble extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      ChatUiMapper.formatTime(message.sentAt),
+                      _statusLabel,
                       style: const TextStyle(
                         fontSize: 11,
                         color: AppColors.mutedText,
                       ),
                     ),
-                    if (_isUser && message.isRead) ...[
+                    if (_isUser &&
+                        message.deliveryStatus ==
+                            ChatMessageDeliveryStatus.sending) ...[
+                      const SizedBox(width: 4),
+                      const SizedBox(
+                        width: 10,
+                        height: 10,
+                        child: CircularProgressIndicator(strokeWidth: 1.4),
+                      ),
+                    ] else if (_isUser && message.isRead) ...[
                       const SizedBox(width: 4),
                       const Icon(
                         Icons.done_all_rounded,
@@ -712,6 +721,18 @@ class _MessageBubble extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String get _statusLabel {
+    if (!_isUser) {
+      return ChatUiMapper.formatTime(message.sentAt);
+    }
+
+    return switch (message.deliveryStatus) {
+      ChatMessageDeliveryStatus.sending => 'Đang gửi...',
+      ChatMessageDeliveryStatus.failed => 'Chưa gửi',
+      ChatMessageDeliveryStatus.sent => ChatUiMapper.formatTime(message.sentAt),
+    };
   }
 }
 

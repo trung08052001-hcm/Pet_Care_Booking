@@ -207,6 +207,7 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
       featured = content.featuredPost;
     }
 
+    final visibleLatestLimit = featured == null ? 5 : 4;
     final latest = content.latestPosts
         .where(
           (post) => _matchesPost(
@@ -215,6 +216,7 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
             query: normalizedQuery,
           ),
         )
+        .take(visibleLatestLimit)
         .toList(growable: false);
 
     return (featured: featured, latest: latest);

@@ -14,6 +14,21 @@ class ChatAttachment extends Equatable {
     this.sizeBytes,
   });
 
+  factory ChatAttachment.fromJson(Map<String, dynamic> json) {
+    final typeName = json['type']?.toString();
+    return ChatAttachment(
+      type: typeName == 'file'
+          ? ChatAttachmentType.file
+          : ChatAttachmentType.image,
+      name: (json['name'] ?? 'attachment').toString(),
+      dataUrl: (json['dataUrl'] ?? json['url'] ?? '').toString(),
+      mimeType: json['mimeType']?.toString(),
+      sizeBytes: json['sizeBytes'] is num
+          ? (json['sizeBytes'] as num).toInt()
+          : null,
+    );
+  }
+
   final ChatAttachmentType type;
   final String name;
   final String dataUrl;

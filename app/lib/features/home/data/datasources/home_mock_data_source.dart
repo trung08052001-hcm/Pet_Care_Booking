@@ -27,7 +27,7 @@ class HomeMockDataSource {
           label: 'Pet Hotel',
         ),
         HomeFeaturedService(
-          id: 'vet',
+          id: 'veterinarian',
           type: HomeFeaturedServiceType.veterinarian,
           label: 'Bác sĩ thú y',
         ),

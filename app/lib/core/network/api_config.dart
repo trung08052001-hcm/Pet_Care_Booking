@@ -22,6 +22,8 @@ abstract final class ApiEndpoints {
   static const String pets = '/pets';
   static const String petDetail = '/pets/{petId}';
 
+  static const String services = '/services';
+
   static const String bookings = '/bookings';
   static const String bookingDetail = '/bookings/{bookingId}';
   static const String bookingCancel = '/bookings/{bookingId}/cancel';
@@ -32,6 +34,7 @@ abstract final class ApiEndpoints {
   static const String chatRead = '/chat/conversations/{conversationId}/read';
 
   static const String posts = '/posts';
+  static const String blogPosts = '/blog-posts';
   static const String helpCenter = '/help-center';
   static const String helpCenterFeedback = '/help-center/feedback';
   static const String appReviews = '/app-reviews';

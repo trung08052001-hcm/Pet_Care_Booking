@@ -7,15 +7,32 @@ import 'package:app/features/blog/presentation/bloc/blog_bloc.dart';
 import 'package:app/features/blog/presentation/bloc/blog_event.dart';
 import 'package:app/features/blog/presentation/bloc/blog_state.dart';
 import 'package:app/features/blog/presentation/mappers/blog_ui_mapper.dart';
+import 'package:app/features/blog/presentation/pages/blog_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class BlogPage extends StatelessWidget {
   const BlogPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BlogBloc, BlogState>(
+    return BlocConsumer<BlogBloc, BlogState>(
+      listenWhen: (previous, current) =>
+          previous.interaction != current.interaction ||
+          previous.selectedPostId != current.selectedPostId,
+      listener: (context, state) {
+        if ((state.interaction == BlogInteraction.post ||
+                state.interaction == BlogInteraction.featuredPost) &&
+            state.selectedPostId != null) {
+          final post = _findPostById(state, state.selectedPostId!);
+          context.pushNamed(
+            BlogDetailPage.routeName,
+            pathParameters: {'postId': state.selectedPostId!},
+            extra: post,
+          );
+        }
+      },
       builder: (context, state) {
         if (state.status == BlogStatus.failure) {
           return _BlogErrorView(
@@ -40,6 +57,22 @@ class BlogPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  BlogPost? _findPostById(BlogState state, String postId) {
+    final content = state.content;
+    if (content == null) {
+      return null;
+    }
+    if (content.featuredPost.id == postId) {
+      return content.featuredPost;
+    }
+    for (final post in content.latestPosts) {
+      if (post.id == postId) {
+        return post;
+      }
+    }
+    return null;
   }
 }
 
@@ -576,10 +609,15 @@ class _LatestPostTile extends StatelessWidget {
                 color: BlogUiMapper.placeholderColor(post.imagePlaceholderColor),
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: Icon(
-                Icons.image_outlined,
-                color: AppColors.brownText.withValues(alpha: 0.3),
-              ),
+              clipBehavior: Clip.antiAlias,
+              child: post.imageUrl != null && post.imageUrl!.startsWith('http')
+                  ? Image.network(
+                      post.imageUrl!,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          _PostImageFallback(post: post),
+                    )
+                  : _PostImageFallback(post: post),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -617,7 +655,8 @@ class _LatestPostTile extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        BlogUiMapper.formatPublishedDate(post.publishedAt),
+                        post.publishedDateLabel ??
+                            BlogUiMapper.formatPublishedDate(post.publishedAt),
                         style: const TextStyle(
                           fontSize: 12,
                           color: AppColors.mutedText,
@@ -631,7 +670,8 @@ class _LatestPostTile extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        BlogUiMapper.formatViewCount(post.viewCount),
+                        post.readTimeLabel ??
+                            BlogUiMapper.formatViewCount(post.viewCount),
                         style: const TextStyle(
                           fontSize: 12,
                           color: AppColors.mutedText,
@@ -644,6 +684,23 @@ class _LatestPostTile extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _PostImageFallback extends StatelessWidget {
+  const _PostImageFallback({required this.post});
+
+  final BlogPost post;
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: BlogUiMapper.placeholderColor(post.imagePlaceholderColor),
+      child: Icon(
+        Icons.image_outlined,
+        color: AppColors.brownText.withValues(alpha: 0.3),
       ),
     );
   }

@@ -9,15 +9,29 @@ import 'package:app/features/home/presentation/bloc/home_bloc.dart';
 import 'package:app/features/home/presentation/bloc/home_event.dart';
 import 'package:app/features/home/presentation/bloc/home_state.dart';
 import 'package:app/features/home/presentation/mappers/home_ui_mapper.dart';
+import 'package:app/features/services/presentation/pages/service_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
+    return BlocConsumer<HomeBloc, HomeState>(
+      listenWhen: (previous, current) =>
+          previous.interaction != current.interaction ||
+          previous.selectedServiceId != current.selectedServiceId,
+      listener: (context, state) {
+        if (state.interaction == HomeInteraction.featuredService &&
+            state.selectedServiceId != null) {
+          context.pushNamed(
+            ServiceDetailPage.routeName,
+            pathParameters: {'serviceId': state.selectedServiceId!},
+          );
+        }
+      },
       builder: (context, state) {
         if (state.status == HomeStatus.failure) {
           return _HomeErrorView(
@@ -116,9 +130,8 @@ class _HomeContent extends StatelessWidget {
                   const SizedBox(height: 24),
                   _SectionHeader(
                     title: dashboard.featuredServicesSectionTitle,
-                    actionLabel: 'Tất cả',
-                    onActionTap: () =>
-                        bloc.add(const HomeFeaturedServicesSeeAllPressed()),
+                    actionLabel: '',
+                    onActionTap: null,
                   ),
                   const SizedBox(height: 12),
                   _FeaturedServicesRow(
@@ -306,7 +319,7 @@ class _SectionHeader extends StatelessWidget {
 
   final String title;
   final String actionLabel;
-  final VoidCallback onActionTap;
+  final VoidCallback? onActionTap;
 
   @override
   Widget build(BuildContext context) {
@@ -322,22 +335,23 @@ class _SectionHeader extends StatelessWidget {
             ),
           ),
         ),
-        TextButton(
-          onPressed: onActionTap,
-          style: TextButton.styleFrom(
-            foregroundColor: AppColors.primary,
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            minimumSize: Size.zero,
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          child: Text(
-            actionLabel,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
+        if (actionLabel.isNotEmpty && onActionTap != null)
+          TextButton(
+            onPressed: onActionTap,
+            style: TextButton.styleFrom(
+              foregroundColor: AppColors.primary,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              minimumSize: Size.zero,
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+            child: Text(
+              actionLabel,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-        ),
       ],
     );
   }

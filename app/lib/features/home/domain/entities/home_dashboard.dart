@@ -21,6 +21,25 @@ class HomeDashboard extends Equatable {
   final String featuredServicesSectionTitle;
   final String petTipsSectionTitle;
 
+  HomeDashboard copyWith({
+    HomeWelcome? welcome,
+    List<HomeFeaturedService>? featuredServices,
+    HomePromo? promo,
+    List<HomePetTip>? petTips,
+    String? featuredServicesSectionTitle,
+    String? petTipsSectionTitle,
+  }) {
+    return HomeDashboard(
+      welcome: welcome ?? this.welcome,
+      featuredServices: featuredServices ?? this.featuredServices,
+      promo: promo ?? this.promo,
+      petTips: petTips ?? this.petTips,
+      featuredServicesSectionTitle:
+          featuredServicesSectionTitle ?? this.featuredServicesSectionTitle,
+      petTipsSectionTitle: petTipsSectionTitle ?? this.petTipsSectionTitle,
+    );
+  }
+
   @override
   List<Object?> get props => [
         welcome,

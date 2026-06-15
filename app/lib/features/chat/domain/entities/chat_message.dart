@@ -2,6 +2,12 @@ import 'package:app/features/chat/domain/entities/chat_attachment.dart';
 import 'package:app/features/chat/domain/entities/chat_message_sender.dart';
 import 'package:equatable/equatable.dart';
 
+enum ChatMessageDeliveryStatus {
+  sending,
+  sent,
+  failed,
+}
+
 class ChatMessage extends Equatable {
   const ChatMessage({
     required this.id,
@@ -11,6 +17,7 @@ class ChatMessage extends Equatable {
     this.attachments = const [],
     this.imageAttachmentTitle,
     this.isRead = false,
+    this.deliveryStatus = ChatMessageDeliveryStatus.sent,
   });
 
   final String id;
@@ -20,6 +27,7 @@ class ChatMessage extends Equatable {
   final List<ChatAttachment> attachments;
   final String? imageAttachmentTitle;
   final bool isRead;
+  final ChatMessageDeliveryStatus deliveryStatus;
 
   bool get hasImageAttachment =>
       attachments.any((attachment) => attachment.isImage) ||
@@ -37,5 +45,6 @@ class ChatMessage extends Equatable {
         attachments,
         imageAttachmentTitle,
         isRead,
+        deliveryStatus,
       ];
 }

@@ -26,18 +26,7 @@ class ChatMessageMapper {
     }
 
     return value.whereType<Map<String, dynamic>>().map((item) {
-      final typeName = item['type']?.toString();
-      return ChatAttachment(
-        type: typeName == 'file'
-            ? ChatAttachmentType.file
-            : ChatAttachmentType.image,
-        name: (item['name'] ?? 'attachment').toString(),
-        dataUrl: (item['dataUrl'] ?? item['url'] ?? '').toString(),
-        mimeType: item['mimeType']?.toString(),
-        sizeBytes: item['sizeBytes'] is num
-            ? (item['sizeBytes'] as num).toInt()
-            : null,
-      );
+      return ChatAttachment.fromJson(item);
     }).where((attachment) => attachment.dataUrl.isNotEmpty).toList();
   }
 }

@@ -5,6 +5,8 @@ export const apiConfig = {
     authRefreshToken: "/auth/refresh-token",
     chatConversations: "/chat/conversations",
     chatMessages: (conversationId: string) => `/chat/conversations/${conversationId}/messages`,
+    services: "/services",
+    serviceDetail: (serviceId: string) => `/services/${serviceId}`,
   },
 };
 

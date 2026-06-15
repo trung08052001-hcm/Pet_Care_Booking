@@ -8,6 +8,7 @@ import 'package:app/features/chat/domain/usecases/get_chat_page_content_usecase.
 import 'package:app/features/chat/domain/usecases/send_chat_message_usecase.dart';
 import 'package:app/features/chat/presentation/bloc/chat_event.dart';
 import 'package:app/features/chat/presentation/bloc/chat_state.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -17,23 +18,40 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     this._getChatPageContentUseCase,
     this._sendChatMessageUseCase,
     this._repository,
-  ) : super(const ChatState()) {
+    [
+    Connectivity? connectivity,
+  ])  : _connectivity = connectivity,
+        super(const ChatState()) {
     on<ChatStarted>(_onStarted);
     on<ChatRefreshRequested>(_onRefreshRequested);
     on<ChatMessageSendRequested>(_onMessageSendRequested);
     on<ChatIncomingMessageReceived>(_onIncomingMessageReceived);
+    on<ChatPendingMessagesSyncRequested>(_onPendingMessagesSyncRequested);
     on<ChatFaqPressed>(_onFaqPressed);
     on<ChatSeeAllFaqsPressed>(_onSeeAllFaqsPressed);
     on<ChatNotificationsPressed>(_onNotificationsPressed);
     on<ChatAttachmentPressed>(_onAttachmentPressed);
     on<ChatPickImagePressed>(_onPickImagePressed);
     on<ChatPickEmojiPressed>(_onPickEmojiPressed);
+
+    _connectivitySubscription = _connectivity?.onConnectivityChanged.listen(
+      (results) {
+        final hasNetwork = results.any(
+          (result) => result != ConnectivityResult.none,
+        );
+        if (hasNetwork) {
+          add(const ChatPendingMessagesSyncRequested());
+        }
+      },
+    );
   }
 
   final GetChatPageContentUseCase _getChatPageContentUseCase;
   final SendChatMessageUseCase _sendChatMessageUseCase;
   final ChatRepository _repository;
+  final Connectivity? _connectivity;
   StreamSubscription<ChatMessage>? _messageSubscription;
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
 
   Future<void> _onStarted(ChatStarted event, Emitter<ChatState> emit) =>
       _loadChat(emit);
@@ -82,6 +100,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     _messageSubscription = _repository.incomingMessages.listen(
       (message) => add(ChatIncomingMessageReceived(message)),
     );
+    add(const ChatPendingMessagesSyncRequested());
   }
 
   Future<void> _onMessageSendRequested(
@@ -162,6 +181,46 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     );
   }
 
+  Future<void> _onPendingMessagesSyncRequested(
+    ChatPendingMessagesSyncRequested event,
+    Emitter<ChatState> emit,
+  ) async {
+    final result = await _repository.syncPendingMessages();
+    result.fold(
+      (_) {},
+      (syncedMessages) {
+        if (syncedMessages.isEmpty) {
+          return;
+        }
+
+        var nextMessages = [...state.messages];
+        for (final synced in syncedMessages) {
+          final localIndex = nextMessages.indexWhere(
+            (message) => message.id == synced.localId,
+          );
+          final remoteIndex = nextMessages.indexWhere(
+            (message) => message.id == synced.message.id,
+          );
+
+          if (localIndex >= 0) {
+            nextMessages[localIndex] = synced.message;
+          } else if (remoteIndex < 0) {
+            nextMessages.add(synced.message);
+          }
+        }
+
+        nextMessages = _dedupeAndSort(nextMessages);
+        emit(
+          state.copyWith(
+            messages: nextMessages,
+            isRealtimeConnected: true,
+            clearMessage: true,
+          ),
+        );
+      },
+    );
+  }
+
   void _onIncomingMessageReceived(
     ChatIncomingMessageReceived event,
     Emitter<ChatState> emit,
@@ -181,6 +240,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         clearMessage: true,
       ),
     );
+  }
+
+  List<ChatMessage> _dedupeAndSort(List<ChatMessage> messages) {
+    final byId = <String, ChatMessage>{};
+    for (final message in messages) {
+      byId[message.id] = message;
+    }
+    return byId.values.toList()
+      ..sort((a, b) => a.sentAt.compareTo(b.sentAt));
   }
 
   void _onSeeAllFaqsPressed(
@@ -231,6 +299,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   @override
   Future<void> close() async {
     await _messageSubscription?.cancel();
+    await _connectivitySubscription?.cancel();
     return super.close();
   }
 }

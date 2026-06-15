@@ -39,6 +39,10 @@ final class ChatIncomingMessageReceived extends ChatEvent {
   List<Object?> get props => [message];
 }
 
+final class ChatPendingMessagesSyncRequested extends ChatEvent {
+  const ChatPendingMessagesSyncRequested();
+}
+
 final class ChatFaqPressed extends ChatEvent {
   const ChatFaqPressed(this.faqId);
 

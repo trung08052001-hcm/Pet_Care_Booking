@@ -9,6 +9,7 @@ import 'package:app/core/config/app_flavor.dart';
 import 'package:app/core/di/injection.dart';
 import 'package:app/core/local/hive_local_store.dart';
 import 'package:app/core/locale_cubit.dart';
+import 'package:app/core/network/offline_banner.dart';
 import 'package:app/core/notifications/push_notification_service.dart';
 import 'package:app/core/presence/presence_socket_service.dart';
 import 'package:app/core/storage/storage_service.dart';
@@ -78,6 +79,9 @@ class MyApp extends StatelessWidget {
             onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
             theme: AppTheme.light(),
             routerConfig: appRouter,
+            builder: (context, child) => OfflineBanner(
+              child: child ?? const SizedBox.shrink(),
+            ),
             debugShowCheckedModeBanner: false,
             locale: locale,
             localizationsDelegates: const [

@@ -13,6 +13,14 @@ class BlogPost extends Equatable {
     this.readTimeMinutes,
     this.authorName,
     this.imageUrl,
+    this.slug,
+    this.shortDescription,
+    this.publishedDateLabel,
+    this.readTimeLabel,
+    this.intro,
+    this.sections = const [],
+    this.tip,
+    this.conclusion,
   });
 
   final String id;
@@ -25,6 +33,14 @@ class BlogPost extends Equatable {
   final int? readTimeMinutes;
   final String? authorName;
   final String? imageUrl;
+  final String? slug;
+  final String? shortDescription;
+  final String? publishedDateLabel;
+  final String? readTimeLabel;
+  final String? intro;
+  final List<BlogPostSection> sections;
+  final String? tip;
+  final String? conclusion;
 
   @override
   List<Object?> get props => [
@@ -38,5 +54,26 @@ class BlogPost extends Equatable {
         readTimeMinutes,
         authorName,
         imageUrl,
+        slug,
+        shortDescription,
+        publishedDateLabel,
+        readTimeLabel,
+        intro,
+        sections,
+        tip,
+        conclusion,
       ];
+}
+
+class BlogPostSection extends Equatable {
+  const BlogPostSection({
+    required this.heading,
+    required this.body,
+  });
+
+  final String heading;
+  final String body;
+
+  @override
+  List<Object?> get props => [heading, body];
 }

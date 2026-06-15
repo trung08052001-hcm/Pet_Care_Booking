@@ -1,7 +1,6 @@
 import 'package:app/core/usecase/usecase.dart';
 import 'package:app/features/services/domain/entities/pet_care_service.dart';
 import 'package:app/features/services/domain/entities/service_category_filter.dart';
-import 'package:app/features/services/domain/entities/service_pet_type.dart';
 import 'package:app/features/services/domain/usecases/get_services_page_content_usecase.dart';
 import 'package:app/features/services/presentation/bloc/services_event.dart';
 import 'package:app/features/services/presentation/bloc/services_state.dart';
@@ -122,10 +121,10 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
     return switch (category) {
       ServiceCategoryFilter.all => services,
       ServiceCategoryFilter.dog => services
-          .where((service) => service.petTypes.contains(ServicePetType.dog))
+          .where((service) => service.category == ServiceCategoryFilter.dog)
           .toList(growable: false),
       ServiceCategoryFilter.cat => services
-          .where((service) => service.petTypes.contains(ServicePetType.cat))
+          .where((service) => service.category == ServiceCategoryFilter.cat)
           .toList(growable: false),
     };
   }

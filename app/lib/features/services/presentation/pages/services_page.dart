@@ -128,7 +128,7 @@ class _ServicesContent extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    content.subtitle,
+                    ServicesUiMapper.subtitle(selectedCategory),
                     style: TextStyle(
                       fontSize: 14,
                       height: 1.4,
@@ -328,14 +328,15 @@ class _ServiceCard extends StatelessWidget {
           Container(
             height: 160,
             width: double.infinity,
-            color: ServicesUiMapper.placeholderColor(
-              service.imagePlaceholderColor,
-            ),
-            child: Icon(
-              Icons.image_outlined,
-              size: 48,
-              color: AppColors.brownText.withValues(alpha: 0.3),
-            ),
+            color: const Color(0xFFF7E8DA),
+            child: service.image.startsWith('http')
+                ? Image.network(
+                    service.image,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) =>
+                        _ServiceImageFallback(service: service),
+                  )
+                : _ServiceImageFallback(service: service),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
@@ -355,7 +356,7 @@ class _ServiceCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (service.isPopular) ...[
+                    if (service.badge.isNotEmpty) ...[
                       const SizedBox(width: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(
@@ -366,9 +367,9 @@ class _ServiceCard extends StatelessWidget {
                           color: const Color(0xFFE3F2FD),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Text(
-                          'POPULAR',
-                          style: TextStyle(
+                        child: Text(
+                          service.badge,
+                          style: const TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
                             color: Color(0xFF1976D2),
@@ -395,7 +396,7 @@ class _ServiceCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        ServicesUiMapper.formatPriceFrom(service.priceFromVnd),
+                        service.priceText,
                         style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
@@ -431,6 +432,32 @@ class _ServiceCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ServiceImageFallback extends StatelessWidget {
+  const _ServiceImageFallback({required this.service});
+
+  final PetCareService service;
+
+  @override
+  Widget build(BuildContext context) {
+    final icon = service.category == ServiceCategoryFilter.cat
+        ? Icons.cruelty_free_rounded
+        : Icons.pets_rounded;
+
+    return DecoratedBox(
+      decoration: const BoxDecoration(
+        color: Color(0xFFF7E8DA),
+      ),
+      child: Center(
+        child: Icon(
+          icon,
+          size: 54,
+          color: AppColors.brownText.withValues(alpha: 0.28),
+        ),
       ),
     );
   }
