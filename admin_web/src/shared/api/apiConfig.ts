@@ -7,6 +7,8 @@ export const apiConfig = {
     chatMessages: (conversationId: string) => `/chat/conversations/${conversationId}/messages`,
     services: "/services",
     serviceDetail: (serviceId: string) => `/services/${serviceId}`,
+    blogPosts: "/blog-posts",
+    blogPostDetail: (articleId: string) => `/blog-posts/${articleId}`,
   },
 };
 

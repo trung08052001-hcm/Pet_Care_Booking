@@ -403,6 +403,25 @@ h3 { font-size: 16px; }
 .service-card img { width: 74px; height: 74px; border-radius: 8px; }
 .service-card p { color: var(--muted); margin: 5px 0; }
 .service-form { display: grid; gap: 16px; }
+.inline-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.chip-button.active { background: var(--brand); color: #fff; border-color: var(--brand); }
+.information-layout { display: grid; grid-template-columns: minmax(300px, 0.82fr) minmax(0, 1.8fr); gap: 20px; align-items: start; }
+.information-list-panel { position: sticky; top: 18px; max-height: calc(100vh - 130px); overflow: hidden; display: grid; grid-template-rows: auto auto minmax(0, 1fr); }
+.info-filter-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.information-list { display: grid; gap: 10px; overflow: auto; padding-right: 4px; }
+.information-row { display: grid; grid-template-columns: 68px 1fr auto; gap: 12px; align-items: center; padding: 10px; border: 1px solid var(--line); border-radius: 8px; background: #fffaf5; cursor: pointer; }
+.information-row.active { border-color: var(--brand); background: #fff0e7; }
+.information-row img { width: 68px; height: 68px; border-radius: 8px; object-fit: cover; background: #f5e9dd; }
+.information-row h3 { margin-bottom: 4px; font-size: 14px; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.information-row p { margin-bottom: 7px; font-size: 12px; color: var(--muted); }
+.information-editor { display: grid; gap: 18px; }
+.information-hero-editor { display: grid; grid-template-columns: 260px 1fr; gap: 18px; align-items: start; }
+.information-hero-editor img { width: 100%; aspect-ratio: 16 / 10; border-radius: 8px; object-fit: cover; background: #f5e9dd; border: 1px solid var(--line); }
+.information-section-stack { display: grid; gap: 14px; }
+.panel-title.compact { margin-bottom: 0; }
+.information-section-editor { display: grid; grid-template-columns: 180px 1fr; gap: 16px; padding: 14px; border: 1px solid var(--line); border-radius: 8px; background: #fffaf5; }
+.information-section-editor img { width: 100%; aspect-ratio: 4 / 3; border-radius: 8px; object-fit: cover; background: #f5e9dd; }
+.information-section-editor > div { display: grid; gap: 12px; }
 .service-toggle { display: flex; align-items: center; gap: 10px; align-self: end; min-height: 44px; }
 .service-toggle input { width: 18px; height: 18px; padding: 0; accent-color: var(--brand); }
 .admin-error { padding: 12px 14px; border-radius: 8px; background: #fff0ed; color: #b2361d; font-size: 13px; font-weight: 800; }

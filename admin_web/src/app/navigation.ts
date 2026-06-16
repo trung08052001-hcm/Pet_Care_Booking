@@ -4,6 +4,7 @@ import {
   HeartPulse,
   LayoutDashboard,
   MessageCircle,
+  Newspaper,
   PawPrint,
   Scissors,
   Settings,
@@ -16,6 +17,7 @@ export type AdminSection =
   | "services"
   | "customers"
   | "chat"
+  | "information"
   | "pets"
   | "reports"
   | "notifications"
@@ -27,6 +29,7 @@ export const navigationItems = [
   { id: "services", label: "Services", icon: Scissors },
   { id: "customers", label: "Customers", icon: Users },
   { id: "chat", label: "Chat", icon: MessageCircle },
+  { id: "information", label: "New Information", icon: Newspaper },
   { id: "pets", label: "Pets", icon: PawPrint },
   { id: "reports", label: "Reports", icon: HeartPulse },
   { id: "notifications", label: "Notifications", icon: Bell },

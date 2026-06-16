@@ -69,11 +69,13 @@ class BlogPostSection extends Equatable {
   const BlogPostSection({
     required this.heading,
     required this.body,
+    this.imageUrl = '',
   });
 
   final String heading;
   final String body;
+  final String imageUrl;
 
   @override
-  List<Object?> get props => [heading, body];
+  List<Object?> get props => [heading, body, imageUrl];
 }

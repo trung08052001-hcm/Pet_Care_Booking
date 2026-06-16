@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const blogArticleSectionSchema = new mongoose.Schema(
   {
@@ -12,8 +13,43 @@ const blogArticleSectionSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    image: {
+      type: String,
+      trim: true,
+      maxlength: 1000,
+    },
   },
   { _id: false }
+);
+
+const blogArticleCommentSchema = new mongoose.Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true,
+    },
+    userName: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: 120,
+    },
+    userAvatar: {
+      type: String,
+      trim: true,
+      maxlength: 5500000,
+      default: null,
+    },
+    body: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: 1000,
+    },
+  },
+  { timestamps: true }
 );
 
 const blogArticleSchema = new mongoose.Schema(
@@ -113,6 +149,20 @@ const blogArticleSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
       index: true,
+    },
+    likedBy: {
+      type: [Schema.Types.ObjectId],
+      ref: "User",
+      default: [],
+    },
+    comments: {
+      type: [blogArticleCommentSchema],
+      default: [],
+    },
+    shareCount: {
+      type: Number,
+      default: 0,
+      min: 0,
     },
   },
   {

@@ -1,10 +1,15 @@
 import 'package:app/app/theme/app_colors.dart';
+import 'package:app/core/di/injection.dart';
+import 'package:app/features/blog/data/datasources/blog_remote_data_source.dart';
 import 'package:app/features/blog/domain/entities/blog_category_filter.dart';
 import 'package:app/features/blog/domain/entities/blog_post.dart';
+import 'package:app/features/blog/domain/entities/blog_social.dart';
 import 'package:app/features/blog/presentation/mappers/blog_ui_mapper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class BlogDetailPage extends StatelessWidget {
+class BlogDetailPage extends StatefulWidget {
   const BlogDetailPage({
     required this.postId,
     this.initialPost,
@@ -18,45 +23,184 @@ class BlogDetailPage extends StatelessWidget {
   final BlogPost? initialPost;
 
   @override
-  Widget build(BuildContext context) {
-    final article = BlogArticleContent.fromPostId(postId, initialPost);
+  State<BlogDetailPage> createState() => _BlogDetailPageState();
+}
 
+class _BlogDetailPageState extends State<BlogDetailPage> {
+  final TextEditingController _commentController = TextEditingController();
+  late final BlogRemoteDataSource _remoteDataSource;
+  late final BlogArticleContent _article;
+  BlogSocial _social = const BlogSocial();
+  bool _isSocialLoading = true;
+  bool _isSendingComment = false;
+  String _socialError = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _remoteDataSource = getIt<BlogRemoteDataSource>();
+    _article = BlogArticleContent.fromPostId(widget.postId, widget.initialPost);
+    _loadSocial();
+  }
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadSocial() async {
+    try {
+      final social = await _remoteDataSource.getSocial(_article.id);
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _social = social;
+        _isSocialLoading = false;
+        _socialError = '';
+      });
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _isSocialLoading = false;
+        _socialError = 'Không tải được tương tác bài viết.';
+      });
+    }
+  }
+
+  Future<void> _toggleLike() async {
+    try {
+      final social = await _remoteDataSource.toggleLike(_article.id);
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _social = social;
+        _socialError = '';
+      });
+    } catch (_) {
+      _showSnack('Bạn cần đăng nhập để thích bài viết.');
+    }
+  }
+
+  Future<void> _sendComment() async {
+    final body = _commentController.text.trim();
+    if (body.isEmpty || _isSendingComment) {
+      return;
+    }
+
+    setState(() => _isSendingComment = true);
+
+    try {
+      final social = await _remoteDataSource.addComment(_article.id, body);
+      if (!mounted) {
+        return;
+      }
+      _commentController.clear();
+      FocusScope.of(context).unfocus();
+      setState(() {
+        _social = social;
+        _isSendingComment = false;
+        _socialError = '';
+      });
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() => _isSendingComment = false);
+      _showSnack('Bạn cần đăng nhập để bình luận.');
+    }
+  }
+
+  Future<void> _registerShare() async {
+    try {
+      final social = await _remoteDataSource.registerShare(_article.id);
+      if (mounted) {
+        setState(() => _social = social);
+      }
+    } catch (_) {
+      // Share UI should still work even if the counter cannot be synced.
+    }
+  }
+
+  Future<void> _openShareSheet() async {
+    await _registerShare();
+    if (!mounted) {
+      return;
+    }
+    final shareLink = 'https://pawsitive-care.local/blog/${_article.id}';
+    await showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+      ),
+      builder: (context) => _ShareSheet(
+        title: _article.title,
+        link: shareLink,
+        onCopied: () => _showSnack('Đã copy link bài viết.'),
+      ),
+    );
+  }
+
+  void _showSnack(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
           CustomScrollView(
             slivers: [
-              SliverToBoxAdapter(child: _ArticleHero(article: article)),
+              SliverToBoxAdapter(child: _ArticleHero(article: _article)),
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 148),
                 sliver: SliverList.list(
                   children: [
-                    _ArticleSummary(article: article),
+                    _ArticleSummary(
+                      article: _article,
+                      social: _social,
+                      onLike: _toggleLike,
+                      onShare: _openShareSheet,
+                    ),
                     const SizedBox(height: 22),
-                    _ArticleOutline(items: article.outline),
+                    _ArticleOutline(items: _article.outline),
                     const SizedBox(height: 24),
                     Text(
-                      article.intro,
+                      _article.intro,
                       style: _bodyStyle,
                     ),
                     const SizedBox(height: 26),
-                    for (final section in article.sections) ...[
+                    for (final section in _article.sections) ...[
                       _ArticleSection(section: section),
                       const SizedBox(height: 28),
                     ],
-                    _VetCtaCard(article: article),
+                    _VetCtaCard(article: _article),
                     const SizedBox(height: 26),
                     const Text(
                       'Kết luận',
                       style: _headingStyle,
                     ),
                     const SizedBox(height: 10),
-                    Text(article.conclusion, style: _bodyStyle),
+                    Text(_article.conclusion, style: _bodyStyle),
                     const SizedBox(height: 30),
-                    _RelatedPosts(posts: article.relatedPosts),
+                    _CommentsSection(
+                      social: _social,
+                      isLoading: _isSocialLoading,
+                      error: _socialError,
+                    ),
+                    const SizedBox(height: 30),
+                    _RelatedPosts(posts: _article.relatedPosts),
                     const SizedBox(height: 28),
-                    _AuthorCard(article: article),
+                    _AuthorCard(article: _article),
                     const SizedBox(height: 24),
                     const _NewsletterCard(),
                     const SizedBox(height: 24),
@@ -70,7 +214,15 @@ class BlogDetailPage extends StatelessWidget {
             left: 0,
             right: 0,
             bottom: 0,
-            child: _BlogBottomChrome(article: article),
+            child: _BlogBottomChrome(
+              article: _article,
+              controller: _commentController,
+              social: _social,
+              isSendingComment: _isSendingComment,
+              onCommentSubmitted: _sendComment,
+              onLike: _toggleLike,
+              onShare: _openShareSheet,
+            ),
           ),
         ],
       ),
@@ -197,9 +349,17 @@ class _CategoryPill extends StatelessWidget {
 }
 
 class _ArticleSummary extends StatelessWidget {
-  const _ArticleSummary({required this.article});
+  const _ArticleSummary({
+    required this.article,
+    required this.social,
+    required this.onLike,
+    required this.onShare,
+  });
 
   final BlogArticleContent article;
+  final BlogSocial social;
+  final VoidCallback onLike;
+  final VoidCallback onShare;
 
   @override
   Widget build(BuildContext context) {
@@ -238,12 +398,26 @@ class _ArticleSummary extends StatelessWidget {
         const SizedBox(height: 22),
         Text(article.summary, style: _bodyStyle),
         const SizedBox(height: 22),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _ArticleAction(icon: Icons.favorite_border_rounded, label: 'Thích'),
-            _ArticleAction(icon: Icons.chat_bubble_outline_rounded, label: 'Bình luận'),
-            _ArticleAction(icon: Icons.share_outlined, label: 'Chia sẻ'),
+            _ArticleAction(
+              icon: social.likedByMe
+                  ? Icons.favorite_rounded
+                  : Icons.favorite_border_rounded,
+              label: '${social.likeCount} Thích',
+              active: social.likedByMe,
+              onTap: onLike,
+            ),
+            _ArticleAction(
+              icon: Icons.chat_bubble_outline_rounded,
+              label: '${social.commentCount} Bình luận',
+            ),
+            _ArticleAction(
+              icon: Icons.share_outlined,
+              label: '${social.shareCount} Chia sẻ',
+              onTap: onShare,
+            ),
           ],
         ),
       ],
@@ -255,23 +429,35 @@ class _ArticleAction extends StatelessWidget {
   const _ArticleAction({
     required this.icon,
     required this.label,
+    this.active = false,
+    this.onTap,
   });
 
   final IconData icon;
   final String label;
+  final bool active;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: 18, color: AppColors.mutedText),
-        const SizedBox(width: 5),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 12, color: AppColors.mutedText),
+    final color = active ? AppColors.primary : AppColors.mutedText;
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 18, color: color),
+            const SizedBox(width: 5),
+            Text(
+              label,
+              style: TextStyle(fontSize: 12, color: color),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
@@ -835,10 +1021,248 @@ class _ArticleRatingCard extends StatelessWidget {
   }
 }
 
+class _CommentsSection extends StatelessWidget {
+  const _CommentsSection({
+    required this.social,
+    required this.isLoading,
+    required this.error,
+  });
+
+  final BlogSocial social;
+  final bool isLoading;
+  final String error;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            const Text('Bình luận', style: _headingStyle),
+            const SizedBox(width: 8),
+            Text(
+              '(${social.commentCount})',
+              style: const TextStyle(
+                color: AppColors.mutedText,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 14),
+        if (isLoading)
+          const _CommentStatusCard(text: 'Đang tải bình luận...')
+        else if (error.isNotEmpty)
+          _CommentStatusCard(text: error)
+        else if (social.comments.isEmpty)
+          const _CommentStatusCard(text: 'Chưa có bình luận nào.')
+        else
+          for (final comment in social.comments) ...[
+            _CommentTile(comment: comment),
+            const SizedBox(height: 12),
+          ],
+      ],
+    );
+  }
+}
+
+class _CommentStatusCard extends StatelessWidget {
+  const _CommentStatusCard({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.cardBg,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(color: AppColors.mutedText, fontSize: 13),
+      ),
+    );
+  }
+}
+
+class _CommentTile extends StatelessWidget {
+  const _CommentTile({required this.comment});
+
+  final BlogComment comment;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CircleAvatar(
+          radius: 18,
+          backgroundColor: AppColors.primary.withValues(alpha: 0.14),
+          backgroundImage:
+              comment.userAvatar.isNotEmpty ? NetworkImage(comment.userAvatar) : null,
+          child: comment.userAvatar.isEmpty
+              ? Text(
+                  comment.userName.isNotEmpty
+                      ? comment.userName.characters.first.toUpperCase()
+                      : '?',
+                  style: const TextStyle(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w900,
+                  ),
+                )
+              : null,
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.cardBg,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  comment.userName,
+                  style: const TextStyle(
+                    color: AppColors.brownText,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 13,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(comment.body, style: _smallBodyStyle),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ShareSheet extends StatelessWidget {
+  const _ShareSheet({
+    required this.title,
+    required this.link,
+    required this.onCopied,
+  });
+
+  final String title;
+  final String link;
+  final VoidCallback onCopied;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 4, 20, 22),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Chia sẻ bài viết', style: _headingStyle),
+            const SizedBox(height: 6),
+            Text(title, style: _smallBodyStyle),
+            const SizedBox(height: 18),
+            _ShareOption(
+              icon: Icons.copy_rounded,
+              label: 'Copy link',
+              onTap: () async {
+                await Clipboard.setData(ClipboardData(text: link));
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
+                onCopied();
+              },
+            ),
+            _ShareOption(
+              icon: Icons.sms_outlined,
+              label: 'Share qua tin nhắn',
+              onTap: () => _launchShareUri(context, Uri.parse('sms:?body=$link')),
+            ),
+            _ShareOption(
+              icon: Icons.mail_outline_rounded,
+              label: 'Share qua email',
+              onTap: () => _launchShareUri(
+                context,
+                Uri(
+                  scheme: 'mailto',
+                  queryParameters: {
+                    'subject': title,
+                    'body': link,
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _launchShareUri(BuildContext context, Uri uri) async {
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
+  }
+}
+
+class _ShareOption extends StatelessWidget {
+  const _ShareOption({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: CircleAvatar(
+        backgroundColor: AppColors.primary.withValues(alpha: 0.12),
+        child: Icon(icon, color: AppColors.primary),
+      ),
+      title: Text(
+        label,
+        style: const TextStyle(
+          color: AppColors.brownText,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+      onTap: onTap,
+    );
+  }
+}
+
 class _BlogBottomChrome extends StatelessWidget {
-  const _BlogBottomChrome({required this.article});
+  const _BlogBottomChrome({
+    required this.article,
+    required this.controller,
+    required this.social,
+    required this.isSendingComment,
+    required this.onCommentSubmitted,
+    required this.onLike,
+    required this.onShare,
+  });
 
   final BlogArticleContent article;
+  final TextEditingController controller;
+  final BlogSocial social;
+  final bool isSendingComment;
+  final VoidCallback onCommentSubmitted;
+  final VoidCallback onLike;
+  final VoidCallback onShare;
 
   @override
   Widget build(BuildContext context) {
@@ -861,37 +1285,50 @@ class _BlogBottomChrome extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Container(
-                  height: 42,
-                  padding: const EdgeInsets.symmetric(horizontal: 14),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF6F7F8),
-                    borderRadius: BorderRadius.circular(22),
-                    border: Border.all(color: AppColors.divider),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.chat_bubble_outline_rounded,
-                        size: 18,
-                        color: AppColors.mutedText,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Viết bình luận...',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: AppColors.mutedText.withValues(alpha: 0.9),
-                        ),
-                      ),
-                    ],
+                child: TextField(
+                  controller: controller,
+                  minLines: 1,
+                  maxLines: 3,
+                  textInputAction: TextInputAction.send,
+                  onSubmitted: (_) => onCommentSubmitted(),
+                  decoration: InputDecoration(
+                    hintText: 'Viết bình luận...',
+                    prefixIcon: const Icon(Icons.chat_bubble_outline_rounded),
+                    suffixIcon: IconButton(
+                      onPressed: isSendingComment ? null : onCommentSubmitted,
+                      icon: isSendingComment
+                          ? const SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Icon(Icons.send_rounded),
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFFF6F7F8),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(22),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 10),
                   ),
                 ),
               ),
               const SizedBox(width: 12),
-              const Icon(Icons.favorite_border_rounded, color: AppColors.brownText),
+              IconButton(
+                onPressed: onLike,
+                icon: Icon(
+                  social.likedByMe
+                      ? Icons.favorite_rounded
+                      : Icons.favorite_border_rounded,
+                  color: social.likedByMe ? AppColors.primary : AppColors.brownText,
+                ),
+              ),
               const SizedBox(width: 18),
-              const Icon(Icons.share_outlined, color: AppColors.brownText),
+              IconButton(
+                onPressed: onShare,
+                icon: const Icon(Icons.share_outlined, color: AppColors.brownText),
+              ),
               const SizedBox(width: 18),
               const Icon(Icons.bookmark_border_rounded, color: AppColors.brownText),
             ],
@@ -997,7 +1434,7 @@ class BlogArticleContent {
       publishedLabel:
           '${BlogUiMapper.formatPublishedDate(publishedAt)}, ${publishedAt.year}',
       readTimeLabel: BlogUiMapper.formatReadTime(readTime),
-      heroImageUrl: _heroImageFor(category, postId),
+      heroImageUrl: _postHeroImage(post, category, postId),
       summary: post?.shortDescription ??
           'Thú cưng cũng giống như con người, đôi khi chúng cần được nghỉ ngơi để phục hồi năng lượng và giữ sức khỏe tốt nhất.',
       outline: post?.sections.isNotEmpty == true
@@ -1073,15 +1510,34 @@ class BlogArticleContent {
     return 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=1000&q=80';
   }
 
+  static String _postHeroImage(
+    BlogPost? post,
+    BlogCategoryFilter category,
+    String postId,
+  ) {
+    final imageUrl = post?.imageUrl ?? '';
+    if (_isRemoteImage(imageUrl)) {
+      return imageUrl;
+    }
+    return _heroImageFor(category, postId);
+  }
+
   static List<BlogArticleSection> _sectionsFromPost(BlogPost post) {
     return post.sections.asMap().entries.map((entry) {
+      final imageUrl = entry.value.imageUrl;
       return BlogArticleSection(
         title: entry.value.heading,
         body: entry.value.body,
-        imageUrl: _sectionImageFor(post.category, entry.key),
+        imageUrl: _isRemoteImage(imageUrl)
+            ? imageUrl
+            : _sectionImageFor(post.category, entry.key),
         tip: entry.key == 0 ? post.tip : null,
       );
     }).toList(growable: false);
+  }
+
+  static bool _isRemoteImage(String imageUrl) {
+    return imageUrl.startsWith('http') && !imageUrl.contains('example.com');
   }
 
   static String _sectionImageFor(BlogCategoryFilter category, int index) {
@@ -1164,3 +1620,4 @@ class RelatedBlogPost {
   final String meta;
   final String imageUrl;
 }
+

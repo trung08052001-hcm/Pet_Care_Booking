@@ -6,7 +6,7 @@
     "mainCategory": "Sức khỏe",
     "category": "Sức khỏe",
     "tag": "Sức khỏe",
-    "image": "https://example.com/articles/pet-rest.jpg",
+    "image": "https://loremflickr.com/1200/800/veterinary%2Cpet%2Cclinic?lock=7000",
     "author": "PawSitive Care",
     "publishedDate": "20 Thg 5, 2024",
     "readTime": "5 phút đọc",
@@ -16,23 +16,28 @@
       "sections": [
         {
           "heading": "1. Ngủ nhiều hơn bình thường",
-          "body": "Nếu thú cưng ngủ lâu hơn mọi ngày, ít phản ứng với tiếng gọi hoặc không còn hào hứng khi chơi đùa, đây có thể là dấu hiệu cơ thể đang cần được phục hồi."
+          "body": "Nếu thú cưng ngủ lâu hơn mọi ngày, ít phản ứng với tiếng gọi hoặc không còn hào hứng khi chơi đùa, đây có thể là dấu hiệu cơ thể đang cần được phục hồi.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7001"
         },
         {
           "heading": "2. Mất hứng thú với hoạt động yêu thích",
-          "body": "Một chú chó thường thích đi dạo nhưng bỗng nhiên nằm im, hoặc một bé mèo ít leo trèo hơn mọi khi có thể đang bị mệt."
+          "body": "Một chú chó thường thích đi dạo nhưng bỗng nhiên nằm im, hoặc một bé mèo ít leo trèo hơn mọi khi có thể đang bị mệt.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7002"
         },
         {
           "heading": "3. Thay đổi thói quen ăn uống",
-          "body": "Ăn ít, bỏ bữa hoặc uống nước nhiều bất thường đều là những dấu hiệu nên được theo dõi kỹ."
+          "body": "Ăn ít, bỏ bữa hoặc uống nước nhiều bất thường đều là những dấu hiệu nên được theo dõi kỹ.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7003"
         },
         {
           "heading": "4. Dễ cáu gắt hoặc tránh xa bạn",
-          "body": "Khi mệt, thú cưng có thể không muốn được vuốt ve, bế hoặc chơi cùng như thường lệ."
+          "body": "Khi mệt, thú cưng có thể không muốn được vuốt ve, bế hoặc chơi cùng như thường lệ.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7004"
         },
         {
           "heading": "5. Cơ thể uể oải, ít vận động",
-          "body": "Nếu bé di chuyển chậm, nằm nhiều hoặc tỏ ra không thoải mái, bạn nên cho bé nghỉ ngơi trong không gian yên tĩnh."
+          "body": "Nếu bé di chuyển chậm, nằm nhiều hoặc tỏ ra không thoải mái, bạn nên cho bé nghỉ ngơi trong không gian yên tĩnh.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7005"
         }
       ],
       "tip": "Hãy quan sát thú cưng mỗi ngày. Nếu tình trạng mệt mỏi kéo dài hơn 2–3 ngày, nên đưa bé đi khám thú y.",
@@ -46,7 +51,7 @@
     "mainCategory": "Dinh dưỡng",
     "category": "Dinh dưỡng",
     "tag": "Dinh dưỡng",
-    "image": "https://example.com/articles/puppy-food.jpg",
+    "image": "https://loremflickr.com/1200/800/pet-food%2Cdog-cat%2Cnutrition?lock=7010",
     "author": "PawSitive Care",
     "publishedDate": "18 Thg 5, 2024",
     "readTime": "6 phút đọc",
@@ -56,23 +61,28 @@
       "sections": [
         {
           "heading": "1. Ưu tiên thức ăn dành riêng cho chó con",
-          "body": "Thức ăn puppy thường có lượng protein, chất béo và khoáng chất phù hợp với nhu cầu tăng trưởng."
+          "body": "Thức ăn puppy thường có lượng protein, chất béo và khoáng chất phù hợp với nhu cầu tăng trưởng.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7011"
         },
         {
           "heading": "2. Chia nhỏ bữa ăn trong ngày",
-          "body": "Chó con nên ăn nhiều bữa nhỏ thay vì một bữa lớn để hệ tiêu hóa hoạt động nhẹ nhàng hơn."
+          "body": "Chó con nên ăn nhiều bữa nhỏ thay vì một bữa lớn để hệ tiêu hóa hoạt động nhẹ nhàng hơn.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7012"
         },
         {
           "heading": "3. Luôn có nước sạch",
-          "body": "Nước giúp duy trì trao đổi chất, hỗ trợ tiêu hóa và điều hòa thân nhiệt."
+          "body": "Nước giúp duy trì trao đổi chất, hỗ trợ tiêu hóa và điều hòa thân nhiệt.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7013"
         },
         {
           "heading": "4. Không cho ăn đồ quá mặn hoặc nhiều dầu mỡ",
-          "body": "Thức ăn của người có thể gây rối loạn tiêu hóa hoặc ảnh hưởng đến gan, thận của chó con."
+          "body": "Thức ăn của người có thể gây rối loạn tiêu hóa hoặc ảnh hưởng đến gan, thận của chó con.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7014"
         },
         {
           "heading": "5. Theo dõi cân nặng định kỳ",
-          "body": "Tăng cân quá nhanh hoặc quá chậm đều cần được điều chỉnh khẩu phần ăn."
+          "body": "Tăng cân quá nhanh hoặc quá chậm đều cần được điều chỉnh khẩu phần ăn.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7015"
         }
       ],
       "tip": "Nên hỏi bác sĩ thú y để chọn loại thức ăn phù hợp với giống chó, cân nặng và tình trạng sức khỏe.",
@@ -86,7 +96,7 @@
     "mainCategory": "Sức khỏe",
     "category": "Chăm sóc",
     "tag": "Chăm sóc",
-    "image": "https://example.com/articles/cat-bath.jpg",
+    "image": "https://loremflickr.com/1200/800/pet-grooming%2Ccat-dog%2Ccare?lock=7020",
     "author": "PawSitive Care",
     "publishedDate": "15 Thg 5, 2024",
     "readTime": "5 phút đọc",
@@ -96,23 +106,28 @@
       "sections": [
         {
           "heading": "1. Chuẩn bị trước khi tắm",
-          "body": "Chuẩn bị khăn mềm, sữa tắm dành riêng cho mèo, nước ấm và không gian kín gió."
+          "body": "Chuẩn bị khăn mềm, sữa tắm dành riêng cho mèo, nước ấm và không gian kín gió.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7021"
         },
         {
           "heading": "2. Chải lông trước khi tắm",
-          "body": "Việc chải lông giúp gỡ rối, loại bỏ lông rụng và giúp quá trình tắm dễ dàng hơn."
+          "body": "Việc chải lông giúp gỡ rối, loại bỏ lông rụng và giúp quá trình tắm dễ dàng hơn.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7022"
         },
         {
           "heading": "3. Dùng nước ấm vừa phải",
-          "body": "Nước quá nóng hoặc quá lạnh đều khiến mèo khó chịu. Hãy kiểm tra nhiệt độ bằng tay trước."
+          "body": "Nước quá nóng hoặc quá lạnh đều khiến mèo khó chịu. Hãy kiểm tra nhiệt độ bằng tay trước.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7023"
         },
         {
           "heading": "4. Tránh để nước vào tai và mắt",
-          "body": "Khi tắm, nên lau vùng mặt bằng khăn ẩm thay vì xịt nước trực tiếp."
+          "body": "Khi tắm, nên lau vùng mặt bằng khăn ẩm thay vì xịt nước trực tiếp.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7024"
         },
         {
           "heading": "5. Sấy khô hoàn toàn",
-          "body": "Sau khi tắm, cần lau và sấy khô để tránh mèo bị lạnh hoặc nấm da."
+          "body": "Sau khi tắm, cần lau và sấy khô để tránh mèo bị lạnh hoặc nấm da.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7025"
         }
       ],
       "tip": "Nếu mèo quá sợ nước, bạn có thể chọn dịch vụ grooming chuyên nghiệp để đảm bảo an toàn.",
@@ -126,7 +141,7 @@
     "mainCategory": "Sức khỏe",
     "category": "Sức khỏe",
     "tag": "Sức khỏe",
-    "image": "https://example.com/articles/vet-checkup.jpg",
+    "image": "https://loremflickr.com/1200/800/veterinary%2Cpet%2Cclinic?lock=7030",
     "author": "PawSitive Care",
     "publishedDate": "12 Thg 5, 2024",
     "readTime": "5 phút đọc",
@@ -136,23 +151,28 @@
       "sections": [
         {
           "heading": "1. Chó mèo con cần được kiểm tra thường xuyên",
-          "body": "Giai đoạn nhỏ tuổi là thời điểm cần theo dõi cân nặng, tiêm phòng, tẩy giun và phát triển thể chất."
+          "body": "Giai đoạn nhỏ tuổi là thời điểm cần theo dõi cân nặng, tiêm phòng, tẩy giun và phát triển thể chất.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7031"
         },
         {
           "heading": "2. Thú cưng trưởng thành nên khám 1–2 lần mỗi năm",
-          "body": "Việc kiểm tra định kỳ giúp bác sĩ đánh giá răng miệng, da lông, tim mạch và tiêu hóa."
+          "body": "Việc kiểm tra định kỳ giúp bác sĩ đánh giá răng miệng, da lông, tim mạch và tiêu hóa.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7032"
         },
         {
           "heading": "3. Thú cưng lớn tuổi cần khám nhiều hơn",
-          "body": "Khi chó mèo già đi, nguy cơ mắc bệnh xương khớp, thận, tim và nội tiết sẽ tăng."
+          "body": "Khi chó mèo già đi, nguy cơ mắc bệnh xương khớp, thận, tim và nội tiết sẽ tăng.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7033"
         },
         {
           "heading": "4. Cần đi khám khi có dấu hiệu bất thường",
-          "body": "Bỏ ăn, nôn ói, tiêu chảy, thở gấp, ngứa nhiều hoặc thay đổi hành vi là những dấu hiệu cần chú ý."
+          "body": "Bỏ ăn, nôn ói, tiêu chảy, thở gấp, ngứa nhiều hoặc thay đổi hành vi là những dấu hiệu cần chú ý.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7034"
         },
         {
           "heading": "5. Lưu hồ sơ sức khỏe",
-          "body": "Việc lưu lịch sử khám, tiêm phòng và điều trị giúp theo dõi sức khỏe của thú cưng tốt hơn."
+          "body": "Việc lưu lịch sử khám, tiêm phòng và điều trị giúp theo dõi sức khỏe của thú cưng tốt hơn.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7035"
         }
       ],
       "tip": "Bạn nên đặt lịch khám trước để tránh chờ lâu và giúp bác sĩ chuẩn bị tốt hơn.",
@@ -166,7 +186,7 @@
     "mainCategory": "Dinh dưỡng",
     "category": "Dinh dưỡng",
     "tag": "Dinh dưỡng",
-    "image": "https://example.com/articles/pet-danger-food.jpg",
+    "image": "https://loremflickr.com/1200/800/pet-food%2Cdog-cat%2Cnutrition?lock=7040",
     "author": "PawSitive Care",
     "publishedDate": "10 Thg 5, 2024",
     "readTime": "6 phút đọc",
@@ -176,23 +196,28 @@
       "sections": [
         {
           "heading": "1. Socola",
-          "body": "Socola có thể gây kích thích tim mạch, nôn ói, run rẩy và nguy hiểm cho chó mèo."
+          "body": "Socola có thể gây kích thích tim mạch, nôn ói, run rẩy và nguy hiểm cho chó mèo.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7041"
         },
         {
           "heading": "2. Hành, tỏi",
-          "body": "Hành và tỏi có thể ảnh hưởng đến hồng cầu, gây mệt mỏi hoặc thiếu máu."
+          "body": "Hành và tỏi có thể ảnh hưởng đến hồng cầu, gây mệt mỏi hoặc thiếu máu.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7042"
         },
         {
           "heading": "3. Xương nhỏ, dễ vỡ",
-          "body": "Xương gà hoặc xương cá nhỏ có thể gây hóc, tổn thương miệng hoặc đường tiêu hóa."
+          "body": "Xương gà hoặc xương cá nhỏ có thể gây hóc, tổn thương miệng hoặc đường tiêu hóa.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7043"
         },
         {
           "heading": "4. Đồ ăn quá mặn",
-          "body": "Thức ăn mặn có thể gây khát nước, rối loạn tiêu hóa và ảnh hưởng đến thận."
+          "body": "Thức ăn mặn có thể gây khát nước, rối loạn tiêu hóa và ảnh hưởng đến thận.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7044"
         },
         {
           "heading": "5. Sữa bò",
-          "body": "Một số chó mèo không dung nạp lactose, dễ bị tiêu chảy khi uống sữa bò."
+          "body": "Một số chó mèo không dung nạp lactose, dễ bị tiêu chảy khi uống sữa bò.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7045"
         }
       ],
       "tip": "Nếu thú cưng ăn nhầm thực phẩm nguy hiểm, hãy liên hệ bác sĩ thú y càng sớm càng tốt.",
@@ -206,7 +231,7 @@
     "mainCategory": "Huấn luyện",
     "category": "Hành vi",
     "tag": "Hành vi",
-    "image": "https://example.com/articles/dog-alone.jpg",
+    "image": "https://loremflickr.com/1200/800/dog-training%2Cpet%2Cpuppy?lock=7050",
     "author": "PawSitive Care",
     "publishedDate": "08 Thg 5, 2024",
     "readTime": "5 phút đọc",
@@ -216,23 +241,28 @@
       "sections": [
         {
           "heading": "1. Tập cho chó quen với việc ở một mình",
-          "body": "Bạn có thể bắt đầu bằng cách rời khỏi phòng vài phút rồi tăng dần thời gian."
+          "body": "Bạn có thể bắt đầu bằng cách rời khỏi phòng vài phút rồi tăng dần thời gian.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7051"
         },
         {
           "heading": "2. Tạo không gian an toàn",
-          "body": "Một góc nghỉ quen thuộc với chăn, đồ chơi và nước sạch sẽ giúp chó cảm thấy yên tâm."
+          "body": "Một góc nghỉ quen thuộc với chăn, đồ chơi và nước sạch sẽ giúp chó cảm thấy yên tâm.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7052"
         },
         {
           "heading": "3. Cho chó vận động trước khi bạn rời nhà",
-          "body": "Đi dạo hoặc chơi nhẹ giúp chó tiêu hao năng lượng và dễ nghỉ ngơi hơn."
+          "body": "Đi dạo hoặc chơi nhẹ giúp chó tiêu hao năng lượng và dễ nghỉ ngơi hơn.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7053"
         },
         {
           "heading": "4. Sử dụng đồ chơi tương tác",
-          "body": "Đồ chơi có đồ ăn bên trong có thể giúp chó tập trung và bớt buồn chán."
+          "body": "Đồ chơi có đồ ăn bên trong có thể giúp chó tập trung và bớt buồn chán.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7054"
         },
         {
           "heading": "5. Không làm lời chào tạm biệt quá căng thẳng",
-          "body": "Việc rời đi quá xúc động có thể khiến chó càng lo lắng hơn."
+          "body": "Việc rời đi quá xúc động có thể khiến chó càng lo lắng hơn.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7055"
         }
       ],
       "tip": "Nếu tình trạng lo âu nặng, bạn nên tham khảo chuyên gia hành vi thú cưng.",
@@ -246,7 +276,7 @@
     "mainCategory": "Sức khỏe",
     "category": "Sức khỏe",
     "tag": "Sức khỏe",
-    "image": "https://example.com/articles/cat-grooming.jpg",
+    "image": "https://loremflickr.com/1200/800/pet-grooming%2Ccat-dog%2Ccare?lock=7060",
     "author": "PawSitive Care",
     "publishedDate": "06 Thg 5, 2024",
     "readTime": "5 phút đọc",
@@ -256,23 +286,28 @@
       "sections": [
         {
           "heading": "1. Mèo đang tự làm sạch",
-          "body": "Đây là hành vi bình thường giúp mèo giữ bộ lông sạch sẽ."
+          "body": "Đây là hành vi bình thường giúp mèo giữ bộ lông sạch sẽ.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7061"
         },
         {
           "heading": "2. Có thể bị ngứa hoặc kích ứng da",
-          "body": "Nếu mèo liếm một vùng liên tục, vùng da đó có thể đang bị khó chịu."
+          "body": "Nếu mèo liếm một vùng liên tục, vùng da đó có thể đang bị khó chịu.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7062"
         },
         {
           "heading": "3. Bọ chét hoặc ký sinh trùng",
-          "body": "Ký sinh trùng ngoài da có thể khiến mèo ngứa, cắn lông hoặc gãi nhiều."
+          "body": "Ký sinh trùng ngoài da có thể khiến mèo ngứa, cắn lông hoặc gãi nhiều.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7063"
         },
         {
           "heading": "4. Căng thẳng hoặc thay đổi môi trường",
-          "body": "Chuyển nhà, có thú cưng mới hoặc thay đổi thói quen có thể khiến mèo liếm lông nhiều hơn."
+          "body": "Chuyển nhà, có thú cưng mới hoặc thay đổi thói quen có thể khiến mèo liếm lông nhiều hơn.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7064"
         },
         {
           "heading": "5. Rụng lông từng mảng",
-          "body": "Nếu xuất hiện vùng lông thưa hoặc da đỏ, bạn nên đưa mèo đi kiểm tra."
+          "body": "Nếu xuất hiện vùng lông thưa hoặc da đỏ, bạn nên đưa mèo đi kiểm tra.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7065"
         }
       ],
       "tip": "Quan sát vị trí mèo liếm nhiều nhất để cung cấp thông tin chính xác cho bác sĩ thú y.",
@@ -286,7 +321,7 @@
     "mainCategory": "Sức khỏe",
     "category": "Chăm sóc",
     "tag": "Chăm sóc",
-    "image": "https://example.com/articles/pet-ear-cleaning.jpg",
+    "image": "https://loremflickr.com/1200/800/pet-grooming%2Ccat-dog%2Ccare?lock=7070",
     "author": "PawSitive Care",
     "publishedDate": "04 Thg 5, 2024",
     "readTime": "4 phút đọc",
@@ -296,23 +331,28 @@
       "sections": [
         {
           "heading": "1. Kiểm tra tai trước khi vệ sinh",
-          "body": "Nếu tai đỏ, sưng, có mùi nặng hoặc chảy dịch, nên đưa bé đi khám trước."
+          "body": "Nếu tai đỏ, sưng, có mùi nặng hoặc chảy dịch, nên đưa bé đi khám trước.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7071"
         },
         {
           "heading": "2. Dùng dung dịch chuyên dụng",
-          "body": "Không nên dùng cồn, oxy già hoặc nước thường để vệ sinh sâu trong tai."
+          "body": "Không nên dùng cồn, oxy già hoặc nước thường để vệ sinh sâu trong tai.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7072"
         },
         {
           "heading": "3. Lau nhẹ phần ngoài tai",
-          "body": "Dùng bông mềm hoặc gạc sạch lau nhẹ nhàng, không chọc sâu vào ống tai."
+          "body": "Dùng bông mềm hoặc gạc sạch lau nhẹ nhàng, không chọc sâu vào ống tai.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7073"
         },
         {
           "heading": "4. Giữ thú cưng bình tĩnh",
-          "body": "Hãy thao tác chậm, nhẹ nhàng và thưởng cho bé sau khi vệ sinh."
+          "body": "Hãy thao tác chậm, nhẹ nhàng và thưởng cho bé sau khi vệ sinh.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7074"
         },
         {
           "heading": "5. Vệ sinh định kỳ",
-          "body": "Một số giống chó tai cụp cần vệ sinh tai thường xuyên hơn để tránh ẩm và mùi."
+          "body": "Một số giống chó tai cụp cần vệ sinh tai thường xuyên hơn để tránh ẩm và mùi.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7075"
         }
       ],
       "tip": "Nếu bạn chưa quen thao tác, nên đặt lịch grooming để nhân viên hỗ trợ vệ sinh an toàn.",
@@ -326,7 +366,7 @@
     "mainCategory": "Huấn luyện",
     "category": "Hành vi",
     "tag": "Hành vi",
-    "image": "https://example.com/articles/pet-stress.jpg",
+    "image": "https://loremflickr.com/1200/800/dog-training%2Cpet%2Cpuppy?lock=7080",
     "author": "PawSitive Care",
     "publishedDate": "02 Thg 5, 2024",
     "readTime": "5 phút đọc",
@@ -336,23 +376,28 @@
       "sections": [
         {
           "heading": "1. Thay đổi hành vi",
-          "body": "Bé có thể trở nên nhút nhát, cáu gắt hoặc bám chủ nhiều hơn bình thường."
+          "body": "Bé có thể trở nên nhút nhát, cáu gắt hoặc bám chủ nhiều hơn bình thường.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7081"
         },
         {
           "heading": "2. Ăn ít hoặc ăn quá nhiều",
-          "body": "Stress có thể ảnh hưởng trực tiếp đến thói quen ăn uống."
+          "body": "Stress có thể ảnh hưởng trực tiếp đến thói quen ăn uống.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7082"
         },
         {
           "heading": "3. Trốn dưới gầm giường hoặc góc kín",
-          "body": "Đây là cách thú cưng tìm cảm giác an toàn khi lo lắng."
+          "body": "Đây là cách thú cưng tìm cảm giác an toàn khi lo lắng.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7083"
         },
         {
           "heading": "4. Sủa, kêu hoặc cào nhiều",
-          "body": "Những hành vi này có thể là tín hiệu bé đang cần được quan tâm."
+          "body": "Những hành vi này có thể là tín hiệu bé đang cần được quan tâm.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7084"
         },
         {
           "heading": "5. Tạo lại lịch sinh hoạt ổn định",
-          "body": "Cho ăn, chơi và nghỉ ngơi đúng giờ giúp thú cưng cảm thấy an toàn hơn."
+          "body": "Cho ăn, chơi và nghỉ ngơi đúng giờ giúp thú cưng cảm thấy an toàn hơn.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7085"
         }
       ],
       "tip": "Không nên la mắng khi thú cưng đang căng thẳng, vì điều đó có thể làm bé sợ hơn.",
@@ -366,7 +411,7 @@
     "mainCategory": "Sức khỏe",
     "category": "Chăm sóc",
     "tag": "Chăm sóc",
-    "image": "https://example.com/articles/pet-nail-trim.jpg",
+    "image": "https://loremflickr.com/1200/800/veterinary%2Cpet%2Cclinic?lock=7090",
     "author": "PawSitive Care",
     "publishedDate": "30 Thg 4, 2024",
     "readTime": "4 phút đọc",
@@ -376,23 +421,28 @@
       "sections": [
         {
           "heading": "1. Móng dài gây khó chịu",
-          "body": "Khi móng chạm sàn quá nhiều, thú cưng có thể đi đứng không thoải mái."
+          "body": "Khi móng chạm sàn quá nhiều, thú cưng có thể đi đứng không thoải mái.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7091"
         },
         {
           "heading": "2. Giảm nguy cơ trầy xước",
-          "body": "Móng gọn giúp hạn chế việc bé vô tình cào vào người hoặc làm hỏng đồ đạc."
+          "body": "Móng gọn giúp hạn chế việc bé vô tình cào vào người hoặc làm hỏng đồ đạc.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7092"
         },
         {
           "heading": "3. Không cắt quá sát",
-          "body": "Cắt quá sâu có thể gây đau và chảy máu, khiến thú cưng sợ việc cắt móng."
+          "body": "Cắt quá sâu có thể gây đau và chảy máu, khiến thú cưng sợ việc cắt móng.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7093"
         },
         {
           "heading": "4. Tập làm quen từ nhỏ",
-          "body": "Cho bé quen với việc chạm vào chân và móng sẽ giúp việc cắt móng dễ hơn."
+          "body": "Cho bé quen với việc chạm vào chân và móng sẽ giúp việc cắt móng dễ hơn.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7094"
         },
         {
           "heading": "5. Nhờ nhân viên grooming nếu chưa tự tin",
-          "body": "Nếu bạn không chắc vị trí cắt, hãy đặt lịch dịch vụ cắt móng chuyên nghiệp."
+          "body": "Nếu bạn không chắc vị trí cắt, hãy đặt lịch dịch vụ cắt móng chuyên nghiệp.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7095"
         }
       ],
       "tip": "Nên kiểm tra móng mỗi 2–4 tuần tùy vào mức độ vận động của thú cưng.",
@@ -406,7 +456,7 @@
     "mainCategory": "Huấn luyện",
     "category": "Lưu trú",
     "tag": "Lưu trú",
-    "image": "https://example.com/articles/pet-hotel-guide.jpg",
+    "image": "https://loremflickr.com/1200/800/dog-training%2Cpet%2Cpuppy?lock=7100",
     "author": "PawSitive Care",
     "publishedDate": "28 Thg 4, 2024",
     "readTime": "5 phút đọc",
@@ -416,23 +466,28 @@
       "sections": [
         {
           "heading": "1. Cung cấp lịch ăn uống",
-          "body": "Ghi rõ loại thức ăn, lượng ăn và thời gian ăn mỗi ngày của thú cưng."
+          "body": "Ghi rõ loại thức ăn, lượng ăn và thời gian ăn mỗi ngày của thú cưng.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7101"
         },
         {
           "heading": "2. Mang theo vật quen thuộc",
-          "body": "Một chiếc chăn, đồ chơi hoặc áo có mùi quen thuộc có thể giúp bé yên tâm hơn."
+          "body": "Một chiếc chăn, đồ chơi hoặc áo có mùi quen thuộc có thể giúp bé yên tâm hơn.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7102"
         },
         {
           "heading": "3. Cập nhật tình trạng sức khỏe",
-          "body": "Thông báo cho trung tâm nếu thú cưng đang dùng thuốc hoặc có bệnh nền."
+          "body": "Thông báo cho trung tâm nếu thú cưng đang dùng thuốc hoặc có bệnh nền.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7103"
         },
         {
           "heading": "4. Kiểm tra vaccine",
-          "body": "Một số nơi lưu trú yêu cầu thú cưng đã tiêm phòng đầy đủ để đảm bảo an toàn."
+          "body": "Một số nơi lưu trú yêu cầu thú cưng đã tiêm phòng đầy đủ để đảm bảo an toàn.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7104"
         },
         {
           "heading": "5. Đặt lịch sớm",
-          "body": "Đặt trước giúp trung tâm chuẩn bị phòng phù hợp cho bé."
+          "body": "Đặt trước giúp trung tâm chuẩn bị phòng phù hợp cho bé.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7105"
         }
       ],
       "tip": "Nên cho bé làm quen với môi trường gửi ngắn ngày trước nếu đây là lần đầu.",
@@ -446,7 +501,7 @@
     "mainCategory": "Huấn luyện",
     "category": "Vận động",
     "tag": "Vận động",
-    "image": "https://example.com/articles/dog-walking.jpg",
+    "image": "https://loremflickr.com/1200/800/dog-training%2Cpet%2Cpuppy?lock=7110",
     "author": "PawSitive Care",
     "publishedDate": "26 Thg 4, 2024",
     "readTime": "4 phút đọc",
@@ -456,23 +511,28 @@
       "sections": [
         {
           "heading": "1. Tùy theo giống và độ tuổi",
-          "body": "Chó nhỏ, chó già hoặc chó có vấn đề sức khỏe cần thời gian vận động nhẹ hơn."
+          "body": "Chó nhỏ, chó già hoặc chó có vấn đề sức khỏe cần thời gian vận động nhẹ hơn.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7111"
         },
         {
           "heading": "2. Chó năng động cần vận động nhiều hơn",
-          "body": "Một số giống chó cần được đi dạo hoặc chơi vận động từ 30–60 phút mỗi ngày."
+          "body": "Một số giống chó cần được đi dạo hoặc chơi vận động từ 30–60 phút mỗi ngày.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7112"
         },
         {
           "heading": "3. Không đi dạo lúc trời quá nóng",
-          "body": "Mặt đường nóng có thể làm bỏng bàn chân chó và khiến bé bị sốc nhiệt."
+          "body": "Mặt đường nóng có thể làm bỏng bàn chân chó và khiến bé bị sốc nhiệt.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7113"
         },
         {
           "heading": "4. Luôn dùng dây dắt",
-          "body": "Dây dắt giúp đảm bảo an toàn cho chó và những người xung quanh."
+          "body": "Dây dắt giúp đảm bảo an toàn cho chó và những người xung quanh.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7114"
         },
         {
           "heading": "5. Quan sát dấu hiệu mệt",
-          "body": "Nếu chó thở gấp, đi chậm hoặc muốn nằm xuống, hãy cho bé nghỉ."
+          "body": "Nếu chó thở gấp, đi chậm hoặc muốn nằm xuống, hãy cho bé nghỉ.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7115"
         }
       ],
       "tip": "Bạn có thể đặt dịch vụ dắt chó đi dạo nếu quá bận trong ngày.",
@@ -486,7 +546,7 @@
     "mainCategory": "Sức khỏe",
     "category": "Sức khỏe",
     "tag": "Sức khỏe",
-    "image": "https://example.com/articles/pet-water.jpg",
+    "image": "https://loremflickr.com/1200/800/veterinary%2Cpet%2Cclinic?lock=7120",
     "author": "PawSitive Care",
     "publishedDate": "24 Thg 4, 2024",
     "readTime": "5 phút đọc",
@@ -496,23 +556,28 @@
       "sections": [
         {
           "heading": "1. Nướu khô hoặc dính",
-          "body": "Nướu khỏe mạnh thường ẩm. Nếu nướu khô, thú cưng có thể đang thiếu nước."
+          "body": "Nướu khỏe mạnh thường ẩm. Nếu nướu khô, thú cưng có thể đang thiếu nước.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7121"
         },
         {
           "heading": "2. Da kém đàn hồi",
-          "body": "Bạn có thể kéo nhẹ da vùng gáy. Nếu da trở về chậm, cần chú ý tình trạng mất nước."
+          "body": "Bạn có thể kéo nhẹ da vùng gáy. Nếu da trở về chậm, cần chú ý tình trạng mất nước.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7122"
         },
         {
           "heading": "3. Uể oải, ít vận động",
-          "body": "Thiếu nước khiến thú cưng mệt, nằm nhiều và ít phản ứng hơn."
+          "body": "Thiếu nước khiến thú cưng mệt, nằm nhiều và ít phản ứng hơn.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7123"
         },
         {
           "heading": "4. Tiểu ít hoặc nước tiểu sậm màu",
-          "body": "Đây có thể là dấu hiệu cơ thể không đủ nước."
+          "body": "Đây có thể là dấu hiệu cơ thể không đủ nước.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7124"
         },
         {
           "heading": "5. Khuyến khích uống nước",
-          "body": "Đặt nhiều bát nước trong nhà hoặc dùng máy lọc nước cho thú cưng."
+          "body": "Đặt nhiều bát nước trong nhà hoặc dùng máy lọc nước cho thú cưng.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7125"
         }
       ],
       "tip": "Nếu bé nôn ói, tiêu chảy hoặc không chịu uống nước, nên đưa đi khám sớm.",
@@ -526,7 +591,7 @@
     "mainCategory": "Sức khỏe",
     "category": "Sức khỏe",
     "tag": "Sức khỏe",
-    "image": "https://example.com/articles/pet-vaccine.jpg",
+    "image": "https://loremflickr.com/1200/800/veterinary%2Cpet%2Cclinic?lock=7130",
     "author": "PawSitive Care",
     "publishedDate": "22 Thg 4, 2024",
     "readTime": "5 phút đọc",
@@ -536,23 +601,28 @@
       "sections": [
         {
           "heading": "1. Phòng ngừa bệnh nguy hiểm",
-          "body": "Một số bệnh truyền nhiễm ở chó mèo có thể tiến triển nhanh và khó điều trị."
+          "body": "Một số bệnh truyền nhiễm ở chó mèo có thể tiến triển nhanh và khó điều trị.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7131"
         },
         {
           "heading": "2. Bảo vệ cộng đồng thú cưng",
-          "body": "Tiêm phòng giúp giảm nguy cơ lây lan bệnh giữa các thú cưng."
+          "body": "Tiêm phòng giúp giảm nguy cơ lây lan bệnh giữa các thú cưng.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7132"
         },
         {
           "heading": "3. Cần tiêm nhắc lại",
-          "body": "Một số vaccine không bảo vệ trọn đời, vì vậy cần tiêm nhắc theo hướng dẫn của bác sĩ."
+          "body": "Một số vaccine không bảo vệ trọn đời, vì vậy cần tiêm nhắc theo hướng dẫn của bác sĩ.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7133"
         },
         {
           "heading": "4. Lưu lịch sử tiêm",
-          "body": "Lưu hồ sơ giúp bạn dễ theo dõi lịch tiêm tiếp theo."
+          "body": "Lưu hồ sơ giúp bạn dễ theo dõi lịch tiêm tiếp theo.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7134"
         },
         {
           "heading": "5. Kiểm tra sức khỏe trước khi tiêm",
-          "body": "Thú cưng nên được kiểm tra tình trạng sức khỏe trước khi tiêm vaccine."
+          "body": "Thú cưng nên được kiểm tra tình trạng sức khỏe trước khi tiêm vaccine.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7135"
         }
       ],
       "tip": "Hãy đặt lịch nhắc tiêm trên app để không bỏ lỡ mũi tiêm quan trọng.",
@@ -566,7 +636,7 @@
     "mainCategory": "Sức khỏe",
     "category": "Chăm sóc",
     "tag": "Chăm sóc",
-    "image": "https://example.com/articles/pet-summer-grooming.jpg",
+    "image": "https://loremflickr.com/1200/800/pet-grooming%2Ccat-dog%2Ccare?lock=7140",
     "author": "PawSitive Care",
     "publishedDate": "20 Thg 4, 2024",
     "readTime": "5 phút đọc",
@@ -576,23 +646,28 @@
       "sections": [
         {
           "heading": "1. Chải lông thường xuyên",
-          "body": "Chải lông giúp loại bỏ lông rụng, giảm rối và giúp da thông thoáng."
+          "body": "Chải lông giúp loại bỏ lông rụng, giảm rối và giúp da thông thoáng.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7141"
         },
         {
           "heading": "2. Tắm đúng tần suất",
-          "body": "Không nên tắm quá nhiều vì có thể làm khô da, nhưng cũng không nên để lông bẩn quá lâu."
+          "body": "Không nên tắm quá nhiều vì có thể làm khô da, nhưng cũng không nên để lông bẩn quá lâu.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7142"
         },
         {
           "heading": "3. Sấy khô sau khi tắm",
-          "body": "Lông ẩm lâu có thể tạo điều kiện cho nấm và vi khuẩn phát triển."
+          "body": "Lông ẩm lâu có thể tạo điều kiện cho nấm và vi khuẩn phát triển.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7143"
         },
         {
           "heading": "4. Không tự cạo sát lông",
-          "body": "Một số giống chó mèo cần lớp lông để bảo vệ da khỏi nắng và nhiệt."
+          "body": "Một số giống chó mèo cần lớp lông để bảo vệ da khỏi nắng và nhiệt.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7144"
         },
         {
           "heading": "5. Kiểm tra da thường xuyên",
-          "body": "Nếu thấy đỏ da, gàu, mùi lạ hoặc rụng lông từng mảng, nên đưa bé đi kiểm tra."
+          "body": "Nếu thấy đỏ da, gàu, mùi lạ hoặc rụng lông từng mảng, nên đưa bé đi kiểm tra.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7145"
         }
       ],
       "tip": "Dịch vụ grooming định kỳ có thể giúp bé sạch sẽ và mát mẻ hơn trong mùa nóng.",
@@ -606,7 +681,7 @@
     "mainCategory": "Dinh dưỡng",
     "category": "Dinh dưỡng",
     "tag": "Dinh dưỡng",
-    "image": "https://example.com/articles/cat-drinking-water.jpg",
+    "image": "https://loremflickr.com/1200/800/pet-food%2Cdog-cat%2Cnutrition?lock=7150",
     "author": "PawSitive Care",
     "publishedDate": "18 Thg 4, 2024",
     "readTime": "4 phút đọc",
@@ -616,23 +691,28 @@
       "sections": [
         {
           "heading": "1. Đặt nhiều bát nước trong nhà",
-          "body": "Mèo có thể uống nhiều hơn nếu nước luôn có sẵn ở nhiều vị trí quen thuộc."
+          "body": "Mèo có thể uống nhiều hơn nếu nước luôn có sẵn ở nhiều vị trí quen thuộc.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7151"
         },
         {
           "heading": "2. Dùng máy nước chảy",
-          "body": "Một số bé mèo thích nước chuyển động hơn nước đứng yên trong bát."
+          "body": "Một số bé mèo thích nước chuyển động hơn nước đứng yên trong bát.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7152"
         },
         {
           "heading": "3. Vệ sinh bát nước hằng ngày",
-          "body": "Bát nước sạch sẽ khuyến khích mèo uống nhiều hơn."
+          "body": "Bát nước sạch sẽ khuyến khích mèo uống nhiều hơn.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7153"
         },
         {
           "heading": "4. Kết hợp thức ăn ướt",
-          "body": "Pate hoặc thức ăn ướt giúp bổ sung nước qua khẩu phần ăn."
+          "body": "Pate hoặc thức ăn ướt giúp bổ sung nước qua khẩu phần ăn.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7154"
         },
         {
           "heading": "5. Tránh đặt nước gần khay vệ sinh",
-          "body": "Mèo thường không thích uống nước ở nơi có mùi hoặc kém sạch sẽ."
+          "body": "Mèo thường không thích uống nước ở nơi có mùi hoặc kém sạch sẽ.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7155"
         }
       ],
       "tip": "Theo dõi lượng nước uống và số lần đi vệ sinh để phát hiện sớm bất thường.",
@@ -646,7 +726,7 @@
     "mainCategory": "Huấn luyện",
     "category": "Kiến thức",
     "tag": "Kiến thức",
-    "image": "https://example.com/articles/adopt-pet.jpg",
+    "image": "https://loremflickr.com/1200/800/dog-training%2Cpet%2Cpuppy?lock=7160",
     "author": "PawSitive Care",
     "publishedDate": "16 Thg 4, 2024",
     "readTime": "6 phút đọc",
@@ -656,23 +736,28 @@
       "sections": [
         {
           "heading": "1. Xem xét thời gian chăm sóc",
-          "body": "Chó mèo cần được cho ăn, vệ sinh, chơi cùng và theo dõi sức khỏe mỗi ngày."
+          "body": "Chó mèo cần được cho ăn, vệ sinh, chơi cùng và theo dõi sức khỏe mỗi ngày.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7161"
         },
         {
           "heading": "2. Chuẩn bị chi phí cơ bản",
-          "body": "Thức ăn, tiêm phòng, khám bệnh, grooming và vật dụng là những khoản cần tính trước."
+          "body": "Thức ăn, tiêm phòng, khám bệnh, grooming và vật dụng là những khoản cần tính trước.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7162"
         },
         {
           "heading": "3. Chọn thú cưng phù hợp lối sống",
-          "body": "Người bận rộn, nhà nhỏ hoặc có trẻ em nên chọn thú cưng có tính cách phù hợp."
+          "body": "Người bận rộn, nhà nhỏ hoặc có trẻ em nên chọn thú cưng có tính cách phù hợp.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7163"
         },
         {
           "heading": "4. Chuẩn bị không gian sống",
-          "body": "Bạn cần có khu vực ngủ, ăn uống, vệ sinh và chơi an toàn cho bé."
+          "body": "Bạn cần có khu vực ngủ, ăn uống, vệ sinh và chơi an toàn cho bé.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7164"
         },
         {
           "heading": "5. Cam kết lâu dài",
-          "body": "Thú cưng có thể đồng hành với bạn nhiều năm, vì vậy cần sự kiên nhẫn và trách nhiệm."
+          "body": "Thú cưng có thể đồng hành với bạn nhiều năm, vì vậy cần sự kiên nhẫn và trách nhiệm.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7165"
         }
       ],
       "tip": "Hãy tìm hiểu kỹ về giống, tính cách và nhu cầu chăm sóc trước khi nhận nuôi.",
@@ -686,7 +771,7 @@
     "mainCategory": "Sức khỏe",
     "category": "Chăm sóc",
     "tag": "Chăm sóc",
-    "image": "https://example.com/articles/pet-sleep-corner.jpg",
+    "image": "https://loremflickr.com/1200/800/cat%2Cpet%2Chome?lock=7170",
     "author": "PawSitive Care",
     "publishedDate": "14 Thg 4, 2024",
     "readTime": "4 phút đọc",
@@ -696,23 +781,28 @@
       "sections": [
         {
           "heading": "1. Chọn nơi yên tĩnh",
-          "body": "Tránh đặt ổ ngủ ở khu vực quá ồn, nhiều người qua lại hoặc gần thiết bị phát tiếng lớn."
+          "body": "Tránh đặt ổ ngủ ở khu vực quá ồn, nhiều người qua lại hoặc gần thiết bị phát tiếng lớn.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7171"
         },
         {
           "heading": "2. Dùng đệm phù hợp",
-          "body": "Đệm mềm, dễ vệ sinh và vừa kích thước sẽ giúp thú cưng ngủ thoải mái hơn."
+          "body": "Đệm mềm, dễ vệ sinh và vừa kích thước sẽ giúp thú cưng ngủ thoải mái hơn.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7172"
         },
         {
           "heading": "3. Giữ khu vực sạch sẽ",
-          "body": "Ổ ngủ cần được giặt và hút bụi định kỳ để hạn chế mùi và ký sinh trùng."
+          "body": "Ổ ngủ cần được giặt và hút bụi định kỳ để hạn chế mùi và ký sinh trùng.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7173"
         },
         {
           "heading": "4. Đảm bảo nhiệt độ dễ chịu",
-          "body": "Không gian quá nóng hoặc quá lạnh đều ảnh hưởng đến chất lượng giấc ngủ."
+          "body": "Không gian quá nóng hoặc quá lạnh đều ảnh hưởng đến chất lượng giấc ngủ.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7174"
         },
         {
           "heading": "5. Tôn trọng không gian riêng",
-          "body": "Khi bé đang nghỉ, nên hạn chế làm phiền hoặc bế lên liên tục."
+          "body": "Khi bé đang nghỉ, nên hạn chế làm phiền hoặc bế lên liên tục.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7175"
         }
       ],
       "tip": "Bạn có thể đặt thêm món đồ quen mùi chủ để bé cảm thấy an toàn hơn.",
@@ -726,7 +816,7 @@
     "mainCategory": "Dinh dưỡng",
     "category": "Dinh dưỡng",
     "tag": "Dinh dưỡng",
-    "image": "https://example.com/articles/pet-not-eating.jpg",
+    "image": "https://loremflickr.com/1200/800/pet-food%2Cdog-cat%2Cnutrition?lock=7180",
     "author": "PawSitive Care",
     "publishedDate": "12 Thg 4, 2024",
     "readTime": "5 phút đọc",
@@ -736,23 +826,28 @@
       "sections": [
         {
           "heading": "1. Kiểm tra thức ăn",
-          "body": "Thức ăn bị hỏng, đổi mùi hoặc không phù hợp khẩu vị có thể khiến bé bỏ ăn."
+          "body": "Thức ăn bị hỏng, đổi mùi hoặc không phù hợp khẩu vị có thể khiến bé bỏ ăn.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7181"
         },
         {
           "heading": "2. Không đổi thức ăn quá đột ngột",
-          "body": "Nên chuyển đổi từ từ bằng cách trộn thức ăn mới với thức ăn cũ trong vài ngày."
+          "body": "Nên chuyển đổi từ từ bằng cách trộn thức ăn mới với thức ăn cũ trong vài ngày.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7182"
         },
         {
           "heading": "3. Quan sát dấu hiệu bệnh",
-          "body": "Nếu bé nôn, tiêu chảy, mệt mỏi hoặc bỏ ăn lâu, cần đưa đi khám."
+          "body": "Nếu bé nôn, tiêu chảy, mệt mỏi hoặc bỏ ăn lâu, cần đưa đi khám.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7183"
         },
         {
           "heading": "4. Tạo giờ ăn cố định",
-          "body": "Cho ăn đúng giờ giúp thú cưng hình thành thói quen ăn uống tốt hơn."
+          "body": "Cho ăn đúng giờ giúp thú cưng hình thành thói quen ăn uống tốt hơn.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7184"
         },
         {
           "heading": "5. Không lạm dụng đồ ăn vặt",
-          "body": "Ăn quá nhiều snack có thể làm bé không còn hứng thú với bữa chính."
+          "body": "Ăn quá nhiều snack có thể làm bé không còn hứng thú với bữa chính.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7185"
         }
       ],
       "tip": "Nếu thú cưng bỏ ăn hơn 24 giờ, đặc biệt là mèo, bạn nên liên hệ bác sĩ thú y.",
@@ -766,7 +861,7 @@
     "mainCategory": "Huấn luyện",
     "category": "Hành vi",
     "tag": "Hành vi",
-    "image": "https://example.com/articles/pet-socialization.jpg",
+    "image": "https://loremflickr.com/1200/800/dog-training%2Cpet%2Cpuppy?lock=7190",
     "author": "PawSitive Care",
     "publishedDate": "10 Thg 4, 2024",
     "readTime": "5 phút đọc",
@@ -776,23 +871,28 @@
       "sections": [
         {
           "heading": "1. Không ép thú cưng tiếp xúc ngay",
-          "body": "Hãy để bé tự quan sát và tiến lại gần khi cảm thấy an toàn."
+          "body": "Hãy để bé tự quan sát và tiến lại gần khi cảm thấy an toàn.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7191"
         },
         {
           "heading": "2. Giữ khoảng cách ban đầu",
-          "body": "Người lạ nên ngồi yên, tránh nhìn chằm chằm hoặc đưa tay chạm vào bé quá nhanh."
+          "body": "Người lạ nên ngồi yên, tránh nhìn chằm chằm hoặc đưa tay chạm vào bé quá nhanh.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7192"
         },
         {
           "heading": "3. Dùng phần thưởng tích cực",
-          "body": "Snack hoặc lời khen giúp thú cưng liên kết người lạ với trải nghiệm dễ chịu."
+          "body": "Snack hoặc lời khen giúp thú cưng liên kết người lạ với trải nghiệm dễ chịu.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7193"
         },
         {
           "heading": "4. Theo dõi ngôn ngữ cơ thể",
-          "body": "Nếu bé cụp tai, gầm gừ, trốn hoặc run, hãy cho bé thêm thời gian."
+          "body": "Nếu bé cụp tai, gầm gừ, trốn hoặc run, hãy cho bé thêm thời gian.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7194"
         },
         {
           "heading": "5. Luyện tập thường xuyên",
-          "body": "Những buổi tiếp xúc ngắn, nhẹ nhàng và lặp lại đều đặn sẽ hiệu quả hơn."
+          "body": "Những buổi tiếp xúc ngắn, nhẹ nhàng và lặp lại đều đặn sẽ hiệu quả hơn.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7195"
         }
       ],
       "tip": "Không nên la mắng khi thú cưng sợ người lạ, vì điều này có thể làm bé căng thẳng hơn.",
@@ -806,7 +906,7 @@
     "mainCategory": "Sức khỏe",
     "category": "Sức khỏe",
     "tag": "Sức khỏe",
-    "image": "https://example.com/articles/dog-pain-signs.jpg",
+    "image": "https://loremflickr.com/1200/800/veterinary%2Cpet%2Cclinic?lock=7200",
     "author": "PawSitive Care",
     "publishedDate": "08 Thg 4, 2024",
     "readTime": "5 phút đọc",
@@ -816,23 +916,28 @@
       "sections": [
         {
           "heading": "1. Đi khập khiễng hoặc tránh vận động",
-          "body": "Nếu chó đi lệch, ngại nhảy lên ghế hoặc không muốn chạy chơi, bé có thể đang đau ở chân, khớp hoặc cơ."
+          "body": "Nếu chó đi lệch, ngại nhảy lên ghế hoặc không muốn chạy chơi, bé có thể đang đau ở chân, khớp hoặc cơ.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7201"
         },
         {
           "heading": "2. Rên nhẹ hoặc phản ứng khi chạm vào",
-          "body": "Một số bé sẽ kêu, né tránh hoặc quay lại nhìn khi bạn chạm vào vùng đang đau."
+          "body": "Một số bé sẽ kêu, né tránh hoặc quay lại nhìn khi bạn chạm vào vùng đang đau.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7202"
         },
         {
           "heading": "3. Ăn ít hơn bình thường",
-          "body": "Đau răng, đau bụng hoặc mệt mỏi có thể khiến chó bỏ bữa hoặc ăn rất chậm."
+          "body": "Đau răng, đau bụng hoặc mệt mỏi có thể khiến chó bỏ bữa hoặc ăn rất chậm.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7203"
         },
         {
           "heading": "4. Thở gấp dù không vận động",
-          "body": "Thở gấp, run rẩy hoặc nằm co người có thể là dấu hiệu cơ thể đang khó chịu."
+          "body": "Thở gấp, run rẩy hoặc nằm co người có thể là dấu hiệu cơ thể đang khó chịu.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7204"
         },
         {
           "heading": "5. Thay đổi tính cách",
-          "body": "Chó đang đau có thể trở nên cáu gắt, trốn tránh hoặc không còn thích được ôm vuốt như trước."
+          "body": "Chó đang đau có thể trở nên cáu gắt, trốn tránh hoặc không còn thích được ôm vuốt như trước.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7205"
         }
       ],
       "tip": "Nếu dấu hiệu đau kéo dài hoặc chó không chịu đi lại, nên đưa bé đi khám thú y càng sớm càng tốt.",
@@ -846,7 +951,7 @@
     "mainCategory": "Dinh dưỡng",
     "category": "Dinh dưỡng",
     "tag": "Dinh dưỡng",
-    "image": "https://example.com/articles/cat-pate-daily.jpg",
+    "image": "https://loremflickr.com/1200/800/pet-food%2Cdog-cat%2Cnutrition?lock=7210",
     "author": "PawSitive Care",
     "publishedDate": "06 Thg 4, 2024",
     "readTime": "5 phút đọc",
@@ -856,23 +961,28 @@
       "sections": [
         {
           "heading": "1. Pate giúp mèo bổ sung nước",
-          "body": "Thức ăn ướt có lượng nước cao, phù hợp với những bé mèo ít uống nước."
+          "body": "Thức ăn ướt có lượng nước cao, phù hợp với những bé mèo ít uống nước.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7211"
         },
         {
           "heading": "2. Không nên chỉ ăn một loại duy nhất",
-          "body": "Nếu chỉ ăn pate mà thiếu hạt hoặc khẩu phần cân bằng, mèo có thể thiếu một số dưỡng chất cần thiết."
+          "body": "Nếu chỉ ăn pate mà thiếu hạt hoặc khẩu phần cân bằng, mèo có thể thiếu một số dưỡng chất cần thiết.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7212"
         },
         {
           "heading": "3. Chọn pate phù hợp độ tuổi",
-          "body": "Mèo con, mèo trưởng thành và mèo lớn tuổi có nhu cầu dinh dưỡng khác nhau."
+          "body": "Mèo con, mèo trưởng thành và mèo lớn tuổi có nhu cầu dinh dưỡng khác nhau.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7213"
         },
         {
           "heading": "4. Theo dõi cân nặng",
-          "body": "Một số loại pate giàu năng lượng, nếu ăn quá nhiều có thể khiến mèo tăng cân."
+          "body": "Một số loại pate giàu năng lượng, nếu ăn quá nhiều có thể khiến mèo tăng cân.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7214"
         },
         {
           "heading": "5. Bảo quản đúng cách",
-          "body": "Pate đã mở nên được bảo quản lạnh và dùng trong thời gian khuyến nghị để tránh hư hỏng."
+          "body": "Pate đã mở nên được bảo quản lạnh và dùng trong thời gian khuyến nghị để tránh hư hỏng.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7215"
         }
       ],
       "tip": "Có thể kết hợp pate với hạt hoặc thức ăn tươi theo hướng dẫn để tạo khẩu phần đa dạng.",
@@ -886,7 +996,7 @@
     "mainCategory": "Huấn luyện",
     "category": "Huấn luyện",
     "tag": "Huấn luyện",
-    "image": "https://example.com/articles/dog-sit-down-training.jpg",
+    "image": "https://loremflickr.com/1200/800/dog-training%2Cpet%2Cpuppy?lock=7220",
     "author": "PawSitive Care",
     "publishedDate": "04 Thg 4, 2024",
     "readTime": "6 phút đọc",
@@ -896,23 +1006,28 @@
       "sections": [
         {
           "heading": "1. Chuẩn bị phần thưởng nhỏ",
-          "body": "Dùng snack nhỏ, thơm và dễ ăn để tạo động lực cho chó trong buổi tập."
+          "body": "Dùng snack nhỏ, thơm và dễ ăn để tạo động lực cho chó trong buổi tập.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7221"
         },
         {
           "heading": "2. Dạy lệnh ngồi trước",
-          "body": "Giữ snack gần mũi chó rồi đưa nhẹ lên trên, khi bé ngồi xuống hãy nói 'ngồi' và thưởng ngay."
+          "body": "Giữ snack gần mũi chó rồi đưa nhẹ lên trên, khi bé ngồi xuống hãy nói 'ngồi' và thưởng ngay.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7222"
         },
         {
           "heading": "3. Dạy lệnh nằm sau khi đã biết ngồi",
-          "body": "Từ tư thế ngồi, đưa snack xuống gần sàn để chó hạ người theo."
+          "body": "Từ tư thế ngồi, đưa snack xuống gần sàn để chó hạ người theo.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7223"
         },
         {
           "heading": "4. Tập ngắn nhưng đều",
-          "body": "Mỗi buổi chỉ nên kéo dài 5–10 phút để chó không bị chán hoặc căng thẳng."
+          "body": "Mỗi buổi chỉ nên kéo dài 5–10 phút để chó không bị chán hoặc căng thẳng.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7224"
         },
         {
           "heading": "5. Lặp lại trong nhiều hoàn cảnh",
-          "body": "Khi chó đã hiểu lệnh, hãy tập ở phòng khách, sân nhà hoặc khi đi dạo để tăng khả năng nghe lệnh."
+          "body": "Khi chó đã hiểu lệnh, hãy tập ở phòng khách, sân nhà hoặc khi đi dạo để tăng khả năng nghe lệnh.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7225"
         }
       ],
       "tip": "Không nên la mắng nếu chó chưa làm đúng. Hãy kiên nhẫn và thưởng đúng thời điểm.",
@@ -926,7 +1041,7 @@
     "mainCategory": "Sức khỏe",
     "category": "Sức khỏe",
     "tag": "Sức khỏe",
-    "image": "https://example.com/articles/pet-skin-problems.jpg",
+    "image": "https://loremflickr.com/1200/800/cat%2Cpet%2Chome?lock=7230",
     "author": "PawSitive Care",
     "publishedDate": "02 Thg 4, 2024",
     "readTime": "6 phút đọc",
@@ -936,23 +1051,28 @@
       "sections": [
         {
           "heading": "1. Viêm da do dị ứng",
-          "body": "Thức ăn, môi trường hoặc sản phẩm tắm không phù hợp có thể khiến da thú cưng đỏ và ngứa."
+          "body": "Thức ăn, môi trường hoặc sản phẩm tắm không phù hợp có thể khiến da thú cưng đỏ và ngứa.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7231"
         },
         {
           "heading": "2. Nấm da",
-          "body": "Nấm thường gây rụng lông từng vùng, da bong vảy và có thể lây sang thú cưng khác."
+          "body": "Nấm thường gây rụng lông từng vùng, da bong vảy và có thể lây sang thú cưng khác.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7232"
         },
         {
           "heading": "3. Ký sinh trùng ngoài da",
-          "body": "Bọ chét, ve hoặc rận khiến chó mèo gãi liên tục, cắn lông và khó chịu."
+          "body": "Bọ chét, ve hoặc rận khiến chó mèo gãi liên tục, cắn lông và khó chịu.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7233"
         },
         {
           "heading": "4. Viêm tai liên quan đến da",
-          "body": "Một số bé có da nhạy cảm cũng dễ bị viêm tai, tai đỏ hoặc có mùi."
+          "body": "Một số bé có da nhạy cảm cũng dễ bị viêm tai, tai đỏ hoặc có mùi.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7234"
         },
         {
           "heading": "5. Chăm sóc lông sai cách",
-          "body": "Tắm quá nhiều, không sấy khô hoặc dùng sản phẩm không phù hợp có thể làm da yếu hơn."
+          "body": "Tắm quá nhiều, không sấy khô hoặc dùng sản phẩm không phù hợp có thể làm da yếu hơn.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7235"
         }
       ],
       "tip": "Nếu thấy rụng lông bất thường hoặc da có mùi, nên đặt lịch khám thay vì tự bôi thuốc.",
@@ -966,7 +1086,7 @@
     "mainCategory": "Dinh dưỡng",
     "category": "Dinh dưỡng",
     "tag": "Dinh dưỡng",
-    "image": "https://example.com/articles/shiny-pet-coat-food.jpg",
+    "image": "https://loremflickr.com/1200/800/pet-food%2Cdog-cat%2Cnutrition?lock=7240",
     "author": "PawSitive Care",
     "publishedDate": "30 Thg 3, 2024",
     "readTime": "5 phút đọc",
@@ -976,23 +1096,28 @@
       "sections": [
         {
           "heading": "1. Thức ăn giàu protein chất lượng",
-          "body": "Protein là nền tảng để cơ thể tạo lông khỏe, ít gãy rụng hơn."
+          "body": "Protein là nền tảng để cơ thể tạo lông khỏe, ít gãy rụng hơn.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7241"
         },
         {
           "heading": "2. Omega-3 và omega-6",
-          "body": "Các chất béo tốt hỗ trợ da mềm, giảm khô và giúp lông bóng hơn."
+          "body": "Các chất béo tốt hỗ trợ da mềm, giảm khô và giúp lông bóng hơn.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7242"
         },
         {
           "heading": "3. Trứng nấu chín",
-          "body": "Trứng có protein và biotin, nhưng cần cho ăn lượng phù hợp và không nên dùng trứng sống."
+          "body": "Trứng có protein và biotin, nhưng cần cho ăn lượng phù hợp và không nên dùng trứng sống.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7243"
         },
         {
           "heading": "4. Cá phù hợp cho thú cưng",
-          "body": "Một số loại cá đã nấu chín có thể bổ sung chất béo tốt, nhưng cần bỏ xương kỹ."
+          "body": "Một số loại cá đã nấu chín có thể bổ sung chất béo tốt, nhưng cần bỏ xương kỹ.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7244"
         },
         {
           "heading": "5. Nước sạch đầy đủ",
-          "body": "Thiếu nước khiến da khô và lông dễ xơ hơn."
+          "body": "Thiếu nước khiến da khô và lông dễ xơ hơn.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7245"
         }
       ],
       "tip": "Không tự ý bổ sung dầu cá hoặc vitamin liều cao nếu chưa có tư vấn từ bác sĩ thú y.",
@@ -1006,7 +1131,7 @@
     "mainCategory": "Huấn luyện",
     "category": "Huấn luyện",
     "tag": "Huấn luyện",
-    "image": "https://example.com/articles/dog-barking-guests.jpg",
+    "image": "https://loremflickr.com/1200/800/dog-training%2Cpet%2Cpuppy?lock=7250",
     "author": "PawSitive Care",
     "publishedDate": "28 Thg 3, 2024",
     "readTime": "5 phút đọc",
@@ -1016,23 +1141,28 @@
       "sections": [
         {
           "heading": "1. Xác định nguyên nhân sủa",
-          "body": "Chó sủa vì sợ, vui mừng hoặc cảnh báo sẽ cần cách xử lý hơi khác nhau."
+          "body": "Chó sủa vì sợ, vui mừng hoặc cảnh báo sẽ cần cách xử lý hơi khác nhau.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7251"
         },
         {
           "heading": "2. Tập với tiếng chuông cửa",
-          "body": "Cho chó nghe tiếng chuông ở âm lượng thấp, thưởng khi bé giữ bình tĩnh."
+          "body": "Cho chó nghe tiếng chuông ở âm lượng thấp, thưởng khi bé giữ bình tĩnh.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7252"
         },
         {
           "heading": "3. Dạy lệnh về chỗ",
-          "body": "Một chiếc thảm hoặc góc nằm cố định giúp chó biết nơi cần ở khi có khách."
+          "body": "Một chiếc thảm hoặc góc nằm cố định giúp chó biết nơi cần ở khi có khách.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7253"
         },
         {
           "heading": "4. Không thưởng nhầm lúc chó đang sủa",
-          "body": "Chỉ thưởng khi chó im lặng hoặc chuyển sự chú ý sang bạn."
+          "body": "Chỉ thưởng khi chó im lặng hoặc chuyển sự chú ý sang bạn.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7254"
         },
         {
           "heading": "5. Cho khách tiếp cận từ từ",
-          "body": "Khách nên tránh nhìn chằm chằm hoặc chạm vào chó ngay khi vừa đến."
+          "body": "Khách nên tránh nhìn chằm chằm hoặc chạm vào chó ngay khi vừa đến.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7255"
         }
       ],
       "tip": "Tập nhiều buổi ngắn sẽ hiệu quả hơn một buổi dài khiến chó căng thẳng.",
@@ -1046,7 +1176,7 @@
     "mainCategory": "Sức khỏe",
     "category": "Sức khỏe",
     "tag": "Sức khỏe",
-    "image": "https://example.com/articles/cat-cold-signs.jpg",
+    "image": "https://loremflickr.com/1200/800/cat%2Cpet%2Chome?lock=7260",
     "author": "PawSitive Care",
     "publishedDate": "26 Thg 3, 2024",
     "readTime": "5 phút đọc",
@@ -1056,23 +1186,28 @@
       "sections": [
         {
           "heading": "1. Hắt hơi nhiều",
-          "body": "Hắt hơi liên tục có thể là dấu hiệu đường hô hấp trên đang bị kích ứng."
+          "body": "Hắt hơi liên tục có thể là dấu hiệu đường hô hấp trên đang bị kích ứng.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7261"
         },
         {
           "heading": "2. Chảy nước mắt hoặc nước mũi",
-          "body": "Dịch trong có thể xuất hiện khi mèo bị cảm, nhưng dịch đặc hoặc đổi màu cần được chú ý."
+          "body": "Dịch trong có thể xuất hiện khi mèo bị cảm, nhưng dịch đặc hoặc đổi màu cần được chú ý.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7262"
         },
         {
           "heading": "3. Ăn ít do nghẹt mũi",
-          "body": "Mèo dựa nhiều vào mùi thức ăn, nên nghẹt mũi có thể làm bé kém ăn."
+          "body": "Mèo dựa nhiều vào mùi thức ăn, nên nghẹt mũi có thể làm bé kém ăn.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7263"
         },
         {
           "heading": "4. Mệt và ngủ nhiều",
-          "body": "Mèo có thể nằm nhiều hơn, ít chơi và ít phản ứng với môi trường xung quanh."
+          "body": "Mèo có thể nằm nhiều hơn, ít chơi và ít phản ứng với môi trường xung quanh.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7264"
         },
         {
           "heading": "5. Cần giữ ấm và theo dõi",
-          "body": "Đặt bé ở nơi ấm, sạch, tránh gió lùa và quan sát diễn biến trong ngày."
+          "body": "Đặt bé ở nơi ấm, sạch, tránh gió lùa và quan sát diễn biến trong ngày.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7265"
         }
       ],
       "tip": "Nếu mèo khó thở, bỏ ăn hoặc triệu chứng kéo dài, nên đưa đi khám ngay.",
@@ -1086,7 +1221,7 @@
     "mainCategory": "Dinh dưỡng",
     "category": "Dinh dưỡng",
     "tag": "Dinh dưỡng",
-    "image": "https://example.com/articles/adult-dog-diet.jpg",
+    "image": "https://loremflickr.com/1200/800/pet-food%2Cdog-cat%2Cnutrition?lock=7270",
     "author": "PawSitive Care",
     "publishedDate": "24 Thg 3, 2024",
     "readTime": "6 phút đọc",
@@ -1096,23 +1231,28 @@
       "sections": [
         {
           "heading": "1. Dựa vào cân nặng và mức vận động",
-          "body": "Chó hoạt động nhiều cần năng lượng cao hơn chó ít vận động hoặc sống trong căn hộ."
+          "body": "Chó hoạt động nhiều cần năng lượng cao hơn chó ít vận động hoặc sống trong căn hộ.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7271"
         },
         {
           "heading": "2. Chọn thức ăn phù hợp độ tuổi",
-          "body": "Thức ăn dành cho chó trưởng thành thường có tỷ lệ dinh dưỡng cân bằng hơn cho giai đoạn duy trì."
+          "body": "Thức ăn dành cho chó trưởng thành thường có tỷ lệ dinh dưỡng cân bằng hơn cho giai đoạn duy trì.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7272"
         },
         {
           "heading": "3. Chia bữa hợp lý",
-          "body": "Nhiều chó trưởng thành phù hợp với 2 bữa mỗi ngày để tiêu hóa ổn định."
+          "body": "Nhiều chó trưởng thành phù hợp với 2 bữa mỗi ngày để tiêu hóa ổn định.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7273"
         },
         {
           "heading": "4. Kiểm soát đồ ăn vặt",
-          "body": "Snack nên chỉ chiếm một phần nhỏ trong tổng năng lượng hằng ngày."
+          "body": "Snack nên chỉ chiếm một phần nhỏ trong tổng năng lượng hằng ngày.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7274"
         },
         {
           "heading": "5. Theo dõi vóc dáng",
-          "body": "Bạn nên quan sát vòng eo, xương sườn và cân nặng để điều chỉnh khẩu phần."
+          "body": "Bạn nên quan sát vòng eo, xương sườn và cân nặng để điều chỉnh khẩu phần.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7275"
         }
       ],
       "tip": "Khi đổi thức ăn, hãy chuyển đổi từ từ trong vài ngày để tránh rối loạn tiêu hóa.",
@@ -1126,7 +1266,7 @@
     "mainCategory": "Huấn luyện",
     "category": "Huấn luyện",
     "tag": "Huấn luyện",
-    "image": "https://example.com/articles/dog-potty-training.jpg",
+    "image": "https://loremflickr.com/1200/800/dog-training%2Cpet%2Cpuppy?lock=7280",
     "author": "PawSitive Care",
     "publishedDate": "22 Thg 3, 2024",
     "readTime": "6 phút đọc",
@@ -1136,23 +1276,28 @@
       "sections": [
         {
           "heading": "1. Chọn vị trí cố định",
-          "body": "Một khu vực ổn định giúp chó nhận biết nơi được phép đi vệ sinh."
+          "body": "Một khu vực ổn định giúp chó nhận biết nơi được phép đi vệ sinh.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7281"
         },
         {
           "heading": "2. Đưa chó đi sau khi ăn và ngủ dậy",
-          "body": "Đây là các thời điểm chó thường có nhu cầu đi vệ sinh nhất."
+          "body": "Đây là các thời điểm chó thường có nhu cầu đi vệ sinh nhất.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7282"
         },
         {
           "heading": "3. Thưởng ngay khi làm đúng",
-          "body": "Khen và thưởng trong vài giây sau khi chó đi đúng chỗ để bé hiểu hành vi tốt."
+          "body": "Khen và thưởng trong vài giây sau khi chó đi đúng chỗ để bé hiểu hành vi tốt.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7283"
         },
         {
           "heading": "4. Không phạt khi lỡ đi sai",
-          "body": "La mắng có thể khiến chó sợ và lén đi vệ sinh ở nơi khó thấy hơn."
+          "body": "La mắng có thể khiến chó sợ và lén đi vệ sinh ở nơi khó thấy hơn.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7284"
         },
         {
           "heading": "5. Vệ sinh mùi thật kỹ",
-          "body": "Nếu còn mùi cũ, chó có thể quay lại đúng vị trí đó để đi tiếp."
+          "body": "Nếu còn mùi cũ, chó có thể quay lại đúng vị trí đó để đi tiếp.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7285"
         }
       ],
       "tip": "Nên ghi lại giờ ăn, giờ ngủ và giờ đi vệ sinh để tìm ra lịch phù hợp cho bé.",
@@ -1166,7 +1311,7 @@
     "mainCategory": "Sức khỏe",
     "category": "Sức khỏe",
     "tag": "Sức khỏe",
-    "image": "https://example.com/articles/pet-deworming.jpg",
+    "image": "https://loremflickr.com/1200/800/veterinary%2Cpet%2Cclinic?lock=7290",
     "author": "PawSitive Care",
     "publishedDate": "20 Thg 3, 2024",
     "readTime": "5 phút đọc",
@@ -1176,23 +1321,28 @@
       "sections": [
         {
           "heading": "1. Giun ảnh hưởng đến tiêu hóa",
-          "body": "Thú cưng nhiễm giun có thể ăn nhiều nhưng vẫn gầy hoặc đi ngoài bất thường."
+          "body": "Thú cưng nhiễm giun có thể ăn nhiều nhưng vẫn gầy hoặc đi ngoài bất thường.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7291"
         },
         {
           "heading": "2. Chó mèo con dễ bị ảnh hưởng hơn",
-          "body": "Cơ thể còn nhỏ khiến các bé dễ mất sức khi nhiễm ký sinh trùng đường ruột."
+          "body": "Cơ thể còn nhỏ khiến các bé dễ mất sức khi nhiễm ký sinh trùng đường ruột.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7292"
         },
         {
           "heading": "3. Cần lịch tẩy giun phù hợp",
-          "body": "Tần suất tẩy giun phụ thuộc vào tuổi, môi trường sống và tư vấn của bác sĩ thú y."
+          "body": "Tần suất tẩy giun phụ thuộc vào tuổi, môi trường sống và tư vấn của bác sĩ thú y.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7293"
         },
         {
           "heading": "4. Không dùng thuốc tùy tiện",
-          "body": "Dùng sai liều hoặc sai loại thuốc có thể gây nguy hiểm cho thú cưng."
+          "body": "Dùng sai liều hoặc sai loại thuốc có thể gây nguy hiểm cho thú cưng.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7294"
         },
         {
           "heading": "5. Kết hợp vệ sinh môi trường",
-          "body": "Dọn phân, vệ sinh khay cát và khu vực sống giúp giảm nguy cơ tái nhiễm."
+          "body": "Dọn phân, vệ sinh khay cát và khu vực sống giúp giảm nguy cơ tái nhiễm.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7295"
         }
       ],
       "tip": "Hãy lưu lịch tẩy giun trong hồ sơ thú cưng để không bỏ sót các mốc quan trọng.",
@@ -1206,7 +1356,7 @@
     "mainCategory": "Dinh dưỡng",
     "category": "Dinh dưỡng",
     "tag": "Dinh dưỡng",
-    "image": "https://example.com/articles/pet-safe-vegetables.jpg",
+    "image": "https://loremflickr.com/1200/800/pet-food%2Cdog-cat%2Cnutrition?lock=7300",
     "author": "PawSitive Care",
     "publishedDate": "18 Thg 3, 2024",
     "readTime": "5 phút đọc",
@@ -1216,23 +1366,28 @@
       "sections": [
         {
           "heading": "1. Bí đỏ nấu chín",
-          "body": "Bí đỏ mềm, dễ tiêu và có thể hỗ trợ hệ tiêu hóa khi dùng lượng phù hợp."
+          "body": "Bí đỏ mềm, dễ tiêu và có thể hỗ trợ hệ tiêu hóa khi dùng lượng phù hợp.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7301"
         },
         {
           "heading": "2. Cà rốt",
-          "body": "Cà rốt nấu chín hoặc cắt nhỏ có thể dùng như món ăn phụ cho một số bé chó."
+          "body": "Cà rốt nấu chín hoặc cắt nhỏ có thể dùng như món ăn phụ cho một số bé chó.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7302"
         },
         {
           "heading": "3. Đậu que nấu chín",
-          "body": "Đậu que không nêm gia vị có thể bổ sung chất xơ nhẹ."
+          "body": "Đậu que không nêm gia vị có thể bổ sung chất xơ nhẹ.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7303"
         },
         {
           "heading": "4. Không nêm muối, đường hoặc gia vị",
-          "body": "Gia vị của người có thể không phù hợp với hệ tiêu hóa của thú cưng."
+          "body": "Gia vị của người có thể không phù hợp với hệ tiêu hóa của thú cưng.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7304"
         },
         {
           "heading": "5. Cho ăn thử lượng nhỏ",
-          "body": "Mỗi bé có khả năng dung nạp khác nhau, nên bắt đầu từ lượng rất ít."
+          "body": "Mỗi bé có khả năng dung nạp khác nhau, nên bắt đầu từ lượng rất ít.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7305"
         }
       ],
       "tip": "Không nên thay thế khẩu phần chính bằng rau củ nếu chưa có tư vấn dinh dưỡng.",
@@ -1246,7 +1401,7 @@
     "mainCategory": "Huấn luyện",
     "category": "Huấn luyện",
     "tag": "Huấn luyện",
-    "image": "https://example.com/articles/dog-new-pet-introduction.jpg",
+    "image": "https://loremflickr.com/1200/800/dog-training%2Cpet%2Cpuppy?lock=7310",
     "author": "PawSitive Care",
     "publishedDate": "16 Thg 3, 2024",
     "readTime": "6 phút đọc",
@@ -1256,23 +1411,28 @@
       "sections": [
         {
           "heading": "1. Cho làm quen bằng mùi trước",
-          "body": "Bạn có thể trao đổi khăn hoặc đồ dùng có mùi của hai bé trước khi gặp trực tiếp."
+          "body": "Bạn có thể trao đổi khăn hoặc đồ dùng có mùi của hai bé trước khi gặp trực tiếp.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7311"
         },
         {
           "heading": "2. Gặp nhau ở không gian trung lập",
-          "body": "Nếu có thể, hãy cho các bé gặp ở nơi rộng, ít tạo cảm giác bị xâm phạm lãnh thổ."
+          "body": "Nếu có thể, hãy cho các bé gặp ở nơi rộng, ít tạo cảm giác bị xâm phạm lãnh thổ.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7312"
         },
         {
           "heading": "3. Dùng dây dắt trong lần đầu",
-          "body": "Dây dắt giúp bạn kiểm soát tình huống nếu một bé quá phấn khích hoặc căng thẳng."
+          "body": "Dây dắt giúp bạn kiểm soát tình huống nếu một bé quá phấn khích hoặc căng thẳng.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7313"
         },
         {
           "heading": "4. Không ép tiếp xúc gần",
-          "body": "Hãy để các bé tự tiến lại khi đã sẵn sàng."
+          "body": "Hãy để các bé tự tiến lại khi đã sẵn sàng.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7314"
         },
         {
           "heading": "5. Chia tài nguyên riêng",
-          "body": "Bát ăn, ổ ngủ và đồ chơi riêng giúp giảm tranh giành trong giai đoạn đầu."
+          "body": "Bát ăn, ổ ngủ và đồ chơi riêng giúp giảm tranh giành trong giai đoạn đầu.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7315"
         }
       ],
       "tip": "Khen thưởng khi các bé bình tĩnh ở gần nhau để tạo liên kết tích cực.",
@@ -1286,7 +1446,7 @@
     "mainCategory": "Sức khỏe",
     "category": "Sức khỏe",
     "tag": "Sức khỏe",
-    "image": "https://example.com/articles/cat-kidney-warning.jpg",
+    "image": "https://loremflickr.com/1200/800/cat%2Cpet%2Chome?lock=7320",
     "author": "PawSitive Care",
     "publishedDate": "14 Thg 3, 2024",
     "readTime": "6 phút đọc",
@@ -1296,23 +1456,28 @@
       "sections": [
         {
           "heading": "1. Uống nước nhiều bất thường",
-          "body": "Nếu mèo uống nước nhiều hơn hẳn mọi ngày, đây có thể là dấu hiệu cần theo dõi."
+          "body": "Nếu mèo uống nước nhiều hơn hẳn mọi ngày, đây có thể là dấu hiệu cần theo dõi.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7321"
         },
         {
           "heading": "2. Đi tiểu nhiều hơn",
-          "body": "Khay cát ướt nhanh hoặc phải thay cát thường xuyên hơn có thể liên quan đến vấn đề tiết niệu hoặc thận."
+          "body": "Khay cát ướt nhanh hoặc phải thay cát thường xuyên hơn có thể liên quan đến vấn đề tiết niệu hoặc thận.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7322"
         },
         {
           "heading": "3. Sụt cân",
-          "body": "Mèo bệnh thận có thể gầy đi dù vẫn ăn hoặc ăn ít hơn trước."
+          "body": "Mèo bệnh thận có thể gầy đi dù vẫn ăn hoặc ăn ít hơn trước.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7323"
         },
         {
           "heading": "4. Hơi thở có mùi lạ",
-          "body": "Một số vấn đề chuyển hóa có thể khiến hơi thở mèo nặng mùi hơn."
+          "body": "Một số vấn đề chuyển hóa có thể khiến hơi thở mèo nặng mùi hơn.",
+          "image": "https://loremflickr.com/900/650/cat%2Cpet%2Chome?lock=7324"
         },
         {
           "heading": "5. Mệt mỏi và lông xơ",
-          "body": "Khi cơ thể không khỏe, mèo có thể ít chải lông, lông xơ và kém linh hoạt."
+          "body": "Khi cơ thể không khỏe, mèo có thể ít chải lông, lông xơ và kém linh hoạt.",
+          "image": "https://loremflickr.com/900/650/pet-grooming%2Ccat-dog%2Ccare?lock=7325"
         }
       ],
       "tip": "Mèo lớn tuổi nên được khám định kỳ để phát hiện sớm các vấn đề về thận và tiết niệu.",
@@ -1326,7 +1491,7 @@
     "mainCategory": "Dinh dưỡng",
     "category": "Dinh dưỡng",
     "tag": "Dinh dưỡng",
-    "image": "https://example.com/articles/dog-kibble-vs-fresh-food.jpg",
+    "image": "https://loremflickr.com/1200/800/pet-food%2Cdog-cat%2Cnutrition?lock=7330",
     "author": "PawSitive Care",
     "publishedDate": "12 Thg 3, 2024",
     "readTime": "6 phút đọc",
@@ -1336,23 +1501,28 @@
       "sections": [
         {
           "heading": "1. Thức ăn hạt tiện lợi",
-          "body": "Hạt dễ bảo quản, dễ chia khẩu phần và thường được thiết kế theo nhu cầu dinh dưỡng từng giai đoạn."
+          "body": "Hạt dễ bảo quản, dễ chia khẩu phần và thường được thiết kế theo nhu cầu dinh dưỡng từng giai đoạn.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7331"
         },
         {
           "heading": "2. Thức ăn tươi dễ tăng khẩu vị",
-          "body": "Một số bé thích thức ăn tươi hơn, nhưng khẩu phần cần được cân đối để tránh thiếu chất."
+          "body": "Một số bé thích thức ăn tươi hơn, nhưng khẩu phần cần được cân đối để tránh thiếu chất.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7332"
         },
         {
           "heading": "3. Không phải món tươi nào cũng an toàn",
-          "body": "Xương nhỏ, gia vị, hành tỏi hoặc đồ nhiều dầu mỡ có thể gây hại cho chó."
+          "body": "Xương nhỏ, gia vị, hành tỏi hoặc đồ nhiều dầu mỡ có thể gây hại cho chó.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7333"
         },
         {
           "heading": "4. Có thể kết hợp hợp lý",
-          "body": "Kết hợp hạt và thức ăn tươi cần tính tổng năng lượng để tránh tăng cân."
+          "body": "Kết hợp hạt và thức ăn tươi cần tính tổng năng lượng để tránh tăng cân.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7334"
         },
         {
           "heading": "5. Theo dõi phân và da lông",
-          "body": "Phân ổn định, da lông khỏe và cân nặng phù hợp là dấu hiệu khẩu phần đang hợp với bé."
+          "body": "Phân ổn định, da lông khỏe và cân nặng phù hợp là dấu hiệu khẩu phần đang hợp với bé.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7335"
         }
       ],
       "tip": "Nếu muốn chuyển sang chế độ tươi lâu dài, nên hỏi bác sĩ thú y hoặc chuyên gia dinh dưỡng thú cưng.",
@@ -1366,7 +1536,7 @@
     "mainCategory": "Huấn luyện",
     "category": "Huấn luyện",
     "tag": "Huấn luyện",
-    "image": "https://example.com/articles/cat-litter-training.jpg",
+    "image": "https://loremflickr.com/1200/800/dog-training%2Cpet%2Cpuppy?lock=7340",
     "author": "PawSitive Care",
     "publishedDate": "10 Thg 3, 2024",
     "readTime": "5 phút đọc",
@@ -1376,23 +1546,28 @@
       "sections": [
         {
           "heading": "1. Chọn khay đủ rộng",
-          "body": "Mèo cần đủ không gian để xoay người và đào cát thoải mái."
+          "body": "Mèo cần đủ không gian để xoay người và đào cát thoải mái.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7341"
         },
         {
           "heading": "2. Đặt khay ở nơi yên tĩnh",
-          "body": "Không nên đặt khay ở nơi quá ồn hoặc gần bát ăn uống."
+          "body": "Không nên đặt khay ở nơi quá ồn hoặc gần bát ăn uống.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7342"
         },
         {
           "heading": "3. Giữ khay sạch",
-          "body": "Mèo rất nhạy với mùi, khay bẩn có thể khiến bé tránh sử dụng."
+          "body": "Mèo rất nhạy với mùi, khay bẩn có thể khiến bé tránh sử dụng.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7343"
         },
         {
           "heading": "4. Không đổi cát quá đột ngột",
-          "body": "Nếu muốn đổi loại cát, nên chuyển từ từ để mèo làm quen."
+          "body": "Nếu muốn đổi loại cát, nên chuyển từ từ để mèo làm quen.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7344"
         },
         {
           "heading": "5. Quan sát dấu hiệu bất thường",
-          "body": "Nếu mèo thường xuyên đi ngoài khay hoặc rặn tiểu, cần kiểm tra sức khỏe."
+          "body": "Nếu mèo thường xuyên đi ngoài khay hoặc rặn tiểu, cần kiểm tra sức khỏe.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7345"
         }
       ],
       "tip": "Nhà có nhiều mèo nên có nhiều hơn một khay vệ sinh để giảm tranh chấp.",
@@ -1406,7 +1581,7 @@
     "mainCategory": "Sức khỏe",
     "category": "Sức khỏe",
     "tag": "Sức khỏe",
-    "image": "https://example.com/articles/pet-first-aid.jpg",
+    "image": "https://loremflickr.com/1200/800/veterinary%2Cpet%2Cclinic?lock=7350",
     "author": "PawSitive Care",
     "publishedDate": "08 Thg 3, 2024",
     "readTime": "5 phút đọc",
@@ -1416,23 +1591,28 @@
       "sections": [
         {
           "heading": "1. Giữ bình tĩnh và kiểm tra vết thương",
-          "body": "Quan sát xem vết thương có chảy máu nhiều, sâu hoặc có dị vật hay không."
+          "body": "Quan sát xem vết thương có chảy máu nhiều, sâu hoặc có dị vật hay không.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7351"
         },
         {
           "heading": "2. Rửa nhẹ bằng dung dịch phù hợp",
-          "body": "Không dùng các chất mạnh nếu chưa biết có an toàn cho thú cưng hay không."
+          "body": "Không dùng các chất mạnh nếu chưa biết có an toàn cho thú cưng hay không.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7352"
         },
         {
           "heading": "3. Cầm máu bằng gạc sạch",
-          "body": "Ấn nhẹ lên vùng chảy máu bằng gạc sạch trong vài phút."
+          "body": "Ấn nhẹ lên vùng chảy máu bằng gạc sạch trong vài phút.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7353"
         },
         {
           "heading": "4. Ngăn thú cưng liếm vết thương",
-          "body": "Liếm nhiều có thể làm vết thương lâu lành hoặc nhiễm trùng."
+          "body": "Liếm nhiều có thể làm vết thương lâu lành hoặc nhiễm trùng.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7354"
         },
         {
           "heading": "5. Theo dõi sau sơ cứu",
-          "body": "Nếu vết thương sưng, đỏ, chảy dịch hoặc bé đau nhiều, cần đưa đi khám."
+          "body": "Nếu vết thương sưng, đỏ, chảy dịch hoặc bé đau nhiều, cần đưa đi khám.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7355"
         }
       ],
       "tip": "Luôn chuẩn bị một hộp sơ cứu nhỏ dành riêng cho thú cưng trong nhà.",
@@ -1446,7 +1626,7 @@
     "mainCategory": "Dinh dưỡng",
     "category": "Dinh dưỡng",
     "tag": "Dinh dưỡng",
-    "image": "https://example.com/articles/pet-feeding-mistakes.jpg",
+    "image": "https://loremflickr.com/1200/800/pet-food%2Cdog-cat%2Cnutrition?lock=7360",
     "author": "PawSitive Care",
     "publishedDate": "06 Thg 3, 2024",
     "readTime": "6 phút đọc",
@@ -1456,23 +1636,28 @@
       "sections": [
         {
           "heading": "1. Cho ăn theo cảm tính",
-          "body": "Không đo khẩu phần khiến thú cưng dễ ăn quá nhiều hoặc quá ít."
+          "body": "Không đo khẩu phần khiến thú cưng dễ ăn quá nhiều hoặc quá ít.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7361"
         },
         {
           "heading": "2. Đổi thức ăn đột ngột",
-          "body": "Thay đổi nhanh có thể gây tiêu chảy, nôn hoặc biếng ăn."
+          "body": "Thay đổi nhanh có thể gây tiêu chảy, nôn hoặc biếng ăn.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7362"
         },
         {
           "heading": "3. Cho ăn nhiều đồ của người",
-          "body": "Thức ăn mặn, cay, nhiều dầu mỡ hoặc có gia vị không phù hợp với chó mèo."
+          "body": "Thức ăn mặn, cay, nhiều dầu mỡ hoặc có gia vị không phù hợp với chó mèo.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7363"
         },
         {
           "heading": "4. Lạm dụng snack",
-          "body": "Snack quá nhiều làm tăng năng lượng dư thừa và khiến bé bỏ bữa chính."
+          "body": "Snack quá nhiều làm tăng năng lượng dư thừa và khiến bé bỏ bữa chính.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7364"
         },
         {
           "heading": "5. Không theo dõi cân nặng",
-          "body": "Cân nặng thay đổi là tín hiệu quan trọng để điều chỉnh khẩu phần."
+          "body": "Cân nặng thay đổi là tín hiệu quan trọng để điều chỉnh khẩu phần.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7365"
         }
       ],
       "tip": "Hãy dùng cốc đong hoặc cân nhỏ để chia khẩu phần chính xác hơn.",
@@ -1486,7 +1671,7 @@
     "mainCategory": "Huấn luyện",
     "category": "Huấn luyện",
     "tag": "Huấn luyện",
-    "image": "https://example.com/articles/dog-leash-training.jpg",
+    "image": "https://loremflickr.com/1200/800/dog-training%2Cpet%2Cpuppy?lock=7370",
     "author": "PawSitive Care",
     "publishedDate": "04 Thg 3, 2024",
     "readTime": "5 phút đọc",
@@ -1496,23 +1681,28 @@
       "sections": [
         {
           "heading": "1. Cho chó ngửi dây trước",
-          "body": "Để dây dắt gần khu vực chơi giúp chó xem đây là vật quen thuộc."
+          "body": "Để dây dắt gần khu vực chơi giúp chó xem đây là vật quen thuộc.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7371"
         },
         {
           "heading": "2. Đeo trong thời gian ngắn",
-          "body": "Bắt đầu với vài phút trong nhà, sau đó tăng dần khi bé đã thoải mái."
+          "body": "Bắt đầu với vài phút trong nhà, sau đó tăng dần khi bé đã thoải mái.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7372"
         },
         {
           "heading": "3. Kết hợp phần thưởng",
-          "body": "Thưởng khi chó đứng yên hoặc đi theo bạn mà không cố tháo dây."
+          "body": "Thưởng khi chó đứng yên hoặc đi theo bạn mà không cố tháo dây.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7373"
         },
         {
           "heading": "4. Tập đi trong nhà trước",
-          "body": "Không gian yên tĩnh giúp chó tập trung và ít bị kích thích hơn."
+          "body": "Không gian yên tĩnh giúp chó tập trung và ít bị kích thích hơn.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7374"
         },
         {
           "heading": "5. Không kéo giật mạnh",
-          "body": "Kéo mạnh có thể khiến chó sợ dây dắt và chống đối hơn."
+          "body": "Kéo mạnh có thể khiến chó sợ dây dắt và chống đối hơn.",
+          "image": "https://loremflickr.com/900/650/dog-training%2Cpet%2Cpuppy?lock=7375"
         }
       ],
       "tip": "Chọn vòng cổ hoặc yếm vừa vặn để chó không bị đau hoặc khó chịu.",
@@ -1526,7 +1716,7 @@
     "mainCategory": "Sức khỏe",
     "category": "Sức khỏe",
     "tag": "Sức khỏe",
-    "image": "https://example.com/articles/pet-obesity.jpg",
+    "image": "https://loremflickr.com/1200/800/veterinary%2Cpet%2Cclinic?lock=7380",
     "author": "PawSitive Care",
     "publishedDate": "02 Thg 3, 2024",
     "readTime": "6 phút đọc",
@@ -1536,23 +1726,28 @@
       "sections": [
         {
           "heading": "1. Nhận biết vóc dáng",
-          "body": "Nếu khó sờ thấy xương sườn hoặc không thấy eo khi nhìn từ trên, thú cưng có thể đang thừa cân."
+          "body": "Nếu khó sờ thấy xương sườn hoặc không thấy eo khi nhìn từ trên, thú cưng có thể đang thừa cân.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7381"
         },
         {
           "heading": "2. Đo khẩu phần ăn",
-          "body": "Cho ăn theo hướng dẫn và điều chỉnh theo mức vận động thay vì đổ đầy bát liên tục."
+          "body": "Cho ăn theo hướng dẫn và điều chỉnh theo mức vận động thay vì đổ đầy bát liên tục.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7382"
         },
         {
           "heading": "3. Giảm đồ ăn vặt",
-          "body": "Snack nên được tính vào tổng năng lượng trong ngày."
+          "body": "Snack nên được tính vào tổng năng lượng trong ngày.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7383"
         },
         {
           "heading": "4. Tăng vận động phù hợp",
-          "body": "Đi dạo, chơi ném bóng hoặc trò chơi tương tác giúp thú cưng tiêu hao năng lượng."
+          "body": "Đi dạo, chơi ném bóng hoặc trò chơi tương tác giúp thú cưng tiêu hao năng lượng.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7384"
         },
         {
           "heading": "5. Theo dõi cân nặng định kỳ",
-          "body": "Cân mỗi vài tuần giúp bạn biết kế hoạch ăn uống và vận động có hiệu quả không."
+          "body": "Cân mỗi vài tuần giúp bạn biết kế hoạch ăn uống và vận động có hiệu quả không.",
+          "image": "https://loremflickr.com/900/650/veterinary%2Cpet%2Cclinic?lock=7385"
         }
       ],
       "tip": "Không giảm cân quá nhanh cho thú cưng; hãy tham khảo bác sĩ thú y để có kế hoạch an toàn.",
@@ -1566,7 +1761,7 @@
     "mainCategory": "Dinh dưỡng",
     "category": "Dinh dưỡng",
     "tag": "Dinh dưỡng",
-    "image": "https://example.com/articles/pet-vitamins.jpg",
+    "image": "https://loremflickr.com/1200/800/pet-food%2Cdog-cat%2Cnutrition?lock=7390",
     "author": "PawSitive Care",
     "publishedDate": "28 Thg 2, 2024",
     "readTime": "5 phút đọc",
@@ -1576,23 +1771,28 @@
       "sections": [
         {
           "heading": "1. Không phải thú cưng nào cũng cần vitamin",
-          "body": "Nếu đang ăn khẩu phần cân bằng, bé có thể đã nhận đủ dưỡng chất cần thiết."
+          "body": "Nếu đang ăn khẩu phần cân bằng, bé có thể đã nhận đủ dưỡng chất cần thiết.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7391"
         },
         {
           "heading": "2. Thiếu chất cần được xác định đúng",
-          "body": "Các dấu hiệu như lông xơ, mệt mỏi hoặc biếng ăn có thể do nhiều nguyên nhân khác nhau."
+          "body": "Các dấu hiệu như lông xơ, mệt mỏi hoặc biếng ăn có thể do nhiều nguyên nhân khác nhau.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7392"
         },
         {
           "heading": "3. Dùng sai liều có thể gây hại",
-          "body": "Một số vitamin nếu dùng quá nhiều có thể tích lũy và ảnh hưởng đến sức khỏe."
+          "body": "Một số vitamin nếu dùng quá nhiều có thể tích lũy và ảnh hưởng đến sức khỏe.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7393"
         },
         {
           "heading": "4. Chọn sản phẩm dành cho thú cưng",
-          "body": "Không nên dùng vitamin của người cho chó mèo nếu chưa được tư vấn."
+          "body": "Không nên dùng vitamin của người cho chó mèo nếu chưa được tư vấn.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7394"
         },
         {
           "heading": "5. Ưu tiên khẩu phần chất lượng",
-          "body": "Thức ăn phù hợp vẫn là nền tảng quan trọng hơn việc bổ sung thêm."
+          "body": "Thức ăn phù hợp vẫn là nền tảng quan trọng hơn việc bổ sung thêm.",
+          "image": "https://loremflickr.com/900/650/pet-food%2Cdog-cat%2Cnutrition?lock=7395"
         }
       ],
       "tip": "Hãy hỏi bác sĩ thú y trước khi dùng vitamin, đặc biệt với thú cưng đang bệnh, mang thai hoặc lớn tuổi.",

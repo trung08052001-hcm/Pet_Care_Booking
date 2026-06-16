@@ -5,6 +5,7 @@ import { LoginPage } from "./features/auth/LoginPage";
 import { BookingsPage } from "./features/bookings/BookingsPage";
 import { ChatPage } from "./features/chat/ChatPage";
 import { CustomersPage } from "./features/customers/CustomersPage";
+import { InformationPage } from "./features/information/InformationPage";
 import { NotificationsPage } from "./features/notifications/NotificationsPage";
 import { OverviewPage } from "./features/overview/OverviewPage";
 import { PetsPage } from "./features/pets/PetsPage";
@@ -19,6 +20,7 @@ const pageMap: Record<AdminSection, JSX.Element> = {
   services: <ServicesPage />,
   customers: <CustomersPage />,
   chat: <ChatPage />,
+  information: <InformationPage />,
   pets: <PetsPage />,
   reports: <ReportsPage />,
   notifications: <NotificationsPage />,

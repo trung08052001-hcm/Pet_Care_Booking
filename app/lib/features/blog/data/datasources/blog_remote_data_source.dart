@@ -1,6 +1,7 @@
 import 'package:app/core/network/api_config.dart';
 import 'package:app/features/blog/domain/entities/blog_category_filter.dart';
 import 'package:app/features/blog/domain/entities/blog_post.dart';
+import 'package:app/features/blog/domain/entities/blog_social.dart';
 import 'package:dio/dio.dart';
 
 class BlogRemoteDataSource {
@@ -35,6 +36,35 @@ class BlogRemoteDataSource {
     throw StateError('Invalid blog posts response.');
   }
 
+  Future<BlogSocial> getSocial(String articleId) async {
+    final response = await _dio.get<Map<String, dynamic>>(
+      '${ApiEndpoints.blogPosts}/$articleId/social',
+    );
+    return _socialFromResponse(response.data);
+  }
+
+  Future<BlogSocial> toggleLike(String articleId) async {
+    final response = await _dio.post<Map<String, dynamic>>(
+      '${ApiEndpoints.blogPosts}/$articleId/likes',
+    );
+    return _socialFromResponse(response.data);
+  }
+
+  Future<BlogSocial> addComment(String articleId, String body) async {
+    final response = await _dio.post<Map<String, dynamic>>(
+      '${ApiEndpoints.blogPosts}/$articleId/comments',
+      data: {'body': body},
+    );
+    return _socialFromResponse(response.data);
+  }
+
+  Future<BlogSocial> registerShare(String articleId) async {
+    final response = await _dio.post<Map<String, dynamic>>(
+      '${ApiEndpoints.blogPosts}/$articleId/shares',
+    );
+    return _socialFromResponse(response.data);
+  }
+
   BlogPost _postFromJson(Map<String, dynamic> json) {
     final content = json['content'];
     final contentMap =
@@ -66,6 +96,7 @@ class BlogRemoteDataSource {
                 (section) => BlogPostSection(
                   heading: (section['heading'] ?? '').toString(),
                   body: (section['body'] ?? '').toString(),
+                  imageUrl: (section['image'] ?? '').toString(),
                 ),
               )
               .toList(growable: false)
@@ -121,5 +152,39 @@ class BlogRemoteDataSource {
       return null;
     }
     return int.tryParse(match.group(0)!);
+  }
+
+  BlogSocial _socialFromResponse(Map<String, dynamic>? response) {
+    final data = response?['data'];
+    final social = data is Map ? data['social'] : null;
+    if (social is! Map) {
+      throw StateError('Invalid blog social response.');
+    }
+
+    final comments = social['comments'];
+    return BlogSocial(
+      likeCount: int.tryParse((social['likeCount'] ?? 0).toString()) ?? 0,
+      commentCount: int.tryParse((social['commentCount'] ?? 0).toString()) ?? 0,
+      shareCount: int.tryParse((social['shareCount'] ?? 0).toString()) ?? 0,
+      likedByMe: social['likedByMe'] == true,
+      comments: comments is List
+          ? comments
+              .whereType<Map<String, dynamic>>()
+              .map(
+                (comment) => BlogComment(
+                  id: (comment['id'] ?? '').toString(),
+                  userId: (comment['userId'] ?? '').toString(),
+                  userName: (comment['userName'] ?? 'Người dùng').toString(),
+                  userAvatar: (comment['userAvatar'] ?? '').toString(),
+                  body: (comment['body'] ?? '').toString(),
+                  createdAt: DateTime.tryParse(
+                        (comment['createdAt'] ?? '').toString(),
+                      ) ??
+                      DateTime.now(),
+                ),
+              )
+              .toList(growable: false)
+          : const [],
+    );
   }
 }
